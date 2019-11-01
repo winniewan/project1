@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+        <title> Forum Home Page</title>
+    </head>
+	<body>
+        {% if current_user.is_authenticated %}
+        <h1>currently logged in: {{ current_user.first_name }}</h1>
+        {% else %}
+        <h1>no one is logged in</h1>
+        {% endif %}
+            <script>
+                function myFunction() {
+                var x = document.URL;
+                document.getElementById("demo").innerHTML = x;
+                    }
+            </script>
+        <a href='/add_user'> <button type="button"> add user </button> </a> <br>
+        {% if current_user.is_authenticated %}
+        <a href="{{ url_for('logout') }}">
+        <button type="button"> Log Out </button>
+        </a>
+        {% else %}
+        <a href="{{ url_for('login') }}">
+        <button type="button"> Log In </button>
+        </a>
+        {% endif %}
+    </body>
+</html>

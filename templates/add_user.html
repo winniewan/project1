@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+        <title> add_user</title>
+        <!--
+        <link rel="stylesheet" href="{{ url_for('static', filename='forum.css') }}">
+        <script type="text/javascript" src="{{ url_for('static', filename='forum.js') }}"></script> -->
+	</head>
+	<body>
+        <div id="form descr">
+            <h2>add user:</h2>
+        </div>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            {{ form.first_name.label }}: {{ form.first_name() }}<br>
+            {{ form.last_name.label }}: {{ form.last_name() }}<br>
+            {{ form.email.label }}: {{ form.email() }}<br>
+            {{ form.password.label }}: {{ form.password() }}<br>
+            {{ form.submit() }}
+        </form>                
+    </body>
+</html>

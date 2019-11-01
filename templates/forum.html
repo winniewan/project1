@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+        <title> Forum</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='forum.css') }}">
+        <script type="text/javascript" src="{{ url_for('static', filename='forum.js') }}"></script>
+	</head>
+	<body>
+        <div id="profile">
+                <h1>Hello, {{user.first_name}} {{ user.last_name }}!</h1>
+                <p>email: {{user.email}}</p>
+            <!--
+            <span class="friends">
+                <ul>
+                    {% for fuid in user.friends%}
+                        <li>
+                            <a href="{{ url_for('users',uid = fuid|string) }}"> {{users[fuid|string].fname}} {{users[fuid|string].lname}} </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </span>
+        -->
+        </div>
+    </body>
+</html>
