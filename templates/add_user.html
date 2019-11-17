@@ -3,20 +3,19 @@
 	<head>
 		<meta charset="utf-8"/>
         <title> add_user</title>
-        <!--
-        <link rel="stylesheet" href="{{ url_for('static', filename='forum.css') }}">
-        <script type="text/javascript" src="{{ url_for('static', filename='forum.js') }}"></script> -->
+        <link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}">
 	</head>
 	<body>
         <div id="form descr">
-            <h2>add user:</h2>
+            <a href = "/" class = "button">Home</a>
+            <h2>Add user: </h2>
         </div>
-        <form method="POST">
+        <form method="POST" id = "block">
             {{ form.hidden_tag() }}
-            {{ form.first_name.label }}: {{ form.first_name() }}<br>
-            {{ form.last_name.label }}: {{ form.last_name() }}<br>
-            {{ form.email.label }}: {{ form.email() }}<br>
-            {{ form.password.label }}: {{ form.password() }}<br>
+            First Name : {{ form.first_name() }}<br>
+            Last Name: {{ form.last_name() }}<br>
+            Email: {{ form.email() }}<br>
+            Password: {{ form.password() }}<br>
             {{ form.submit() }}
         </form>                
     </body>

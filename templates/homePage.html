@@ -3,12 +3,21 @@
 	<head>
 		<meta charset="utf-8"/>
         <title> Forum Home Page</title>
+        <link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}">
     </head>
 	<body>
         {% if current_user.is_authenticated %}
-        <h1>currently logged in: {{ current_user.first_name }}</h1>
+        <a href = "profile/ {{ current_user.uid}}" id = "profile" class = "button">Profile</a>
+        <a href = "{{ url_for('logout') }}" class = "button">Log out</a>
         {% else %}
-        <h1>no one is logged in</h1>
+        <a href = "/add_user" class = "button">Add user</a>
+        <a href = "{{ url_for('login') }}" class = "button">Log in</a>
+        </a>
+        {% endif %}
+        {% if current_user.is_authenticated %}
+        <h1>Welcome, {{ current_user.first_name }}!</h1>
+        {% else %}
+        <h1>Welcome, anon!</h1>
         {% endif %}
             <script>
                 function myFunction() {
@@ -16,15 +25,5 @@
                 document.getElementById("demo").innerHTML = x;
                     }
             </script>
-        <a href='/add_user'> <button type="button"> add user </button> </a> <br>
-        {% if current_user.is_authenticated %}
-        <a href="{{ url_for('logout') }}">
-        <button type="button"> Log Out </button>
-        </a>
-        {% else %}
-        <a href="{{ url_for('login') }}">
-        <button type="button"> Log In </button>
-        </a>
-        {% endif %}
     </body>
 </html>

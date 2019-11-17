@@ -2,13 +2,16 @@
 <html>
     <head>
         <title> Login </title>
+        <link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}">
     </head>
     <body>
-        <form method="POST">
+        <a href = "/" class = "button">Home</a>
+        <h2>Login: </h2>
+        <form method="POST" id = "block">
             {{ form.hidden_tag() }}
             {{ form.email.label }}: {{ form.email() }}<br>
             {{ form.password.label }}: {{ form.password() }}<br>
-            {{ form.remember_me.label }}:<br>{{ form.remember_me() }}<br>
+            {{ form.remember_me.label }}: {{ form.remember_me() }}<br>
             {{ form.submit() }}
         </form>
     </body>

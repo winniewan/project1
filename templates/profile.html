@@ -1,0 +1,12 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+        <title> Forum Home Page</title>
+        <link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}">
+    </head>
+	<body>
+        {% if current_user.is_authenticated %}
+        <h1> {{current_user.first_name }}</h1>
+    </body>
+</html>
