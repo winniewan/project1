@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Admin </title>
+    </head>
+    <body>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            {{ form.email.label }}: {{ form.email() }}<br>
+            {{ form.role_name.label }}: {{ form.role_name() }}<br>
+            {{ form.submit() }}
+        </form>
+    </body>
+</html>
