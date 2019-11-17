@@ -12,7 +12,7 @@ import base64
 from werkzeug import security
 from hashlib import sha512
 from cryptography.fernet import Fernet
-from database import db
+from database import *
 
 # google oauth
 
