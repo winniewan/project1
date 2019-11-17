@@ -44,14 +44,6 @@ def load_user(user_id):
 ##
 #
 
-class Permission(object):
-    FOLLOW = 1
-    COMMENT = 2
-    WRITE = 4
-    MODERATE = 8
-    ADMIN = 16
-
-
 def permission_required(perm):
     def decorator(f):
         @wraps(f)
