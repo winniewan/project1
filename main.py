@@ -1,4 +1,3 @@
-import json
 import os
 from flask import Flask, render_template, abort, redirect, request, url_for, flash
 from flask_login import login_user, logout_user, UserMixin, AnonymousUserMixin, LoginManager, login_required, \
@@ -11,7 +10,7 @@ from functools import wraps
 import base64
 from werkzeug import security
 from hashlib import sha512
-from cryptography.fernet import Fernet
+
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "oEHYBreJ2QSefBdUhD19PkxC"
@@ -127,7 +126,7 @@ class Roles(db.Model):
     users = db.relationship("Users", backref="role", lazy="dynamic")
 
     def __init__(self, **kwargs):
-        super(Role, self).__init__(**kwargs)
+        super(Roles, self).__init__(**kwargs)
         if self.permissions is None:
             self.permissions = 0
 
@@ -260,6 +259,11 @@ def add_user():
         return redirect(next)
     return render_template("add_user.html", form=form)
 
+
+@app.route("/profile/<int:uid>", methods=["GET"])
+def profile(uid):
+    user = Users.query.filter_by(id=uid).first()
+    return render_template('profile.html')
 
 @app.route("/users/<int:uid>")
 def users(uid):
