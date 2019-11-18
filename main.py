@@ -1,17 +1,13 @@
-import json
 import os
-from flask import Flask, render_template, abort, redirect, request, url_for, flash
-from flask_login import login_user, logout_user, UserMixin, AnonymousUserMixin, LoginManager, login_required, \
-    current_user
-from flask_sqlalchemy import SQLAlchemy
-from flask_wtf import FlaskForm
+from functools import wraps
+
 import wtforms as wtf
 import wtforms.validators as valid
-from functools import wraps
-import base64
-from werkzeug import security
-from hashlib import sha512
-from cryptography.fernet import Fernet
+from flask import Flask, render_template, abort, redirect, request, url_for, flash
+from flask_login import login_user, logout_user, LoginManager, login_required, \
+    current_user
+from flask_wtf import FlaskForm
+
 from database import *
 
 # google oauth
@@ -229,10 +225,15 @@ def initialize_app():
         db.session.add_all([newt, follow, comment, write, mod, admin])
         db.session.add_all([gal_user, josh_user, all_cnitt])
         db.session.commit()
-        user_id = db.session.query(Users).filter(Users.email=="jradin16@gmail.com").first().id
-        cnitt_id = db.session.query(SubCnitt).first().cnitt_id
-        subscribe(app, user_id,
-                  cnitt_id)
+        user = db.session.query(Users).filter(Users.email == "jradin16@gmail.com").first()
+        all_cnitt.subscribe(user.id)
+        all_cnitt.create_text_post("TEST POST PLEASE IGNORE 1", "hello world", user.id)
+        all_cnitt.create_text_post("TEST POST PLEASE IGNORE 2", "hello world, again", user.id)
+
+
+def get_the_all_cnitt():
+    with app.app_context():
+        return db.session.query(SubCnitt).filter(SubCnitt.name == "All").first()
 
 
 if __name__ == "__main__":

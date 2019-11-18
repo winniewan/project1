@@ -1,12 +1,8 @@
-from flask_sqlalchemy import SQLAlchemy
 import datetime
-from flask_login import login_user, logout_user, UserMixin, AnonymousUserMixin, LoginManager, login_required, \
-    current_user
 
+from flask_login import UserMixin, AnonymousUserMixin
+from flask_sqlalchemy import SQLAlchemy
 from werkzeug import security
-from hashlib import sha512
-from cryptography.fernet import Fernet
-
 
 db = SQLAlchemy()
 
@@ -58,9 +54,14 @@ class Users(UserMixin, db.Model):
     def verify_password(self, password):
         return security.check_password_hash(self.password_hash, password)
 
+    def up_vote_post(self, pid):
+        Post.query.filter(Post.pid == pid).first().up_vote(self.id)
+
+    def down_vote_post(self, pid):
+        Post.query.filter(Post.pid == pid).first().down_vote(self.id)
+
     def __repr__(self):
         return f"[{self.id}] {self.email}"
-
 
 
 class AnonymousUser(AnonymousUserMixin):
@@ -104,24 +105,54 @@ class SubCnitt(db.Model):
     cnitt_id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     name = db.Column(db.String, autoincrement=True, unique=True, nullable=False)
     datetime_created = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now())
-    subscribers = db.relationship('Subscriber', backref='subs', lazy='dynamic', )
+    subscribers = db.relationship('Subscriber', backref='subs', lazy='dynamic')
 
     def create_link_post(self, title, link, user_id):
         post = Post(title=title, content=link, is_link=True, poster=user_id, cnitt_id=self.cnitt_id)
         db.session.add(post)
         db.session.commit()
+        post.up_vote(user_id)
         return post
 
     def create_text_post(self, title, content, user_id):
         post = Post(title=title, content=content, is_link=False, poster=user_id, cnitt_id=self.cnitt_id)
         db.session.add(post)
         db.session.commit()
+        post.up_vote(user_id)
         return post
 
     def subscribe(self, user_id):
         sub = Subscriber(cnitt_id=self.cnitt_id, user_id=user_id)
         db.session.add(sub)
         db.session.commit()
+
+    def posts(self, sort_type='Hot', quantity=25):
+
+        output = [None]*quantity
+        if self.name == "All":
+            if sort_type == 'Hot':
+                all_posts = Post.query.all()
+                all_posts.sort(key=(lambda x: x.post_hotness_rating()), reverse=True)
+            elif sort_type == 'New':
+                all_posts = Post.query.order_by(Post.created.desc()).all()
+            elif sort_type == 'Top':
+                all_posts = Post.query.order_by(Post.created.desc()).all()
+            else:
+                return []
+        else:
+            if sort_type == 'Hot':
+                all_posts = Post.query.filter(Post.cnitt_id == self.cnitt_id).all()
+                all_posts.sort(key=(lambda x: x.post_hotness_rating()), reverse=True)
+            elif sort_type == 'New':
+                all_posts = Post.query.filter(Post.cnitt_id == self.cnitt_id).order_by(Post.created.desc()).all()
+            elif sort_type == 'Top':
+                all_posts = Post.query.filter(Post.cnitt_id == self.cnitt_id).order_by(Post.created.desc()).all()
+            else:
+                return []
+
+        for i in range(0, min(quantity, len(all_posts))):
+            output[i] = all_posts[i]
+        return output
 
     def __repr__(self):
         return f"c/{self.name}"
@@ -133,27 +164,71 @@ class Subscriber(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("Users.id"), nullable=False, primary_key=True)
 
 
+class Vote(db.Model):
+    vote_num = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('Posts.pid'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("Users.id"), nullable=False)
+    is_up_vote = db.Column(db.Boolean, nullable=False)
+
+    def __repr__(self):
+        return f"{repr(Users.query.filter(Users.id == self.user_id).first())} voted on {repr(Post.query.filter(Post.pid == self.post_id).first())} "
+
+
 class Post(db.Model):
     __tablename__ = "Posts"
     title = db.Column(db.String, nullable=False)
     pid = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
-    up_votes = db.Column(db.Integer, nullable=False, default=1)
+    up_votes = db.Column(db.Integer, nullable=False, default=0)
     down_votes = db.Column(db.Integer, nullable=False, default=0)
     poster = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable=False)
     cnitt_id = db.Column(db.Integer, db.ForeignKey('SubCnitts.cnitt_id'), nullable=False)
     content = db.Column(db.Text)
     is_link = db.Column(db.Boolean, nullable=False)
+    created = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now())
+    modified = db.Column(db.DateTime, nullable=True, default=None)
 
     def __repr__(self):
         cnitt = SubCnitt.query.filter(SubCnitt.cnitt_id == self.cnitt_id).first()
         votes = self.up_votes - self.down_votes
         return f"{repr(cnitt)} [{votes}] {self.title}"
 
+    def up_vote(self, user_id):
+        prev_vote = Vote.query.filter(Post.pid == Vote.post_id).filter(Vote.user_id == user_id).first()
+        if prev_vote is None:
+            vote = Vote(post_id=self.pid, user_id=user_id, is_up_vote=True)
+            self.up_votes += 1
+            db.session.add(vote)
+            db.session.commit()
+        elif not prev_vote.is_up_vote:
+            prev_vote.is_up_vote = True
+            self.up_votes += 1
+            self.down_votes -= 1
+            db.session.commit()
+
+    def down_vote(self, user_id):
+        prev_vote = Vote.query.filter(Post.pid == Vote.post_id).filter(Vote.user_id == user_id).first()
+        if prev_vote is None:
+            vote = Vote(post_id=self.pid, user_id=user_id, is_up_vote=False)
+            self.down_votes += 1
+            db.session.add(vote)
+            db.session.commit()
+        elif prev_vote.is_up_vote:
+            prev_vote.is_up_vote = False
+            self.up_votes -= 1
+            self.down_votes += 1
+            db.session.commit()
+
+    def net_votes(self):
+        return self.up_votes - self.down_votes
+
+    def post_hotness_rating(self):
+        return self.net_votes() / (datetime.datetime.now() - self.created).seconds.real
+
     def create_comment(self, content, user_id, parent_comment=None):
         user = Users.query.filter(Users.id == user_id).first()
         comment = Comment(post=self.pid, user=user.id, text=content, parent=parent_comment)
         db.session.add(comment)
-        db.session.commmit()
+        db.session.commit()
         return comment
 
     def create_comment_chains(self):
@@ -173,8 +248,9 @@ class Post(db.Model):
 
 
 class Moderator(db.Model):
-    uid = db.Column(db.Integer, db.ForeignKey("Users.id"), nullable=False, primary_key=True)
-    cnitt_id = db.Column(db.Integer, db.ForeignKey('SubCnitts.cnitt_id'), nullable=False, primary_key=True)
+    mod_number = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
+    uid = db.Column(db.Integer, db.ForeignKey("Users.id"), nullable=False)
+    cnitt_id = db.Column(db.Integer, db.ForeignKey('SubCnitts.cnitt_id'), nullable=False)
 
 
 class Comment(db.Model):
@@ -185,7 +261,6 @@ class Comment(db.Model):
     text = db.Column(db.Text, nullable=False)
     votes = db.Column(db.Integer, nullable=False, default=0)
     parent = db.Column(db.Integer, db.ForeignKey('Comments.cmnt_id'), nullable=True)
-
 
 
 
