@@ -7,23 +7,19 @@
     </head>
 	<body>
         {% if current_user.is_authenticated %}
-        <a href = "users/{{current_user.id}}" id = "profile" class = "button">Profile</a>
-        <a href = "{{ url_for('logout') }}" class = "button">Log out</a>
+					<h1 id = "welcome" >Welcome, {{ current_user.first_name }}!</h1>
+        	<a href = "users/{{current_user.id}}" id = "profile" class = "button">Profile</a>
+        	<a href = "{{ url_for('logout') }}" class = "button">Log out</a>
         {% else %}
-        <a href = "/add_user" class = "button">Add user</a>
-        <a href = "{{ url_for('login') }}" class = "button">Log in</a>
-        </a>
+					<h1 id = "welcome">Welcome, anon!</h1>
+        	<a href = "/add_user" class = "button">Add user</a>
+        	<a href = "{{ url_for('login') }}" class = "button">Log in</a>
         {% endif %}
-        {% if current_user.is_authenticated %}
-        <h1 id = "welcome" >Welcome, {{ current_user.first_name }}!</h1>
-        {% else %}
-        <h1 id = "welcome">Welcome, anon!</h1>
-        {% endif %}
-            <script>
-                function myFunction() {
-                var x = document.URL;
-                document.getElementById("demo").innerHTML = x;
-                    }
-            </script>
+        <script>
+            function myFunction() {
+	            var x = document.URL;
+	            document.getElementById("demo").innerHTML = x;
+            }
+        </script>
     </body>
 </html>
