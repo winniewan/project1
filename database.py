@@ -157,7 +157,12 @@ def create_comment_chains(app, pid):
     output = []
     with app.app_context():
         all_comments = Comment.query(post=pid)
-        child_dict = {}
+        parents = []
+        for c in all_comments:
+            if c.post is None:
+                parents += [c]
+
+
 
 
     return output
