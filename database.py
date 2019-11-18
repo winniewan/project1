@@ -28,6 +28,7 @@ class Users(UserMixin, db.Model):
     email = db.Column(db.Unicode(256), nullable=False, unique=True)
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey("Roles.rid"), default=1)
+    subcnitts = db.relationship('Subscriber', lazy='dynamic')
 
     def change_user_role(self, new_role):
         role = Roles.query.filter_by(rid=new_role).first()
@@ -56,6 +57,10 @@ class Users(UserMixin, db.Model):
 
     def verify_password(self, password):
         return security.check_password_hash(self.password_hash, password)
+
+    def __repr__(self):
+        return f"[{self.id}] {self.email}"
+
 
 
 class AnonymousUser(AnonymousUserMixin):
@@ -99,11 +104,31 @@ class SubCnitt(db.Model):
     cnitt_id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     name = db.Column(db.String, autoincrement=True, unique=True, nullable=False)
     datetime_created = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now())
-    subscribers = db.relationship('Subscriber', backref='subs', lazy='dynamic')
+    subscribers = db.relationship('Subscriber', backref='subs', lazy='dynamic', )
+
+    def create_link_post(self, title, link, user_id):
+        post = Post(title=title, content=link, is_link=True, poster=user_id, cnitt_id=self.cnitt_id)
+        db.session.add(post)
+        db.session.commit()
+        return post
+
+    def create_text_post(self, title, content, user_id):
+        post = Post(title=title, content=content, is_link=False, poster=user_id, cnitt_id=self.cnitt_id)
+        db.session.add(post)
+        db.session.commit()
+        return post
+
+    def subscribe(self, user_id):
+        sub = Subscriber(cnitt_id=self.cnitt_id, user_id=user_id)
+        db.session.add(sub)
+        db.session.commit()
+
+    def __repr__(self):
+        return f"c/{self.name}"
 
 
 class Subscriber(db.Model):
-#   table_args__ = (SQLAlchemy.PrimaryKeyConstraint('cnitt_id', 'user_id'))
+    #   table_args__ = (SQLAlchemy.PrimaryKeyConstraint('cnitt_id', 'user_id'))
     cnitt_id = db.Column(db.Integer, db.ForeignKey('SubCnitts.cnitt_id'), nullable=False, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("Users.id"), nullable=False, primary_key=True)
 
@@ -112,11 +137,39 @@ class Post(db.Model):
     __tablename__ = "Posts"
     title = db.Column(db.String, nullable=False)
     pid = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
-    votes = db.Column(db.Integer, nullable=False, default=0)
+    up_votes = db.Column(db.Integer, nullable=False, default=1)
+    down_votes = db.Column(db.Integer, nullable=False, default=0)
     poster = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable=False)
     cnitt_id = db.Column(db.Integer, db.ForeignKey('SubCnitts.cnitt_id'), nullable=False)
     content = db.Column(db.Text)
     is_link = db.Column(db.Boolean, nullable=False)
+
+    def __repr__(self):
+        cnitt = SubCnitt.query.filter(SubCnitt.cnitt_id == self.cnitt_id).first()
+        votes = self.up_votes - self.down_votes
+        return f"{repr(cnitt)} [{votes}] {self.title}"
+
+    def create_comment(self, content, user_id, parent_comment=None):
+        user = Users.query.filter(Users.id == user_id).first()
+        comment = Comment(post=self.pid, user=user.id, text=content, parent=parent_comment)
+        db.session.add(comment)
+        db.session.commmit()
+        return comment
+
+    def create_comment_chains(self):
+        child_tree = {}
+        all_comments = Comment.query.filter(Comment.post == self.pid).all()
+        base_comments = []
+        for c in all_comments:
+            child_tree[c.cmnt_id] = []
+            if c.parent is None:
+                base_comments += [c.cmnt_id]
+
+        for c in all_comments:
+            parent_cmnt_id = c.parent
+            child_tree[parent_cmnt_id] += [c.cmnt_id]
+
+        return child_tree, base_comments
 
 
 class Moderator(db.Model):
@@ -134,49 +187,12 @@ class Comment(db.Model):
     parent = db.Column(db.Integer, db.ForeignKey('Comments.cmnt_id'), nullable=True)
 
 
-def create_link_post(app, title, link, user_id, cnitt):
+
+
+def subscribe(app, uid, cnitt_id):
     with app.app_context():
-        cnitt_id = SubCnitt.query.filter_by(name=cnitt).first()
-        if cnitt_id is None:
-            return None
-        post = Post(title=title, content=link, is_link=True, poster=user_id, cnitt_id=cnitt_id)
-        db.session.add(post)
+        sub = Subscriber(cnitt_id=cnitt_id, user_id=uid)
+        db.session.add(sub)
         db.session.commit()
-        return post
-
-
-def create_comment(app, content, user_id, pid, parent_comment=None):
-    with app.app_context():
-        comment = Comment(post=pid, user=user_id, text=content, parent=parent_comment)
-        db.session.add(comment)
-        db.session.commmit()
-        return comment
-
-
-def create_comment_chains(app, pid):
-    output = []
-    with app.app_context():
-        all_comments = Comment.query(post=pid)
-        parents = []
-        for c in all_comments:
-            if c.post is None:
-                parents += [c]
-
-
-
-
-    return output
-
-
-class PostInformationCollection:
-    def __init__(self, app, pid):
-        with app.app_context():
-            post = Post.query.filter_by(pid=pid).first()
-            self.title = post.title
-            self.content = post.content
-            self.is_link = post.is_link
-            self.poster = post.poster
-            self.post = post
-            self.comment_trees = []
 
 

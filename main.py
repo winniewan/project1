@@ -214,21 +214,27 @@ def users(uid):
         abort(404)
 
 
-def intitialize_app():
+def initialize_app():
     newt = Roles(name="newt", default=True, permissions=0)
     follow = Roles(name="follow", permissions=1)
     comment = Roles(name="comment", permissions=3)
     write = Roles(name="write", permissions=7)
     mod = Roles(name="moderator", permissions=15)
     admin = Roles(name="admin", permissions=31)
+    gal_user = Users(first_name="Gal", last_name="Cherki", email="gal.cherki@hotmail.com", password="math", role_id=6)
+    josh_user = Users(first_name="Josh", last_name="Radin", email="jradin16@gmail.com", password="helloworld",
+                      role_id=6)
+    all_cnitt = SubCnitt(name="All")
     with app.app_context():
         db.session.add_all([newt, follow, comment, write, mod, admin])
-        gal_user = Users(first_name="Gal", last_name="Cherki", email="gal.cherki@hotmail.com", password="math", role_id=6)
-
-        db.session.add_all([gal_user])
+        db.session.add_all([gal_user, josh_user, all_cnitt])
         db.session.commit()
+        user_id = db.session.query(Users).filter(Users.email=="jradin16@gmail.com").first().id
+        cnitt_id = db.session.query(SubCnitt).first().cnitt_id
+        subscribe(app, user_id,
+                  cnitt_id)
 
 
 if __name__ == "__main__":
-    intitialize_app()
+    initialize_app()
     app.run(ssl_context=("cert.pem", "key.pem"))
