@@ -6,25 +6,18 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='forum.css') }}">
         <script type="text/javascript" src="{{ url_for('static', filename='forum.js') }}"></script>
 	</head>
+
 	<body>
-        <div id="profile">
-                <h1>Hello, {{user.first_name}} {{ user.last_name }}!</h1>
-                <p>email: {{user.email}}</p>
-                <p>role: {{user.role_id}}
-            <!--
-            <span class="friends">
-                <ul>
-                    {% for fuid in user.friends%}
-                        <li>
-                            <a href="{{ url_for('users',uid = fuid|string) }}"> {{users[fuid|string].fname}} {{users[fuid|string].lname}} </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </span>
-        -->
-        </div>
         <br/>
         <a href = "/" id = "home" class = "button">Back to Home</a>
         <a href = "{{ url_for('logout') }}" class = "button">Log out</a>
+    -->
+    <ul>
+    {% for post in posts%}
+        <li>
+            {{ post.title }}
+        </li>
+    {% endfor %}
+    </ul>
     </body>
 </html>

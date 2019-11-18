@@ -208,6 +208,26 @@ def users(uid):
         abort(404)
 
 
+@app.route("/c")
+@app.route("/c/", defaults={'cnitt_name': 'Front'})
+@app.route("/c/<string:cnitt_name>")
+@app.route("/c/<string:cnitt_name>/<string:sort_type>")
+def show_sub_cnitt(cnitt_name="Front", sort_type='Hot'):
+    cnitt = SubCnitt.get(cnitt_name)
+    if cnitt is None:
+        return redirect(url_for("index")), 404
+    '''
+    if current_user is None:
+        id = None
+    else:
+        id = c  urrent_user.id
+    '''
+    id = None
+    posts = cnitt.posts(sort_type=sort_type, user_id=id)
+    # SHOW POSTS HERE
+    return render_template("forum.html", posts=posts), 200
+
+
 def initialize_app():
     newt = Roles(name="newt", default=True, permissions=0)
     follow = Roles(name="follow", permissions=1)
@@ -250,6 +270,11 @@ def get_subscribed():
         return SubCnitt.query.join(Subscriber.cnitt_id).filter(Subscriber.user_id == current_user.id)
 
 
-if __name__ == "__main__":
-    initialize_app()
+initialize_app()
+
+
+def run():
     app.run(ssl_context=("cert.pem", "key.pem"))
+
+if __name__ == '__main__':
+    run()
