@@ -7,7 +7,7 @@
     </head>
 	<body>
         {% if current_user.is_authenticated %}
-        <a href = "profile/ {{ current_user.uid}}" id = "profile" class = "button">Profile</a>
+        <a href = "users/{{current_user.id}}" id = "profile" class = "button">Profile</a>
         <a href = "{{ url_for('logout') }}" class = "button">Log out</a>
         {% else %}
         <a href = "/add_user" class = "button">Add user</a>
