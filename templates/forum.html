@@ -1,23 +1,33 @@
 <!DOCTYPE HTML>
 <html lang="en">
-	<head>
-		<meta charset="utf-8"/>
-        <title> Forum</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='forum.css') }}">
-        <script type="text/javascript" src="{{ url_for('static', filename='forum.js') }}"></script>
-	</head>
+<head>
+    <meta charset="utf-8"/>
+    <title> Forum</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='forum.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='forum.js') }}"></script>
+</head>
 
-	<body>
-        <br/>
-        <a href = "/" id = "home" class = "button">Back to Home</a>
-        <a href = "{{ url_for('logout') }}" class = "button">Log out</a>
-    -->
-    <ul>
+<body>
+<br/>
+<a href = "/" id = "home" class = "button">Back to Home</a>
+<a href = "{{ url_for('logout') }}" class = "button">Log out</a>
+
+<ul>
     {% for post in posts%}
-        <li>
-            {{ post.title }}
-        </li>
+    <li>
+
+        <button class="up_arrow"  type="button">UP</button>
+
+        <b> {{ post.net_votes }}</b>
+        {% if post.is_link %}
+        <a href = "{{post.content}}"> {{ post.title }} </a>
+        {% else %}
+        <a href = "c/{{post.cnitt_name}}/comments/{{post.pid}}"> {{ post.title }} </a>
+        {% endif %}
+        <br>
+        <a href = "c/{{post.cnitt_name}}/comments/{{post.pid}}"> comments </a>
+    </li>
     {% endfor %}
-    </ul>
-    </body>
+</ul>
+</body>
 </html>

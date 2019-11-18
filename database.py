@@ -257,6 +257,10 @@ class Post(db.Model):
         db.session.commit()
         return comment
 
+    @property
+    def cnitt_name(self):
+        return SubCnitt.query.filter_by(cnitt_id=self.cnitt_id).first().name
+
     def create_comment_chains(self):
         child_tree = {}
         all_comments = Comment.query.filter(Comment.post == self.pid).all()

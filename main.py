@@ -228,6 +228,12 @@ def show_sub_cnitt(cnitt_name="Front", sort_type='Hot'):
     return render_template("forum.html", posts=posts), 200
 
 
+@app.route("/c/<string:cnitt_name>/comments/<int:post_id>", defaults={'sort_type': 'Hot'})
+@app.route("/c/<string:cnitt_name>/comments/<int:post_id>/<string:sort_type>")
+def comments_for_post(cnitt_name, post_id, sort_type):
+    return f"Here will be info from the post {repr(Post.query.filter(Post.pid == post_id).first())} {cnitt_name} with sorting of {sort_type}", 200
+
+
 def initialize_app():
     newt = Roles(name="newt", default=True, permissions=0)
     follow = Roles(name="follow", permissions=1)
@@ -256,7 +262,7 @@ def initialize_app():
         load_user(user.id)
 
         SubCnitt.add_required_subscriptions()
-        all_cnitt.create_text_post("TEST POST PLEASE IGNORE 1", "hello world", user.id)
+        all_cnitt.create_link_post("TEST POST PLEASE IGNORE 1", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", user.id)
         all_cnitt.create_text_post("TEST POST PLEASE IGNORE 2", "hello world, again", user.id)
 
 
