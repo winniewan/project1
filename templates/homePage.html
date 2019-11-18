@@ -15,9 +15,9 @@
         </a>
         {% endif %}
         {% if current_user.is_authenticated %}
-        <h1>Welcome, {{ current_user.first_name }}!</h1>
+        <h1 id = "welcome" >Welcome, {{ current_user.first_name }}!</h1>
         {% else %}
-        <h1>Welcome, anon!</h1>
+        <h1 id = "welcome">Welcome, anon!</h1>
         {% endif %}
             <script>
                 function myFunction() {

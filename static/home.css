@@ -38,7 +38,14 @@ a.button {
     background: white;
 }
 
-
+#welcome {
+    text-decoration: none;
+    border: 2px solid black;
+    font-size: 20px;
+    padding: 4px;
+    color: black;
+    background: white;
+}
 #block {
   background-color: lightgray;
   border: 2px solid black;
