@@ -31,8 +31,6 @@ def load_user(user_id):
     return Users.query.get(int(user_id))
 
 
-# initialize the SQLAlchemy database adaptor
-
 
 #
 ##
@@ -220,13 +218,24 @@ def initialize_app():
     gal_user = Users(first_name="Gal", last_name="Cherki", email="gal.cherki@hotmail.com", password="math", role_id=6)
     josh_user = Users(first_name="Josh", last_name="Radin", email="jradin16@gmail.com", password="helloworld",
                       role_id=6)
-    all_cnitt = SubCnitt(name="All")
+    all_cnitt = SubCnitt(name="All", required_subscription=True)
+    front_cnitt = SubCnitt(name="Front", required_subscription=True)
+    pictures = SubCnitt(name="pics")
+    rochester = SubCnitt(name="roch")
+    leibenning = SubCnitt(name="leibenning")
+    funny = SubCnitt(name="funny")
     with app.app_context():
         db.session.add_all([newt, follow, comment, write, mod, admin])
-        db.session.add_all([gal_user, josh_user, all_cnitt])
+        db.session.add_all([gal_user, josh_user, all_cnitt, front_cnitt, pictures, rochester, leibenning, funny])
         db.session.commit()
         user = db.session.query(Users).filter(Users.email == "jradin16@gmail.com").first()
-        all_cnitt.subscribe(user.id)
+        #all_cnitt.subscribe(user.id)
+        '''
+        DELETE EVENTUALLY, THIS IS FOR TESTING PURPOSES ONLY
+        '''
+        load_user(user.id)
+
+        SubCnitt.add_required_subscriptions()
         all_cnitt.create_text_post("TEST POST PLEASE IGNORE 1", "hello world", user.id)
         all_cnitt.create_text_post("TEST POST PLEASE IGNORE 2", "hello world, again", user.id)
 
@@ -234,6 +243,11 @@ def initialize_app():
 def get_the_all_cnitt():
     with app.app_context():
         return db.session.query(SubCnitt).filter(SubCnitt.name == "All").first()
+
+
+def get_subscribed():
+    if current_user is not None:
+        return SubCnitt.query.join(Subscriber.cnitt_id).filter(Subscriber.user_id == current_user.id)
 
 
 if __name__ == "__main__":

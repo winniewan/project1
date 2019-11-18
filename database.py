@@ -24,7 +24,6 @@ class Users(UserMixin, db.Model):
     email = db.Column(db.Unicode(256), nullable=False, unique=True)
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey("Roles.rid"), default=1)
-    subcnitts = db.relationship('Subscriber', lazy='dynamic')
 
     def change_user_role(self, new_role):
         role = Roles.query.filter_by(rid=new_role).first()
@@ -43,6 +42,13 @@ class Users(UserMixin, db.Model):
     def is_administrator(self):
         return self.can(Permission.ADMIN)
 
+    def get_subscriptions(self):
+        return SubCnitt.query.join(Subscriber).filter(Subscriber.user_id == self.id).all()
+
+    @property
+    def subscriptions(self):
+        return self.get_subscriptions()
+
     @property
     def password(self):
         raise AttributeError("password is write only")
@@ -60,8 +66,10 @@ class Users(UserMixin, db.Model):
     def down_vote_post(self, pid):
         Post.query.filter(Post.pid == pid).first().down_vote(self.id)
 
+    '''
     def __repr__(self):
         return f"[{self.id}] {self.email}"
+    '''
 
 
 class AnonymousUser(AnonymousUserMixin):
@@ -103,8 +111,9 @@ class Roles(db.Model):
 class SubCnitt(db.Model):
     __tablename__ = "SubCnitts"
     cnitt_id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
-    name = db.Column(db.String, autoincrement=True, unique=True, nullable=False)
-    datetime_created = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now())
+    name = db.Column(db.String(30), autoincrement=True, unique=True, nullable=False)
+    datetime_created = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now)
+    required_subscription = db.Column(db.Boolean, nullable=False, default=False)
     subscribers = db.relationship('Subscriber', backref='subs', lazy='dynamic')
 
     def create_link_post(self, title, link, user_id):
@@ -122,40 +131,59 @@ class SubCnitt(db.Model):
         return post
 
     def subscribe(self, user_id):
-        sub = Subscriber(cnitt_id=self.cnitt_id, user_id=user_id)
-        db.session.add(sub)
-        db.session.commit()
+        if Subscriber.query.filter_by(cnitt_id=self.cnitt_id, user_id=user_id).first() is None:
+            sub = Subscriber(cnitt_id=self.cnitt_id, user_id=user_id)
+            db.session.add(sub)
+            db.session.commit()
 
-    def posts(self, sort_type='Hot', quantity=25):
+    @staticmethod
+    def get_subscribed(user_id):
+        return SubCnitt.query.join(Subscriber).filter(Subscriber.user_id == user_id).all()
 
-        output = [None]*quantity
-        if self.name == "All":
-            if sort_type == 'Hot':
-                all_posts = Post.query.all()
-                all_posts.sort(key=(lambda x: x.post_hotness_rating()), reverse=True)
-            elif sort_type == 'New':
-                all_posts = Post.query.order_by(Post.created.desc()).all()
-            elif sort_type == 'Top':
-                all_posts = Post.query.order_by(Post.created.desc()).all()
-            else:
-                return []
+    def posts(self, sort_type='Hot', start=0, quantity=25, user_id=None):
+
+        output = []
+        if self.name == "All" or (self.name == "Front" and user_id is None):
+            query_filter = Post.query
+        elif self.name == "Front":
+            query_filter = Post.query.select_from(Subscriber).join(Post, Post.cnitt_id == Subscriber.cnitt_id).filter(Subscriber.user_id == user_id)
         else:
-            if sort_type == 'Hot':
-                all_posts = Post.query.filter(Post.cnitt_id == self.cnitt_id).all()
-                all_posts.sort(key=(lambda x: x.post_hotness_rating()), reverse=True)
-            elif sort_type == 'New':
-                all_posts = Post.query.filter(Post.cnitt_id == self.cnitt_id).order_by(Post.created.desc()).all()
-            elif sort_type == 'Top':
-                all_posts = Post.query.filter(Post.cnitt_id == self.cnitt_id).order_by(Post.created.desc()).all()
-            else:
-                return []
+            query_filter = Post.query.filter_by(cnitt_id=self.cnitt_id)
 
-        for i in range(0, min(quantity, len(all_posts))):
-            output[i] = all_posts[i]
+        if sort_type == 'Hot':
+            all_posts = query_filter.all()
+            all_posts.sort(key=(lambda x: x.post_hotness_rating()), reverse=True)
+        elif sort_type == 'New':
+            all_posts = query_filter.order_by(Post.created.desc()).all()
+        elif sort_type == 'Top':
+            all_posts = query_filter.order_by(Post.net_votes.desc()).all()
+        else:
+            return []
+
+        stop = min(quantity, len(all_posts) - start)
+        if stop > 0:
+            for i in range(0, stop):
+                output += [all_posts[i + start]]
         return output
 
     def __repr__(self):
         return f"c/{self.name}"
+
+    @staticmethod
+    def add_required_subscriptions(user_id=None):
+        if user_id is None:
+            users = Users.query.all()
+        else:
+            users = Users.query.filter_by(user_id=user_id).all()
+
+        required_subscriptions = SubCnitt.query.filter_by(required_subscription=True).all()
+        for u in users:
+            for r in required_subscriptions:
+                r.subscribe(u.id)
+
+    @staticmethod
+    def get(name="Front"):
+        return SubCnitt.query.filter_by(name=name).first()
 
 
 class Subscriber(db.Model):
@@ -180,20 +208,21 @@ class Post(db.Model):
     pid = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
     up_votes = db.Column(db.Integer, nullable=False, default=0)
     down_votes = db.Column(db.Integer, nullable=False, default=0)
+    net_votes = db.column_property(up_votes - down_votes)
     poster = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable=False)
     cnitt_id = db.Column(db.Integer, db.ForeignKey('SubCnitts.cnitt_id'), nullable=False)
     content = db.Column(db.Text)
     is_link = db.Column(db.Boolean, nullable=False)
-    created = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now())
-    modified = db.Column(db.DateTime, nullable=True, default=None)
+    created = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now)
+    modified = db.Column(db.DateTime, nullable=True, default=None, onupdate=datetime.datetime.now)
 
     def __repr__(self):
         cnitt = SubCnitt.query.filter(SubCnitt.cnitt_id == self.cnitt_id).first()
         votes = self.up_votes - self.down_votes
-        return f"{repr(cnitt)} [{votes}] {self.title}"
+        return f"{repr(cnitt)}.{self.pid} [{votes}] {self.title}"
 
     def up_vote(self, user_id):
-        prev_vote = Vote.query.filter(Post.pid == Vote.post_id).filter(Vote.user_id == user_id).first()
+        prev_vote = Vote.query.filter(self.pid == Vote.post_id).filter(Vote.user_id == user_id).first()
         if prev_vote is None:
             vote = Vote(post_id=self.pid, user_id=user_id, is_up_vote=True)
             self.up_votes += 1
@@ -206,7 +235,7 @@ class Post(db.Model):
             db.session.commit()
 
     def down_vote(self, user_id):
-        prev_vote = Vote.query.filter(Post.pid == Vote.post_id).filter(Vote.user_id == user_id).first()
+        prev_vote = Vote.query.filter(self.pid == Vote.post_id).filter(Vote.user_id == user_id).first()
         if prev_vote is None:
             vote = Vote(post_id=self.pid, user_id=user_id, is_up_vote=False)
             self.down_votes += 1
@@ -218,11 +247,8 @@ class Post(db.Model):
             self.down_votes += 1
             db.session.commit()
 
-    def net_votes(self):
-        return self.up_votes - self.down_votes
-
     def post_hotness_rating(self):
-        return self.net_votes() / (datetime.datetime.now() - self.created).seconds.real
+        return self.net_votes / (datetime.datetime.now() - self.created).seconds.real
 
     def create_comment(self, content, user_id, parent_comment=None):
         user = Users.query.filter(Users.id == user_id).first()
@@ -242,7 +268,8 @@ class Post(db.Model):
 
         for c in all_comments:
             parent_cmnt_id = c.parent
-            child_tree[parent_cmnt_id] += [c.cmnt_id]
+            if parent_cmnt_id is not None:
+                child_tree[parent_cmnt_id] += [c.cmnt_id]
 
         return child_tree, base_comments
 
@@ -263,11 +290,11 @@ class Comment(db.Model):
     parent = db.Column(db.Integer, db.ForeignKey('Comments.cmnt_id'), nullable=True)
 
 
-
 def subscribe(app, uid, cnitt_id):
     with app.app_context():
         sub = Subscriber(cnitt_id=cnitt_id, user_id=uid)
         db.session.add(sub)
         db.session.commit()
+
 
 
