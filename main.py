@@ -9,10 +9,12 @@ from flask_login import login_user, logout_user, LoginManager, login_required, \
 from flask_wtf import FlaskForm
 
 from database import *
+from post_blueprint import post_page
 
 # google oauth
 
 app = Flask(__name__)
+app.register_blueprint(post_page)
 login_manager = LoginManager()
 login_manager.login_view = "login"
 login_manager.init_app(app)
@@ -240,12 +242,6 @@ def show_sub_cnitt(cnitt_name="Front", sort_type='Hot'):
         posts = cnitt.posts(sort_type=sort_type, quantity=num_posts, start=after, user_id=id)
     # SHOW POSTS HERE
     return render_template("forum.html", posts=posts), 200
-
-
-@app.route("/c/<string:cnitt_name>/comments/<int:post_id>", defaults={'sort_type': 'Hot'})
-@app.route("/c/<string:cnitt_name>/comments/<int:post_id>/<string:sort_type>")
-def comments_for_post(cnitt_name, post_id, sort_type):
-    return f"Here will be info from the post {repr(Post.query.filter(Post.pid == post_id).first())} {cnitt_name} with sorting of {sort_type}", 200
 
 
 def initialize_app():
