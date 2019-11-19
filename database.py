@@ -248,7 +248,7 @@ class Post(db.Model):
             db.session.commit()
 
     def post_hotness_rating(self):
-        return self.net_votes / (datetime.datetime.now() - self.created).seconds.real
+        return self.net_votes / ((datetime.datetime.now() - self.created).seconds.real + 1)
 
     def create_comment(self, content, user_id, parent_comment=None):
         user = Users.query.filter(Users.id == user_id).first()

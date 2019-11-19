@@ -89,6 +89,20 @@ class RoleForm(FlaskForm):
     role_name = wtf.StringField("Role", validators=[valid.DataRequired()])
     submit = wtf.SubmitField("change_role")
 
+class TextPostForm(FlaskForm):
+    title = wtf.StringField("Title", validators= [valid.DataRequired(), valid.Length(1, 64)])
+    content = wtf.TextAreaField("Content", validators= [valid.DataRequired()])
+    submit = wtf.SubmitField("Make Post")
+
+class LinkPostForm(FlaskForm):
+    title = wtf.StringField("Title", validators= [valid.DataRequired(), valid.Length(1, 64)])
+    content = wtf.TextAreaField("Link", validators= [valid.DataRequired(), valid.URL()])
+    submit = wtf.SubmitField("Make Post")
+
+class CommentForm(FlaskForm):
+    content = wtf.TextAreaField("Write Comment Here", validators = [valid.DataRequired()])
+    submit = wtf.SubmitField("Make Post")
+
 
 # clearing the database
 with app.app_context():
@@ -200,12 +214,55 @@ def add_user():
 @app.route("/users/<int:uid>")
 def users(uid):
     user = Users.query.filter_by(id=uid).first()
+    posts = Post.query.filter_by(poster=uid).all()
     # print(help(user))
-    if (user != None):
-        return render_template("forum.html", user=user), 200
+    if (user != None and posts != None):
+        return render_template("profile.html", user=user, posts = posts), 200
+    elif (user != None):
+        return render_template("profile.html", user=user), 200
     else:
         print("oops")
         abort(404)
+
+# @app.route("/make_text_post", methods=["GET","POST"])
+# def make_text_post(cnitt_name):
+#     return render_template ("forum.html"), 200
+
+@app.route("/c/<string:cnitt_name>/mtp", methods = ["GET", "POST"])
+@login_required
+def mtp(cnitt_name):
+    title = None
+    cnitt = SubCnitt.get(cnitt_name)
+    form = TextPostForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        form.title.data = None
+        content = form.content.data
+        form.content.data = None
+        post = cnitt.create_text_post(title, content, current_user.id)
+        next = request.args.get("next")
+        if next is None or not next.startswith("/"):
+            next = url_for("show_sub_cnitt", cnitt_name = cnitt_name, sort_type = 'Hot')
+        return redirect(next)
+    return render_template ("text_post_submission.html", form = form), 200
+
+@app.route("/c/<string:cnitt_name>/mlp", methods = ["GET", "POST"])
+@login_required
+def mlp(cnitt_name):
+    title = None
+    cnitt = SubCnitt.get(cnitt_name)
+    form = LinkPostForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        form.title.data = None
+        content = form.content.data
+        form.content.data = None
+        post = cnitt.create_link_post(title, content, current_user.id)
+        next = request.args.get("next")
+        if next is None or not next.startswith("/"):
+            next = url_for("show_sub_cnitt", cnitt_name = cnitt_name, sort_type = 'Hot')
+        return redirect(next)
+    return render_template ("link_post_submission.html", form = form), 200
 
 
 @app.route("/c")
@@ -225,13 +282,35 @@ def show_sub_cnitt(cnitt_name="Front", sort_type='Hot'):
     id = None
     posts = cnitt.posts(sort_type=sort_type, user_id=id)
     # SHOW POSTS HERE
-    return render_template("forum.html", posts=posts), 200
+    return render_template("forum.html", posts=posts, cnitt_name = cnitt_name), 200
 
 
-@app.route("/c/<string:cnitt_name>/comments/<int:post_id>", defaults={'sort_type': 'Hot'})
-@app.route("/c/<string:cnitt_name>/comments/<int:post_id>/<string:sort_type>")
+@app.route("/c/<string:cnitt_name>/comments/<int:post_id>",  methods = ["GET", "POST"], defaults={'sort_type': 'Hot'})
+@app.route("/c/<string:cnitt_name>/comments/<int:post_id>/<string:sort_type>",  methods = ["GET", "POST"])
 def comments_for_post(cnitt_name, post_id, sort_type):
-    return f"Here will be info from the post {repr(Post.query.filter(Post.pid == post_id).first())} {cnitt_name} with sorting of {sort_type}", 200
+    post = Post.query.filter_by(pid = post_id).first()
+    comments = Comment.query.filter_by(post = post_id).all()
+    if post != None:
+        return render_template("post.html", post = post,cnitt_name = cnitt_name, comments = comments)
+    else: 
+        print("oops")
+        abort(404)
+
+@app.route("/makeComment/<string:cnitt_name>/<int:post_id>",  methods = ["GET", "POST"])
+def makeComment(cnitt_name, post_id,):
+    post = Post.query.filter_by(pid = post_id).first()
+    user_id = current_user.id
+    form = CommentForm()
+    if form.validate_on_submit():
+        content = form.content.data
+        form.content.data = None
+        post.create_comment(content, user_id)
+        next = request.args.get("next")
+        if next is None or not next.startswith("/"):
+            next = url_for("comments_for_post", cnitt_name = cnitt_name, post_id = post_id)
+        return redirect(next)
+    return render_template ("commentForm.html", form = form), 200
+
 
 
 def initialize_app():

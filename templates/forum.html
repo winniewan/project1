@@ -8,6 +8,7 @@
 </head>
 
 <body>
+    <h2> Welcome to {{cnitt_name}}!</h2>
 <br/>
 <a href = "/" id = "home" class = "button">Back to Home</a>
 <a href = "{{ url_for('logout') }}" class = "button">Log out</a>
@@ -22,12 +23,14 @@
         {% if post.is_link %}
         <a href = "{{post.content}}"> {{ post.title }} </a>
         {% else %}
-        <a href = "c/{{post.cnitt_name}}/comments/{{post.pid}}"> {{ post.title }} </a>
+        <a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}"> {{ post.title }} </a>
         {% endif %}
         <br>
-        <a href = "c/{{post.cnitt_name}}/comments/{{post.pid}}"> comments </a>
+        <a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}"> comments </a>
     </li>
     {% endfor %}
 </ul>
+<a href = "{{ url_for('mtp', cnitt_name = cnitt_name ) }}" class = "button">Add Text Post</a>
+<a href = "{{ url_for('mlp', cnitt_name = cnitt_name ) }}" class = "button">Add Link Post</a>
 </body>
 </html>
