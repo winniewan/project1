@@ -1,6 +1,6 @@
 venv/*
 library.db
-.idea/
+.idea/*
 
 # GIT HUB gitignore
 
