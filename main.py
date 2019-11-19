@@ -208,10 +208,10 @@ def users(uid):
         abort(404)
 
 
-@app.route("/c")
-@app.route("/c/", defaults={'cnitt_name': 'Front'})
-@app.route("/c/<string:cnitt_name>")
-@app.route("/c/<string:cnitt_name>/<string:sort_type>")
+@app.route("/c", methods=["GET"])
+@app.route("/c/", defaults={'cnitt_name': 'Front'}, methods=["GET"])
+@app.route("/c/<string:cnitt_name>", methods=["GET"])
+@app.route("/c/<string:cnitt_name>/<string:sort_type>", methods=["GET"])
 def show_sub_cnitt(cnitt_name="Front", sort_type='Hot'):
     cnitt = SubCnitt.get(cnitt_name)
     if cnitt is None:
@@ -223,7 +223,21 @@ def show_sub_cnitt(cnitt_name="Front", sort_type='Hot'):
         id = c  urrent_user.id
     '''
     id = None
-    posts = cnitt.posts(sort_type=sort_type, user_id=id)
+    num_posts = request.args.get("count")
+    if num_posts is not None:
+        num_posts = int(num_posts)
+    after = request.args.get("after")
+    if after is not None:
+        after = int(after)
+
+    if num_posts is None and after is None:
+        posts = cnitt.posts(sort_type=sort_type, user_id=id)
+    elif num_posts is None:
+        posts = cnitt.posts(sort_type=sort_type, start=after, user_id=id)
+    elif after is None:
+        posts = cnitt.posts(sort_type=sort_type, quantity=num_posts, user_id=id)
+    else:
+        posts = cnitt.posts(sort_type=sort_type, quantity=num_posts, start=after, user_id=id)
     # SHOW POSTS HERE
     return render_template("forum.html", posts=posts), 200
 

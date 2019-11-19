@@ -2,6 +2,7 @@ import datetime
 
 from flask_login import UserMixin, AnonymousUserMixin
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import PrimaryKeyConstraint
 from werkzeug import security
 
 db = SQLAlchemy()
@@ -21,6 +22,7 @@ class Users(UserMixin, db.Model):
                    autoincrement=True)
     first_name = db.Column(db.Unicode(64), nullable=False)
     last_name = db.Column(db.Unicode(64), nullable=False)
+    name = db.column_property(first_name + ' ' + last_name)
     email = db.Column(db.Unicode(256), nullable=False, unique=True)
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey("Roles.rid"), default=1)
@@ -151,19 +153,15 @@ class SubCnitt(db.Model):
             query_filter = Post.query.filter_by(cnitt_id=self.cnitt_id)
 
         if sort_type == 'Hot':
-            all_posts = query_filter.all()
-            all_posts.sort(key=(lambda x: x.post_hotness_rating()), reverse=True)
+            all_posts = query_filter.order_by(Post.post_hotness_rating.desc())
         elif sort_type == 'New':
-            all_posts = query_filter.order_by(Post.created.desc()).all()
+            all_posts = query_filter.order_by(Post.created.desc())
         elif sort_type == 'Top':
-            all_posts = query_filter.order_by(Post.net_votes.desc()).all()
+            all_posts = query_filter.order_by(Post.net_votes.desc())
         else:
             return []
 
-        stop = min(quantity, len(all_posts) - start)
-        if stop > 0:
-            for i in range(0, stop):
-                output += [all_posts[i + start]]
+        output = all_posts.offset(start).limit(quantity).all()
         return output
 
     def __repr__(self):
@@ -187,7 +185,7 @@ class SubCnitt(db.Model):
 
 
 class Subscriber(db.Model):
-    #   table_args__ = (SQLAlchemy.PrimaryKeyConstraint('cnitt_id', 'user_id'))
+    __table_args__ = (PrimaryKeyConstraint('cnitt_id', 'user_id'),)
     cnitt_id = db.Column(db.Integer, db.ForeignKey('SubCnitts.cnitt_id'), nullable=False, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("Users.id"), nullable=False, primary_key=True)
 
@@ -209,17 +207,20 @@ class Post(db.Model):
     up_votes = db.Column(db.Integer, nullable=False, default=0)
     down_votes = db.Column(db.Integer, nullable=False, default=0)
     net_votes = db.column_property(up_votes - down_votes)
+    controversial_rating = db.column_property(down_votes * (up_votes + down_votes))
     poster = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable=False)
     cnitt_id = db.Column(db.Integer, db.ForeignKey('SubCnitts.cnitt_id'), nullable=False)
     content = db.Column(db.Text)
     is_link = db.Column(db.Boolean, nullable=False)
     created = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now)
+    hotness_rating = db.Query(net_votes / (datetime.datetime.now() - created))
     modified = db.Column(db.DateTime, nullable=True, default=None, onupdate=datetime.datetime.now)
 
     def __repr__(self):
         cnitt = SubCnitt.query.filter(SubCnitt.cnitt_id == self.cnitt_id).first()
         votes = self.up_votes - self.down_votes
-        return f"{repr(cnitt)}.{self.pid} [{votes}] {self.title}"
+        user = Users.query.filter_by(id=self.poster).first().name
+        return f"{repr(cnitt)}.{self.pid} [{votes}] {self.title} - {user}"
 
     def up_vote(self, user_id):
         prev_vote = Vote.query.filter(self.pid == Vote.post_id).filter(Vote.user_id == user_id).first()
@@ -246,9 +247,6 @@ class Post(db.Model):
             self.up_votes -= 1
             self.down_votes += 1
             db.session.commit()
-
-    def post_hotness_rating(self):
-        return self.net_votes / (datetime.datetime.now() - self.created).seconds.real
 
     def create_comment(self, content, user_id, parent_comment=None):
         user = Users.query.filter(Users.id == user_id).first()
