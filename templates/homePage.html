@@ -14,15 +14,17 @@
 			       <a href="/about" class = "button">About Us</a>
 			       <a href = "users/{{current_user.id}}" id = "profile" class = "button">Profile</a>
 						 <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">Check out the front page!</a>
-						 <a href = "{{ url_for('logout') }}" class = "button">Log out</a>
+						 <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
+						 <!-- <a href = "{{ url_for('logout') }}" class = "button">Log out</a> -->
      			</div>
         {% else %}
 					<h1 id = "welcome">Welcome, anon!</h1>
 					<div class="topnav">
-			       <a href = "/add_user" class = "button">Add user</a>
-						 <a href = "{{ url_for('login') }}" class = "button">Log in</a>
 						 <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">Check out the front page!</a>
 			       <a href= "/about" class = "button">About Us</a>
+
+						 <a href="/add_user" class = "button" style="float:right">Add User</a>
+						 <a href="{{ url_for('login') }}" class = "button" style="float:right">Login</a>
      			</div>
         {% endif %}
         <!-- <script>
