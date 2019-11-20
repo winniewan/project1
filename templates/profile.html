@@ -2,11 +2,29 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8"/>
-        <title> Forum Home Page</title>
+        <title> Your User Profile</title>
         <link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}">
     </head>
 	<body>
         {% if current_user.is_authenticated %}
         <h1> {{current_user.first_name }}</h1>
+        {% endif %}
+		<ul>
+		    {% for post in posts%}
+		    <li>
+
+		        <button class="up_arrow"  type="button">UP</button>
+
+		        <b> {{ post.net_votes }}</b>
+		        {% if post.is_link %}
+		        <a href = "{{post.content}}"> {{ post.title }} </a>
+		        {% else %}
+		        <a href = "c/{{post.cnitt_name}}/comments/{{post.pid}}"> {{ post.title }} </a>
+		        {% endif %}
+		        <br>
+		        <a href = "c/{{post.cnitt_name}}/comments/{{post.pid}}"> comments </a>
+		    </li>
+		    {% endfor %}
+		</ul>
     </body>
 </html>

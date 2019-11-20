@@ -10,10 +10,12 @@
 					<h1 id = "welcome" >Welcome, {{ current_user.first_name }}!</h1>
         	<a href = "users/{{current_user.id}}" id = "profile" class = "button">Profile</a>
         	<a href = "{{ url_for('logout') }}" class = "button">Log out</a>
+            <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">Check out the front page!</a>
         {% else %}
 					<h1 id = "welcome">Welcome, anon!</h1>
         	<a href = "/add_user" class = "button">Add user</a>
         	<a href = "{{ url_for('login') }}" class = "button">Log in</a>
+            <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">Check out the front page!</a>
         {% endif %}
         <script>
             function myFunction() {
