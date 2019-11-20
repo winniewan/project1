@@ -2,27 +2,34 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8"/>
-        <title> Forum Home Page</title>
+        <title> Home </title>
         <link rel = "stylesheet" href = "{{ url_for('static', filename='home.css') }}">
     </head>
 	<body>
         {% if current_user.is_authenticated %}
+					<div class="header">
 					<h1 id = "welcome" >Welcome, {{ current_user.first_name }}!</h1>
-        	<a href = "users/{{current_user.id}}" id = "profile" class = "button">Profile</a>
-        	<a href = "{{ url_for('logout') }}" class = "button">Log out</a>
-            <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">Check out the front page!</a>
+				</div>
+					<div class="topnav">
+			       <a href="/about" class = "button">About Us</a>
+			       <a href = "users/{{current_user.id}}" id = "profile" class = "button">Profile</a>
+						 <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">Check out the front page!</a>
+						 <a href = "{{ url_for('logout') }}" class = "button">Log out</a>
+     			</div>
         {% else %}
 					<h1 id = "welcome">Welcome, anon!</h1>
-        	<a href = "/add_user" class = "button">Add user</a>
-        	<a href = "{{ url_for('login') }}" class = "button">Log in</a>
-          <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">Check out the front page!</a>
-					<a href = "{{ url_for('about') }}" class = "button">About</a>
+					<div class="topnav">
+			       <a href = "/add_user" class = "button">Add user</a>
+						 <a href = "{{ url_for('login') }}" class = "button">Log in</a>
+						 <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">Check out the front page!</a>
+			       <a href= "/about" class = "button">About Us</a>
+     			</div>
         {% endif %}
-        <script>
+        <!-- <script>
             function myFunction() {
 	            var x = document.URL;
 	            document.getElementById("demo").innerHTML = x;
             }
-        </script>
+        </script> -->
     </body>
 </html>

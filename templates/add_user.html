@@ -3,12 +3,12 @@
 	<head>
 		<meta charset="utf-8"/>
         <title> add_user</title>
-        <link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}">
+        <link rel = "stylesheet" href = "{{ url_for('static', filename='addUser.css') }}">
 	</head>
 	<body>
         <div id="form descr">
-            <a href = "/" class = "button">Home</a>
-            <h2>Add user: </h2>
+            <a href = "/" class = "homeButton">Home</a>
+            <h1>Add user: </h1>
         </div>
         <form method="POST" id = "block">
             {{ form.hidden_tag() }}
@@ -17,6 +17,6 @@
             Email: {{ form.email() }}<br>
             Password: {{ form.password() }}<br>
             {{ form.submit() }}
-        </form>                
+        </form>
     </body>
 </html>
