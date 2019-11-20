@@ -1,0 +1,39 @@
+body {
+	background-image: url("https://image.freepik.com/free-vector/blue-watercolor-splash-web-page-screen-size-background_70155-118.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+
+	margin-left : 2.5%;
+	margin-right : 2.5%;
+	font-family: helvetica, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+p {
+  font-size: 30px;
+  text-align: center;
+}
+
+a {
+  	background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 30px;
+}
+
+a.button {
+    text-decoration: none;
+    border: 2px solid black;
+    font-size: 20px;
+    padding: 4px;
+    color: black;
+    background: white;
+}

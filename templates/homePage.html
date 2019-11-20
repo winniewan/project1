@@ -15,7 +15,8 @@
 					<h1 id = "welcome">Welcome, anon!</h1>
         	<a href = "/add_user" class = "button">Add user</a>
         	<a href = "{{ url_for('login') }}" class = "button">Log in</a>
-            <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">Check out the front page!</a>
+          <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">Check out the front page!</a>
+					<a href = "{{ url_for('about') }}" class = "button">About</a>
         {% endif %}
         <script>
             function myFunction() {
