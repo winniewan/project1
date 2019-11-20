@@ -153,7 +153,9 @@ class SubCnitt(db.Model):
             query_filter = Post.query.filter_by(cnitt_id=self.cnitt_id)
 
         if sort_type == 'Hot':
-            all_posts = query_filter.order_by(Post.post_hotness_rating.desc())
+            #wasnt working, temporarily sorting by new
+            # all_posts = query_filter.order_by(Post.post_hotness_rating.desc())
+             all_posts = query_filter.order_by(Post.created.desc())
         elif sort_type == 'New':
             all_posts = query_filter.order_by(Post.created.desc())
         elif sort_type == 'Top':
@@ -213,6 +215,7 @@ class Post(db.Model):
     content = db.Column(db.Text)
     is_link = db.Column(db.Boolean, nullable=False)
     created = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now)
+    #should it not be datetime.datetime.now ?
     hotness_rating = db.Query(net_votes / (datetime.datetime.now() - created))
     modified = db.Column(db.DateTime, nullable=True, default=None, onupdate=datetime.datetime.now)
 
