@@ -8,13 +8,6 @@ body {
 	font-family: helvetica, sans-serif;
 }
 
-/* .header h2  {
-	font-size: 50px;
-  text-align: center;
-  font-family: "Trebuchet MS", Helvetica, sans-serif;
-	background: white;
-} */
-
 /* Style the header */
 .header {
   padding: 50px;
@@ -23,8 +16,7 @@ body {
 }
 
 p {
-  font-size: 30px;
-  text-align: center;
+  font-size: 20px;
 }
 
 a {

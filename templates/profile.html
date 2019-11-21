@@ -3,18 +3,25 @@
 	<head>
 		<meta charset="utf-8"/>
         <title> Your User Profile</title>
-        <link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}">
+        <link rel = "stylesheet" href = "{{ url_for('static', filename='profile.css') }}">
     </head>
 	<body>
         {% if current_user.is_authenticated %}
-        <h1> {{current_user.first_name }}</h1>
-        {% endif %}
+				<div class="header">
+				<h1 id = "welcome" >{{ current_user.first_name }}!</h1>
+				</div>
+				<div class="topnav">
+					<a href = "/" class = "button">Home</a>
+					 <a href="/about" class = "button">About Us</a>
+					 <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">Front Page!</a>
+
+					 <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
+					 <a href="/editProfile" class = "button" style="float:right">Edit Profile</a>
+				</div>
 		<ul>
 		    {% for post in posts%}
 		    <li>
-
 		        <button class="up_arrow"  type="button">UP</button>
-
 		        <b> {{ post.net_votes }}</b>
 		        {% if post.is_link %}
 		        <a href = "{{post.content}}"> {{ post.title }} </a>
@@ -26,5 +33,8 @@
 		    </li>
 		    {% endfor %}
 		</ul>
+				{% else %}
+				 <!-- Lead them to login page. -->
+				{% endif %}
     </body>
 </html>
