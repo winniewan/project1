@@ -37,7 +37,7 @@
         <ul>
     		{% for post in posts %}
 		    <li>
-		    	<span> {{post.cnitt_id}}</span>
+		    	<span> {{post.cnitt.name}}</span>
 		        <button class="up_arrow"  type="button">UP</button>
 		        <b> {{ post.net_votes }}</b>
 		        {% if post.is_link %}

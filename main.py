@@ -120,7 +120,7 @@ with app.app_context():
 @app.route('/')
 def index():
     posts = Post.query
-    return render_template('homePage.html', posts = posts)
+    return render_template('homePage.html', posts = posts, cnitt_name = "All")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -306,10 +306,9 @@ def show_sub_cnitt(cnitt_name="Front", sort_type='Hot'):
 @app.route("/c/<string:cnitt_name>/comments/<int:post_id>/<string:sort_type>",  methods = ["GET", "POST"])
 def comments_for_post(cnitt_name, post_id, sort_type):
     post = Post.query.filter_by(pid = post_id).first()
-    baseC, commentC = Post.create_comment_chain()
+    comments = Comment.query.filter_by(post = post_id).all()
     if post != None:
-        print("")
-        return render_template("post.html", post = post,cnitt_name = cnitt_name, baseC = baseC, commentC = commentC)
+        return render_template("post.html", post = post,cnitt_name = cnitt_name, comments = comments)
     else: 
         print("oops")
         abort(404)
