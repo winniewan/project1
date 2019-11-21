@@ -11,9 +11,9 @@
 				<h1 id = "welcome" >{{ current_user.first_name }}!</h1>
 				</div>
 				<div class="topnav">
-					<a href = "/" class = "button">Home</a>
-					 <a href="/about" class = "button">About Us</a>
+					 <a href = "/" class = "button">Home</a>
 					 <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">Front Page!</a>
+					 <a href="/about" class = "button">About Us</a>
 
 					 <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
 					 <a href="/editProfile" class = "button" style="float:right">Edit Profile</a>
