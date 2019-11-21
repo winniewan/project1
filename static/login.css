@@ -34,6 +34,12 @@ a.button {
     background: white;
 }
 
+/* Change color on hover */
+a:hover {
+  background-color: grey;
+  color: white;
+}
+
 a {
     text-decoration: none;
     border: 2px solid black;

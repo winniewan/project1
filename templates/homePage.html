@@ -11,7 +11,9 @@
 					<h1 id = "welcome" >Welcome, {{ current_user.first_name }}!</h1>
 					</div>
 					<div class="topnav">
-						 <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">Front Page!</a>
+						 <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/games</a>
+						 <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/pokemon</a>
+						 <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/memes</a>
 						 <a href="/about" class = "button">About Us</a>
 
 						 <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
@@ -22,7 +24,9 @@
 					<h1 id = "welcome">Welcome, anon!</h1>
 					</div>
 					<div class="topnav">
-						 <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">Front Page!</a>
+						<a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/games</a>
+						<a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/pokemon</a>
+						<a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/memes</a>
 			       <a href= "/about" class = "button">About Us</a>
 
 						 <a href="{{ url_for('login') }}" class = "button" style="float:right">Login</a>
@@ -58,14 +62,17 @@
 		    </div>
 		    <div class="card">
 		      <h2>Submit a Feedback Form! </h2>
-					<a href="/Feedback" class = "button">Feedback</a>
+					<a href="/Feedback Form" class = "button">Feedback</a>
 		    </div>
 		  </div>
 		</div>
 
 		<div class="footer">
 		  <h2>Contact Us!</h2>
-			<p> 123-456-7890 </p>
+			<p> University of Rochester </p>
+			<p> 500 Joseph C. Wilson Blvd. </p>
+			<p> Rochester, NY 14627 </p>
+			<p> (585) 275-2121 </p>
 		</div>
 
   </body>

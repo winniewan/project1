@@ -2,16 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title> Forum</title>
+    <title> c/games </title>
     <link rel="stylesheet" href="{{ url_for('static', filename='forum.css') }}">
     <script type="text/javascript" src="{{ url_for('static', filename='forum.js') }}"></script>
 </head>
 
 <body>
-    <h2> Welcome to {{cnitt_name}}!</h2>
-<br/>
-<a href = "/" id = "home" class = "button">Back to Home</a>
-<a href = "{{ url_for('logout') }}" class = "button">Log out</a>
+  {% if current_user.is_authenticated %}
+    <div class="header">
+    <h1 id = "welcome" > c/games </h1>
+    </div>
+    <div class="topnav">
+      <a href = "/" class = "button">Home</a>
+       <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/games</a>
+       <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/pokemon</a>
+       <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/memes</a>
+       <a href="/about" class = "button">About Us</a>
+
+       <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
+       <a href="users/{{current_user.id}}" class = "button" style="float:right">Profile</a>
+    </div>
+  {% else %}
+    <div class="header">
+    <h1 id = "welcome"> c/games </h1>
+    </div>
+    <div class="topnav">
+      <a href = "/" class = "button">Home</a>
+      <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/games</a>
+      <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/pokemon</a>
+      <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/memes</a>
+       <a href= "/about" class = "button">About Us</a>
+
+       <a href="{{ url_for('login') }}" class = "button" style="float:right">Login</a>
+       <a href="/add_user" class = "button" style="float:right">Add User</a>
+    </div>
+  {% endif %}
 
 <ul>
     {% for post in posts%}
