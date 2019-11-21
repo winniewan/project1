@@ -4,6 +4,7 @@ from flask_login import UserMixin, AnonymousUserMixin
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import PrimaryKeyConstraint
 from werkzeug import security
+from sqlalchemy.ext.hybrid import hybrid_property
 
 db = SQLAlchemy()
 
@@ -117,6 +118,7 @@ class SubCnitt(db.Model):
     datetime_created = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now)
     required_subscription = db.Column(db.Boolean, nullable=False, default=False)
     subscribers = db.relationship('Subscriber', backref='subs', lazy='dynamic')
+    posts = db.relationship('Post', backref ='SubCnitts')
 
     def create_link_post(self, title, link, user_id):
         post = Post(title=title, content=link, is_link=True, poster=user_id, cnitt_id=self.cnitt_id)
@@ -153,9 +155,7 @@ class SubCnitt(db.Model):
             query_filter = Post.query.filter_by(cnitt_id=self.cnitt_id)
 
         if sort_type == 'Hot':
-            #wasnt working, temporarily sorting by new
-            # all_posts = query_filter.order_by(Post.post_hotness_rating.desc())
-             all_posts = query_filter.order_by(Post.created.desc())
+            all_posts = query_filter.order_by(Post.post_hotness_rating.desc())
         elif sort_type == 'New':
             all_posts = query_filter.order_by(Post.created.desc())
         elif sort_type == 'Top':
@@ -215,7 +215,6 @@ class Post(db.Model):
     content = db.Column(db.Text)
     is_link = db.Column(db.Boolean, nullable=False)
     created = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now)
-    #should it not be datetime.datetime.now ?
     hotness_rating = db.Query(net_votes / (datetime.datetime.now() - created))
     modified = db.Column(db.DateTime, nullable=True, default=None, onupdate=datetime.datetime.now)
 
@@ -251,8 +250,9 @@ class Post(db.Model):
             self.down_votes += 1
             db.session.commit()
 
+    @hybrid_property
     def post_hotness_rating(self):
-        return self.net_votes / ((datetime.datetime.now() - self.created).seconds.real + 1)
+        return self.net_votes / ((datetime.datetime.now() - self.created) + 1)
 
     def create_comment(self, content, user_id, parent_comment=None):
         user = Users.query.filter(Users.id == user_id).first()

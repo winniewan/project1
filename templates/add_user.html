@@ -2,22 +2,21 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8"/>
-        <title> Add User </title>
-        <link rel = "stylesheet" href = "{{ url_for('static', filename='addUser.css') }}">
+        <title> add_user</title>
+        <link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}">
 	</head>
 	<body>
-				<div class="header">
-				<h1 id = "welcome">Sign up to Cnitt!</h1>
-				</div>
+        <div id="form descr">
+            <a href = "/" class = "button">Home</a>
+            <h2>Add user: </h2>
+        </div>
         <form method="POST" id = "block">
             {{ form.hidden_tag() }}
-            First Name : {{ form.first_name() }}<br><br>
-            Last Name: {{ form.last_name() }}<br><br>
-            Email: {{ form.email() }}<br><br>
-            Password: {{ form.password() }}<br><br>
-						<a href = "/" class = "button">Back</a>
-            {{ form.submit() }} <br>
-        </form>
-    </form>
+            First Name : {{ form.first_name() }}<br>
+            Last Name: {{ form.last_name() }}<br>
+            Email: {{ form.email() }}<br>
+            Password: {{ form.password() }}<br>
+            {{ form.submit() }}
+        </form>                
     </body>
 </html>

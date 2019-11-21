@@ -8,42 +8,12 @@
 </head>
 
 <body>
-  {% if current_user.is_authenticated %}
-    <div class="header">
-    <h1 id = "welcome" > c/games </h1>
-    </div>
-    <div class="topnav">
-      <a href = "/" class = "button">Home</a>
-       <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/games</a>
-       <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/pokemon</a>
-       <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/memes</a>
-       <a href="/about" class = "button">About Us</a>
-
-       <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
-       <a href="users/{{current_user.id}}" class = "button" style="float:right">Profile</a>
-    </div>
-  {% else %}
-    <div class="header">
-    <h1 id = "welcome"> c/games </h1>
-    </div>
-    <div class="topnav">
-      <a href = "/" class = "button">Home</a>
-      <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/games</a>
-      <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/pokemon</a>
-      <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/memes</a>
-       <a href= "/about" class = "button">About Us</a>
-
-       <a href="{{ url_for('login') }}" class = "button" style="float:right">Login</a>
-       <a href="/add_user" class = "button" style="float:right">Add User</a>
-    </div>
-  {% endif %}
-
+  <h1> {{ cnitt_name }} </h1>
 <ul>
     {% for post in posts%}
     <li>
-
+        <span> {{post.cnitt_id}}</span>
         <button class="up_arrow"  type="button">UP</button>
-
         <b> {{ post.net_votes }}</b>
         {% if post.is_link %}
         <a href = "{{post.content}}"> {{ post.title }} </a>

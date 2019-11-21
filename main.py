@@ -9,12 +9,10 @@ from flask_login import login_user, logout_user, LoginManager, login_required, \
 from flask_wtf import FlaskForm
 
 from database import *
-from post_blueprint import post_page
 
 # google oauth
 
 app = Flask(__name__)
-app.register_blueprint(post_page)
 login_manager = LoginManager()
 login_manager.login_view = "login"
 login_manager.init_app(app)
@@ -120,7 +118,8 @@ with app.app_context():
 
 @app.route('/')
 def index():
-    return render_template('homePage.html')
+    posts = Post.query
+    return render_template('homePage.html', posts = posts)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -306,15 +305,16 @@ def show_sub_cnitt(cnitt_name="Front", sort_type='Hot'):
 @app.route("/c/<string:cnitt_name>/comments/<int:post_id>/<string:sort_type>",  methods = ["GET", "POST"])
 def comments_for_post(cnitt_name, post_id, sort_type):
     post = Post.query.filter_by(pid = post_id).first()
-    comments = Comment.query.filter_by(post = post_id).all()
+    baseC, commentC = Post.create_comment_chain()
     if post != None:
-        return render_template("post.html", post = post,cnitt_name = cnitt_name, comments = comments)
+        print("")
+        return render_template("post.html", post = post,cnitt_name = cnitt_name, baseC = baseC, commentC = commentC)
     else: 
         print("oops")
         abort(404)
 
 @app.route("/makeComment/<string:cnitt_name>/<int:post_id>",  methods = ["GET", "POST"])
-def makeComment(cnitt_name, post_id,):
+def makeComment(cnitt_name, post_id):
     post = Post.query.filter_by(pid = post_id).first()
     user_id = current_user.id
     form = CommentForm()
@@ -339,6 +339,8 @@ def initialize_app():
     gal_user = Users(first_name="Gal", last_name="Cherki", email="gal.cherki@hotmail.com", password="math", role_id=6)
     josh_user = Users(first_name="Josh", last_name="Radin", email="jradin16@gmail.com", password="helloworld",
                       role_id=6)
+    matt_user = Users(first_name="Matthew", last_name="Leone", email="mleone10@u.rochester.edu", password="scopophobic",
+                      role_id=6)
     all_cnitt = SubCnitt(name="All", required_subscription=True)
     front_cnitt = SubCnitt(name="Front", required_subscription=True)
     pictures = SubCnitt(name="pics")
@@ -347,7 +349,7 @@ def initialize_app():
     funny = SubCnitt(name="funny")
     with app.app_context():
         db.session.add_all([newt, follow, comment, write, mod, admin])
-        db.session.add_all([gal_user, josh_user, all_cnitt, front_cnitt, pictures, rochester, leibenning, funny])
+        db.session.add_all([gal_user, josh_user, matt_user,all_cnitt, front_cnitt, pictures, rochester, leibenning, funny])
         db.session.commit()
         user = db.session.query(Users).filter(Users.email == "jradin16@gmail.com").first()
         #all_cnitt.subscribe(user.id)
