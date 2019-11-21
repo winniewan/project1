@@ -9,29 +9,64 @@
         {% if current_user.is_authenticated %}
 					<div class="header">
 					<h1 id = "welcome" >Welcome, {{ current_user.first_name }}!</h1>
-				</div>
+					</div>
 					<div class="topnav">
 			       <a href="/about" class = "button">About Us</a>
-			       <a href = "users/{{current_user.id}}" id = "profile" class = "button">Profile</a>
-						 <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">Check out the front page!</a>
+						 <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">Front Page!</a>
+
 						 <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
-						 <!-- <a href = "{{ url_for('logout') }}" class = "button">Log out</a> -->
+						 <a href="users/{{current_user.id}}" class = "button" style="float:right">Profile</a>
      			</div>
         {% else %}
+					<div class="header">
 					<h1 id = "welcome">Welcome, anon!</h1>
+					</div>
 					<div class="topnav">
-						 <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">Check out the front page!</a>
+						 <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">Front Page!</a>
 			       <a href= "/about" class = "button">About Us</a>
 
-						 <a href="/add_user" class = "button" style="float:right">Add User</a>
 						 <a href="{{ url_for('login') }}" class = "button" style="float:right">Login</a>
+						 <a href="/add_user" class = "button" style="float:right">Add User</a>
      			</div>
         {% endif %}
-        <!-- <script>
-            function myFunction() {
-	            var x = document.URL;
-	            document.getElementById("demo").innerHTML = x;
-            }
-        </script> -->
-    </body>
+
+			<div class="row">
+		  	<div class="leftcolumn">
+		    	<div class="card">
+			      <h2>Sample Post 1</h2>
+			      <h5>Sample Post Description, Date Of Post</h5>
+			      <p>I love Cnitt!!</p>
+			    </div>
+			    <div class="card">
+			      <h2>Sample Post 2</h2>
+			      <h5>Sample Post Description, Date Of Post</h5>
+			      <p>Better than Reddit!!</p>
+			    </div>
+		  	</div>
+		 		<div class="rightcolumn">
+		    	<div class="card">
+		      	<h2>Trending Posts</h2>
+						<a href="/beauty" class = "button">c/beauty</a>
+			      <a href="/memes" class = "button">c/memes</a>
+			      <a href="/pokemon" class = "button">c/pokemon</a>
+		    	</div>
+		    <div class="card">
+		      <h3>Trending Communities</h3>
+		      <a href="/games" class = "button">c/games</a>
+		      <a href="/funny" class = "button">c/funny</a>
+		      <a href="/life" class = "button">c/life</a>
+		    </div>
+		    <div class="card">
+		      <h3>Submit a Feedback Form! </h3>
+					<a href="/Feedback" class = "button">Feedback</a>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="footer">
+		  <h2>Contact Us</h2>
+			<p> 123-456-7890 </p>
+		</div>
+
+  </body>
 </html>
