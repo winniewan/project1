@@ -1,0 +1,70 @@
+body {
+	background-image: url("https://phonebookofgrenoble.xyz/image/204225-full_65-baby-blue-ombre-wallpapers-download-at-wallpaperbro.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+
+	margin-left : 2.5%;
+	margin-right : 2.5%;
+	font-family: helvetica, sans-serif;
+  text-align: center;
+}
+
+h1 {
+  text-align: center;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+/* Style the header */
+.header {
+  padding: 50px;
+  text-align: center;
+}
+
+p {
+  font-size: 30px;
+  text-align: center;
+}
+
+a.button {
+    text-decoration: none;
+    border: 2px solid black;
+    font-size: 20px;
+    padding: 4px;
+    color: black;
+    background: white;
+}
+
+/* Change color on hover */
+a:hover {
+  background-color: grey;
+  color: white;
+}
+
+a {
+    text-decoration: none;
+    border: 2px solid black;
+    font-size: 20px;
+    padding: 4px;
+    color: black;
+    background: white;
+}
+
+input[type=submit] {
+	text-decoration: none;
+	font-size: 20px;
+	padding: 4px;
+	color: white;
+	background: #2196F3;
+  cursor: pointer;
+}
+
+
+input[type=submit]:hover {
+	opacity: 0.8;
+}
+
+.form {
+    border-radius: 6px;
+    overflow: hidden;
+		text-align: center;
+}

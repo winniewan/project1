@@ -1,40 +1,27 @@
 body {
+	background-image: url("https://phonebookofgrenoble.xyz/image/204225-full_65-baby-blue-ombre-wallpapers-download-at-wallpaperbro.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
 
-	display: box;
 	margin-left : 2.5%;
 	margin-right : 2.5%;
 	font-family: helvetica, sans-serif;
-
-
-}
-#block {
-  background-color: lightgray;
-  border: 2px solid black;
-  font-size: 20px;
-  color: black;
-  padding: 20px;
-  text-align: left;
 }
 
+h1 {
+  text-align: center;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+p {
+  font-size: 30px;
+  text-align: center;
+}
 
-a.button {
+a {
     text-decoration: none;
     border: 2px solid black;
     font-size: 20px;
     padding: 4px;
     color: black;
-    background: lightgray;
-}
-
-
-table, th, td{
-	background: lightgray;
-	border-collapse: collapse;
-	padding: 6px;
-	border: 2px solid black;
-	text-align: left;
-	font-family: Arial, helvetica, sans-serif;
-}
-th{
-	width: auto;
+    background: white;
 }

@@ -2,17 +2,19 @@
 <html>
     <head>
         <title> Login </title>
-        <link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}">
+        <link rel = "stylesheet" href = "{{ url_for('static', filename='login.css') }}">
     </head>
     <body>
-        <a href = "/" class = "button">Home</a>
-        <h2>Login: </h2>
+      <div class="header">
+      <h1 id = "welcome">Log in to Cnitt!</h1>
+      </div>
         <form method="POST" id = "block">
             {{ form.hidden_tag() }}
-            {{ form.email.label }}: {{ form.email() }}<br>
-            {{ form.password.label }}: {{ form.password() }}<br>
-            {{ form.remember_me.label }}: {{ form.remember_me() }}<br>
-            {{ form.submit() }}
+            {{ form.email.label }}: {{ form.email() }}<br><br>
+            {{ form.password.label }}: {{ form.password() }}<br><br>
+            {{ form.remember_me.label }}: {{ form.remember_me() }}<br><br>
+            <a href = "/" class = "button">Back</a>
+            {{ form.submit() }} <br>
         </form>
     </body>
 </html>

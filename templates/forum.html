@@ -1,27 +1,31 @@
 <!DOCTYPE HTML>
 <html lang="en">
-	<head>
-		<meta charset="utf-8"/>
-        <title> Forum</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='forum.css') }}">
-        <script type="text/javascript" src="{{ url_for('static', filename='forum.js') }}"></script>
-	</head>
-	<body>
-        <div id="profile">
-                <h1>Hello, {{user.first_name}} {{ user.last_name }}!</h1>
-                <p>email: {{user.email}}</p>
-                <p>role: {{user.role_id}}
-            <!--
-            <span class="friends">
-                <ul>
-                    {% for fuid in user.friends%}
-                        <li>
-                            <a href="{{ url_for('users',uid = fuid|string) }}"> {{users[fuid|string].fname}} {{users[fuid|string].lname}} </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </span>
-        -->
-        </div>
-    </body>
+<head>
+    <meta charset="utf-8"/>
+    <title> c/games </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='forum.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='forum.js') }}"></script>
+</head>
+
+<body>
+  <h1> {{ cnitt_name }} </h1>
+<ul>
+    {% for post in posts%}
+    <li>
+        <span> {{post.cnitt_id}}</span>
+        <button class="up_arrow"  type="button">UP</button>
+        <b> {{ post.net_votes }}</b>
+        {% if post.is_link %}
+        <a href = "{{post.content}}"> {{ post.title }} </a>
+        {% else %}
+        <a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}"> {{ post.title }} </a>
+        {% endif %}
+        <br>
+        <a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}"> comments </a>
+    </li>
+    {% endfor %}
+</ul>
+<a href = "{{ url_for('mtp', cnitt_name = cnitt_name ) }}" class = "button">Add Text Post</a>
+<a href = "{{ url_for('mlp', cnitt_name = cnitt_name ) }}" class = "button">Add Link Post</a>
+</body>
 </html>

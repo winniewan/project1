@@ -1,0 +1,135 @@
+body {
+	background-image: url("https://phonebookofgrenoble.xyz/image/204225-full_65-baby-blue-ombre-wallpapers-download-at-wallpaperbro.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+
+	margin-left : 2.5%;
+	margin-right : 2.5%;
+	font-family: helvetica, sans-serif;
+}
+
+/* Style the header */
+.header {
+  padding: 50px;
+  text-align: center;
+	/* background: white; */
+}
+
+p {
+  font-size: 20px;
+}
+
+a {
+  	background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 30px;
+}
+
+a.button {
+    text-decoration: none;
+    border: 2px solid black;
+    font-size: 20px;
+    padding: 4px;
+    color: black;
+    background: white;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+#block {
+  background-color: lightgray;
+  border: 2px solid black;
+  font-size: 20px;
+  color: black;
+  padding: 20px;
+  text-align: left;
+}
+
+table, th, td{
+	background: lightgray;
+	border-collapse: collapse;
+	padding: 6px;
+	border: 2px solid black;
+	text-align: left;
+	font-family: Arial, helvetica, sans-serif;
+}
+
+th{
+	width: auto;
+}
+
+/* Style the top navigation bar */
+.topnav {
+  overflow: hidden;
+  background-color: hidden;
+}
+
+/* Style the topnav links */
+.topnav a {
+  float: left;
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change color on hover */
+.topnav a:hover {
+  background-color: grey;
+  color: white;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial;
+  padding: 10px;
+}
+
+/* Create two unequal columns that floats next to each other */
+/* Left column */
+.leftcolumn {
+  float: left;
+  width: 75%;
+}
+
+/* Right column */
+.rightcolumn {
+  float: left;
+  width: 25%;
+  padding-left: 20px;
+}
+
+
+/* Add a card effect for articles */
+.card {
+  padding: 20px;
+  margin-top: 20px;
+	background: white;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Footer */
+.footer {
+  padding: 20px;
+  text-align: center;
+  margin-top: 20px;
+	background: white;
+}

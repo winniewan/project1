@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+	<html>
+		<body>
+			<form method="POST" id = "block">
+            {{ form.hidden_tag() }}
+            Title: {{ form.title() }}<br>
+            Link: {{ form.content() }}<br>
+            {{ form.submit() }}
+            </form>
+			<a href = "/users/{{current_user.id}}" id = "profile" class = "button">Profile</a>
+		</body>
+	</html>
