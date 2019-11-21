@@ -13,6 +13,13 @@ h1 {
   font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
 
+/* Style the header */
+.header {
+  background-color: #f1f1f1;
+  padding: 20px;
+  text-align: center;
+}
+
 p {
   font-size: 30px;
   text-align: center;
@@ -38,14 +45,19 @@ a.button {
     background: white;
 }
 
-#welcome {
+/* #welcome {
     text-decoration: none;
     border: 2px solid black;
     font-size: 20px;
     padding: 4px;
     color: black;
     background: white;
+} */
+
+* {
+  box-sizing: border-box;
 }
+
 #block {
   background-color: lightgray;
   border: 2px solid black;
@@ -66,12 +78,6 @@ table, th, td{
 
 th{
 	width: auto;
-}
-
-.header {
-  background-color: #f1f1f1;
-  padding: 20px;
-  text-align: center;
 }
 
 /* Style the top navigation bar */
