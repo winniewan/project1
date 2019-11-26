@@ -113,7 +113,7 @@ with app.app_context():
 
 #
 ##
-###app route functions    
+### app route functions
 ##
 #
 
@@ -122,6 +122,9 @@ def index():
     posts = Post.query
     return render_template('homePage.html', posts = posts, cnitt_name = "All")
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
