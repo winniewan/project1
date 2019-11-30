@@ -2,39 +2,70 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8"/>
-        <title> Your User Profile</title>
+        <title> Your User Profile </title>
         <link rel = "stylesheet" href = "{{ url_for('static', filename='profile.css') }}">
     </head>
 	<body>
         {% if current_user.is_authenticated %}
 				<div class="header">
-				<h1 id = "welcome" >{{ current_user.first_name }}!</h1>
+				<h1 id = "welcome" > {{ current_user.first_name }}'s Profile!</h1>
 				</div>
 				<div class="topnav">
 					 <a href = "/" class = "button">Home</a>
-					 <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">Front Page!</a>
 					 <a href="/about" class = "button">About Us</a>
 
 					 <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
 					 <a href="/editProfile" class = "button" style="float:right">Edit Profile</a>
+					 <a href="/createPost" class = "button" style="float:right">Create a Post</a>
 				</div>
-		<ul>
-		    {% for post in posts%}
-		    <li>
-		        <button class="up_arrow"  type="button">UP</button>
-		        <b> {{ post.net_votes }}</b>
-		        {% if post.is_link %}
-		        <a href = "{{post.content}}"> {{ post.title }} </a>
-		        {% else %}
-		        <a href = "c/{{post.cnitt_name}}/comments/{{post.pid}}"> {{ post.title }} </a>
-		        {% endif %}
-		        <br>
-		        <a href = "c/{{post.cnitt_name}}/comments/{{post.pid}}"> comments </a>
-		    </li>
-		    {% endfor %}
-		</ul>
-				{% else %}
-				 <!-- Lead them to login page. -->
-				{% endif %}
+		<div class="row">
+	  	<div class="leftcolumn">
+	    	<div class="card">
+		      <h2>Name</h2>
+		      <h5>{{ current_user.first_name }}</h5>
+		    </div>
+		    <div class="card">
+		      <h2>Email</h2>
+		      <h5>{{ current_user.Email }}</h5>
+		    </div>
+				<div class="card">
+		      <h2>Bio</h2>
+		      <h5>Allow user to put a short bio of themselves.</h5>
+		    </div>
+	  	</div>
+	 		<div class="rightcolumn">
+				<div class="card">
+					<h2>User Posts Will Go Here</h2>
+		      <h5>Description.</h5>
+				</div>
+					<ul>
+					    {% for post in posts%}
+							<div class="card">
+					    <li>
+					        <button class="up_arrow"  type="button">UP</button>
+					        <b> {{ post.net_votes }}</b>
+					        {% if post.is_link %}
+					        <a href = "{{post.content}}"> {{ post.title }} </a>
+					        {% else %}
+					        <a href = "c/{{post.cnitt_name}}/comments/{{post.pid}}"> {{ post.title }} </a>
+					        {% endif %}
+					        <br>
+					        <a href = "c/{{post.cnitt_name}}/comments/{{post.pid}}"> comments </a>
+					    </li>
+							 </div>
+					    {% endfor %}
+					</ul>
+	  </div>
+	</div>
+	<div class="footer">
+		<h2>Contact Us!</h2>
+		<p> University of Rochester </p>
+		<p> 500 Joseph C. Wilson Blvd. </p>
+		<p> Rochester, NY 14627 </p>
+		<p> (585) 275-2121 </p>
+	</div>
+	{% else %}
+	 <!-- TODO: Lead them to login page. -->
+	{% endif %}
     </body>
 </html>

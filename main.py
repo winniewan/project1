@@ -120,11 +120,19 @@ with app.app_context():
 @app.route('/')
 def index():
     posts = Post.query
-    return render_template('homePage.html', posts = posts, cnitt_name = "All")
+    return render_template('home.html', posts = posts, cnitt_name = "All")
 
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+@app.route('/editProfile')
+def editProfile():
+    return render_template('editProfile.html')
+
+@app.route('/createPost')
+def createPost():
+    return render_template('createPost.html')
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -312,7 +320,7 @@ def comments_for_post(cnitt_name, post_id, sort_type):
     comments = Comment.query.filter_by(post = post_id).all()
     if post != None:
         return render_template("post.html", post = post,cnitt_name = cnitt_name, comments = comments)
-    else: 
+    else:
         print("oops")
         abort(404)
 
