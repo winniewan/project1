@@ -19,6 +19,11 @@ p {
   font-size: 15px;
 }
 
+.homebutton {
+	text-align: left;
+}
+
+
 a {
   	background-color: #4CAF50; /* Green */
     border: none;

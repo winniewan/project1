@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 	<html>
+	<head>
+		<title> Comment Form </title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='commentForm.css') }}">
+	</head>
 		<body>
 			<form method="POST" id = "block">
 				<h1> Make a Comment</h1>
             {{ form.hidden_tag() }}
             Content: {{ form.content() }}<br>
             {{ form.submit() }}
-            </form>           
+      </form>
 			<a href = "/users/{{current_user.id}}" id = "profile" class = "button">Profile</a>
 		</body>
 	</html>
