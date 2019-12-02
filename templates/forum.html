@@ -31,16 +31,6 @@
     <a href="{{url_for ('users', uid = current_user.id)}}" class = "button" style="float:right">Profile</a>
     <a href = "{{ url_for('mtp', cnitt_name = cnitt_name ) }}" class = "button">Create Text Post</a>
     <a href = "{{ url_for('mlp', cnitt_name = cnitt_name ) }}" class = "button">Create Link Post</a>
-{% else %}
-    <div class="topnav">
-        <a href = "/" class = "button">Home</a>
-        <a href = "{{ url_for('show_sub_cnitt') }}/games" class = "button">games</a>
-        <a href = "{{ url_for('show_sub_cnitt') }}/pokemon" class = "button">pokemon</a>
-        <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">memes</a>
-        <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
-        <a href="users/{{current_user.id}}" class = "button" style="float:right">Profile</a>
-        <a href = "{{ url_for('mtp', cnitt_name = cnitt_name ) }}" class = "button">Create Text Post</a>
-        <a href = "{{ url_for('mlp', cnitt_name = cnitt_name ) }}" class = "button">Create Link Post</a>
     {% else %}
 
         <a href= "/about" class = "button">About Us</a>
