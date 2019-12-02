@@ -24,7 +24,7 @@
     <a href="/about" class = "button">About Us</a>
 
     <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
-    <a href="users/{{current_user.id}}" class = "button" style="float:right">Profile</a>
+    <a href="{{url_for ('users', uid = current_user.id)}}" class = "button" style="float:right">Profile</a>
     <a href = "{{ url_for('mtp', cnitt_name = cnitt_name ) }}" class = "button">Create Text Post</a>
     <a href = "{{ url_for('mlp', cnitt_name = cnitt_name ) }}" class = "button">Create Link Post</a>
 {% else %}
