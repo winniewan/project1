@@ -141,9 +141,18 @@ class SubCnitt(db.Model):
             db.session.add(sub)
             db.session.commit()
 
+    def unsubscribe(self, user_id):
+        first = Subscriber.query.filter_by(cnitt_id=self.cnitt_id, user_id=user_id).first()
+        if first is not None:
+            db.session.delete(first)
+            db.session.commit()
+
     @staticmethod
     def get_subscribed(user_id):
         return SubCnitt.query.join(Subscriber).filter(Subscriber.user_id == user_id).all()
+
+    def is_subscribed(self, user):
+        return Subscriber.query.filter_by(user_id=user.id).filter_by(cnitt_id=self.cnitt_id).first() is not None
 
     def posts(self, sort_type='Hot', start=0, quantity=25, user_id=None):
 

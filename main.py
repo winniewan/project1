@@ -305,7 +305,7 @@ def show_sub_cnitt(cnitt_name="Front", sort_type='Hot'):
     else:
         posts = cnitt.posts(sort_type=sort_type, quantity=num_posts, start=after, user_id=id)
     # SHOW POSTS HERE
-    return render_template("forum.html", posts=posts, cnitt_name = cnitt_name), 200
+    return render_template("forum.html", posts=posts, cnitt_name=cnitt_name, cnitt=cnitt), 200
 
 
 
@@ -329,6 +329,17 @@ def subscribe(cnitt):
         redirect("/")
     elif current_user is not None:
         get.subscribe(current_user.id)
+    return redirect("/c/" + cnitt)
+
+
+@app.route("/unsubscribe/<string:cnitt>")
+@login_required
+def unsubscribe(cnitt):
+    get = SubCnitt.get(cnitt)
+    if get is None:
+        redirect("/")
+    elif current_user is not None:
+        get.unsubscribe(current_user.id)
     return redirect("/c/" + cnitt)
 
 

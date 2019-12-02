@@ -58,14 +58,22 @@
         {% endfor %}
     </div>
     <div class="rightcolumn">
-        {% if current_user.is_authenticated %}
-        <div class="card">
-            <a href="{{ url_for('subscribe', cnitt=cnitt_name) }}" class = "button">Subscribe</a>
-        </div>
-        {% else %}
-        <div class="card">
-            <h2>Please logon to subscribe! </h2>
-        </div>
+        {% if not cnitt.required_subscription %}
+            {% if current_user.is_authenticated %}
+                {% if cnitt.is_subscribed(current_user) %}
+                    <div class="card">
+                        <a href="{{ url_for('unsubscribe', cnitt=cnitt_name) }}" class = "button">Unsubscribe</a>
+                    </div>
+                {% else %}
+                    <div class="card">
+                        <a href="{{ url_for('subscribe', cnitt=cnitt_name) }}" class = "button">Subscribe</a>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="card">
+                    <h2>Please logon to subscribe! </h2>
+                </div>
+            {% endif %}
         {% endif %}
         <div class="card">
             <h2>Submit a Feedback Form! </h2>
