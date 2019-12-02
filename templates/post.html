@@ -7,22 +7,27 @@
     <script type="text/javascript" src="{{ url_for('static', filename='forum.js') }}"></script>
 </head>
 
-    <body>
-    <br/>
-    <a href = "/" id = "home" class = "button">Back to Home</a>
-    <a href = "{{ url_for('logout') }}" class = "button">Log out</a>
-            <h1> 
-                {{post.title}}
-            </h1>
-            <ul>
-                {% for comment in comments %}
-                <li>
-                    <b> {{comment.votes}}</b>
+<body>
+<br/>
+<a href = "/" id = "home" class = "button">Back to Home</a>
+<a href = "{{ url_for('logout') }}" class = "button">Log out</a>
+{% if post.is_link %}
+    <h1>
+        <h2><a href = "{{post.content}}" class="button"> {{ post.title }} </a></h2>
+    </h1>
+{% else %}
+    <h2>{{ post.title }}</h2>
+    <h3>{{ post.content }}</h3>
+{% endif %}
+<ul>
+    {% for comment in comments %}
+        <li>
+            <b> {{comment.votes}}</b>
 
-                    <p>{{comment.text}}</p>
-                </li>
-                {% endfor %}
-            </ul>
-    <a href = "{{ url_for('makeComment', cnitt_name = cnitt_name,post_id = post.pid ) }}" class = "button">Add Comment</a>
-    </body>
+            <p>{{comment.text}}</p>
+        </li>
+    {% endfor %}
+</ul>
+<a href = "{{ url_for('makeComment', cnitt_name = cnitt_name,post_id = post.pid ) }}" class = "button">Add Comment</a>
+</body>
 </html>
