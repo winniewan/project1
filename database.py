@@ -148,6 +148,21 @@ class SubCnitt(db.Model):
             db.session.commit()
 
     @staticmethod
+    def get_top_n_subscribed(n):
+        top_n = []
+        for c in SubCnitt.query.all():
+            placed = False
+            for i in range(0, len(top_n)):
+                if c.subscribers.count() > top_n[i].subscribers.count():
+                    top_n.insert(i, c)
+                    placed = True
+                    break
+            if not placed and len(top_n) < n:
+                top_n += [c]
+
+        return top_n[0:n-1]
+
+    @staticmethod
     def get_subscribed(user_id):
         return SubCnitt.query.join(Subscriber).filter(Subscriber.user_id == user_id).all()
 

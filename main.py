@@ -120,7 +120,8 @@ with app.app_context():
 @app.route('/')
 def index():
     posts = SubCnitt.get("Front").posts()
-    return render_template('home.html', posts=posts, cnitt_name="Front")
+    subscribed = SubCnitt.get_top_n_subscribed(8)
+    return render_template('home.html', posts=posts, cnitt_name="Front", top_cnitts=subscribed)
 
 @app.route('/about')
 def about():
@@ -282,13 +283,12 @@ def show_sub_cnitt(cnitt_name="Front", sort_type='Hot'):
     cnitt = SubCnitt.get(cnitt_name)
     if cnitt is None:
         return redirect(url_for("index")), 404
-    '''
+
     if current_user is None:
         id = None
     else:
-        id = c  urrent_user.id
-    '''
-    id = None
+        id = current_user.id
+
     num_posts = request.args.get("count")
     if num_posts is not None:
         num_posts = int(num_posts)

@@ -30,9 +30,11 @@
 	<h1 id = "welcome">Welcome, anon!</h1>
 </div>
 <div class="topnav">
-	<a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/games</a>
-	<a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/pokemon</a>
-	<a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/memes</a>
+    {% for c in top_cnitts %}
+        <a href = "{{ url_for('show_sub_cnitt') }}/{{ c.name }}" class = "button">{{c.name}}</a>
+    {% endfor %}
+
+
 	<a href= "/about" class = "button">About Us</a>
 
 	<a href="{{ url_for('login') }}" class = "button" style="float:right">Login</a>
