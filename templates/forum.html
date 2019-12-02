@@ -1,34 +1,75 @@
 <!DOCTYPE HTML>
 <html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <title> c/games </title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='forum.css') }}">
-    <script type="text/javascript" src="{{ url_for('static', filename='forum.js') }}"></script>
-</head>
+  <head>
+      <meta charset="utf-8"/>
+      <title> {{ cnitt_name }} </title>
+      <link rel="stylesheet" href="{{ url_for('static', filename='forum.css') }}">
+      <script type="text/javascript" src="{{ url_for('static', filename='forum.js') }}"></script>
+  </head>
 
-<body>
-  <h1> {{ cnitt_name }} </h1>
-  <div class="homebutton">
-    <a href = "/" class = "button">Home</a>
+  <body>
+    <div class="header">
+    <h1 id = "welcome" > {{ cnitt_name }} </h1>
   </div>
-<ul>
-    {% for post in posts%}
-    <span> {{post.cnitt.name}}</span>
-    <li>
-        <button class="up_arrow"  type="button">UP</button>
-        <b> {{ post.net_votes }}</b>
-        {% if post.is_link %}
-        <a href = "{{post.content}}" class="button"> {{ post.title }} </a>
-        {% else %}
-        <a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" class="button"> {{ post.title }} </a>
-        {% endif %}
-        <br>
-        <a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" class="button"> comments </a>
-    </li>
-    {% endfor %}
-</ul>
-<a href = "{{ url_for('mtp', cnitt_name = cnitt_name ) }}" class = "button">Add Text Post</a>
-<a href = "{{ url_for('mlp', cnitt_name = cnitt_name ) }}" class = "button">Add Link Post</a>
-</body>
+      {% if current_user.is_authenticated %}
+        <div class="topnav">
+           <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/games</a>
+           <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/pokemon</a>
+           <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/memes</a>
+           <a href="/about" class = "button">About Us</a>
+
+           <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
+           <a href="users/{{current_user.id}}" class = "button" style="float:right">Profile</a>
+           <a href = "{{ url_for('mtp', cnitt_name = cnitt_name ) }}" class = "button">Create Text Post</a>
+           <a href = "{{ url_for('mlp', cnitt_name = cnitt_name ) }}" class = "button">Create Link Post</a>
+        </div>
+      {% else %}
+        <div class="topnav">
+          <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/games</a>
+          <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/pokemon</a>
+          <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/memes</a>
+           <a href= "/about" class = "button">About Us</a>
+
+           <a href="{{ url_for('login') }}" class = "button" style="float:right">Login</a>
+           <a href="/add_user" class = "button" style="float:right">Register</a>
+        </div>
+      {% endif %}
+
+      <div class="row">
+        <div class="leftcolumn">
+      <ul>
+          {% for post in posts%}
+          <span> {{post.cnitt.name}}</span>
+          <li>
+              <button class="up_arrow"  type="button">UP</button>
+              <b> {{ post.net_votes }}</b>
+              <div class="card">
+              {% if post.is_link %}
+              <h2><a href = "{{post.content}}" class="button"> {{ post.title }} </a></h2>
+              {% else %}
+              <a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" class="button"> {{ post.title }} </a>
+              {% endif %}
+              <br>
+              <a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" class="button"> comments </a>
+            </div>
+          </li>
+          {% endfor %}
+      </ul>
+    </div>
+    <div class="rightcolumn">
+    <div class="card">
+      <h2>Submit a Feedback Form! </h2>
+      <a href="/Feedback Form" class = "button">Feedback Form</a>
+    </div>
+  </div>
+  </div>
+
+  <div class="footer">
+    <h2>Contact Us!</h2>
+    <p> University of Rochester </p>
+    <p> 500 Joseph C. Wilson Blvd. </p>
+    <p> Rochester, NY 14627 </p>
+    <p> (585) 275-2121 </p>
+  </div>
+  </body>
 </html>

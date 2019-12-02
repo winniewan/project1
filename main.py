@@ -130,10 +130,6 @@ def about():
 def editProfile():
     return render_template('editProfile.html')
 
-@app.route('/createPost')
-def createPost():
-    return render_template('createPost.html')
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm()

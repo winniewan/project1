@@ -4,6 +4,8 @@ body {
 	margin-left : 2.5%;
 	margin-right : 2.5%;
 	font-family: helvetica, sans-serif;
+	background-repeat: no-repeat;
+  background-size: auto;
 }
 
 h1 {

@@ -1,9 +1,6 @@
 body {
-	background: rgb(0,212,255);
+	background : rgb(0,212,255);
   background: linear-gradient(180deg, rgba(96,228,255,1) 0%, rgba(255,255,255,1) 100%);
-	background-repeat: no-repeat;
-	background-size: cover;
-
 	margin-left : 2.5%;
 	margin-right : 2.5%;
 	font-family: helvetica, sans-serif;
@@ -18,11 +15,6 @@ body {
 p {
   font-size: 15px;
 }
-
-.homebutton {
-	text-align: left;
-}
-
 
 a {
   	background-color: #4CAF50; /* Green */
@@ -95,10 +87,6 @@ th{
 .card a:hover {
   background-color: grey;
   color: white;
-}
-
-* {
-  box-sizing: border-box;
 }
 
 body {
