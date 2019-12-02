@@ -16,7 +16,14 @@ p {
   font-size: 15px;
 }
 
+#blur{
+
+    box-shadow: 10px 10px 5px #aaaaaa;
+
+}
+
 a {
+
   	background-color: #4CAF50; /* Green */
     border: none;
     color: white;
@@ -26,7 +33,6 @@ a {
     display: inline-block;
     font-size: 30px;
 }
-
 a.button {
     text-decoration: none;
     border: 2px solid black;
