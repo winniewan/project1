@@ -27,10 +27,10 @@
         </div>
         <a href="/about" class = "button">About Us</a>
 
-    <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
-    <a href="{{url_for ('users', uid = current_user.id)}}" class = "button" style="float:right">Profile</a>
-    <a href = "{{ url_for('mtp', cnitt_name = cnitt_name ) }}" class = "button">Create Text Post</a>
-    <a href = "{{ url_for('mlp', cnitt_name = cnitt_name ) }}" class = "button">Create Link Post</a>
+        <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
+        <a href="{{url_for ('users', uid = current_user.id)}}" class = "button" style="float:right">Profile</a>
+        <a href = "{{ url_for('mtp', cnitt_name = cnitt_name ) }}" class = "button">Create Text Post</a>
+        <a href = "{{ url_for('mlp', cnitt_name = cnitt_name ) }}" class = "button">Create Link Post</a>
     {% else %}
 
         <a href= "/about" class = "button">About Us</a>
@@ -39,6 +39,13 @@
         <a href="/add_user" class = "button" style="float:right">Register</a>
         </div>
     {% endif %}
+
+<div class="row">
+    <a href = "{{ url_for('show_sub_cnitt', cnitt_name=cnitt_name, sort_type="Hot")}}" class ="button">Hot</a>
+    <a href = "{{ url_for('show_sub_cnitt', cnitt_name=cnitt_name, sort_type="Top")}}" class ="button">Top</a>
+    <a href = "{{ url_for('show_sub_cnitt', cnitt_name=cnitt_name, sort_type="New")}}" class ="button">New</a>
+
+</div>
 
 <div class="row">
     <div class="leftcolumn">
