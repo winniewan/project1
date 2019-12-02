@@ -4,13 +4,37 @@
 		<title> Comment Form </title>
 		<link rel="stylesheet" href="{{ url_for('static', filename='commentForm.css') }}">
 	</head>
-		<body>
-			<form method="POST" id = "block">
-				<h1> Make a Comment</h1>
-            {{ form.hidden_tag() }}
-            Content: {{ form.content() }}<br>
-            {{ form.submit() }}
-      </form>
-			<a href = "/users/{{current_user.id}}" id = "profile" class = "button">Profile</a>
-		</body>
+	<body>
+		<div class="header">
+		<h1 id = "welcome" > Cnitt </h1>
+	</div>
+			{% if current_user.is_authenticated %}
+				<div class="topnav">
+					 <a href = "/" class = "button">Home</a>
+					 <a href="/about" class = "button">About Us</a>
+
+					 <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
+					 <a href="users/{{current_user.id}}" class = "button" style="float:right">Profile</a>
+				</div>
+
+				</br></br>
+
+				<form method="POST" id = "block">
+					<h1> Make a Comment</h1>
+	            {{ form.hidden_tag() }}
+	            {{ form.content() }}</br></br>
+	            {{ form.submit() }}
+	      </form>
+
+			{% else %}
+				<div class="topnav">
+					 <a href = "/" class = "button">Home</a>
+
+					 <h2> Please Login or Register to comment! </h2>
+
+					 <a href="{{ url_for('login') }}" class = "button" style="float:right">Login</a>
+					 <a href="/add_user" class = "button" style="float:right">Register</a>
+				</div>
+			{% endif %}
+	</body>
 	</html>
