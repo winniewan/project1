@@ -1,21 +1,19 @@
 body {
-	background-image: url("https://image.freepik.com/free-vector/blue-watercolor-splash-web-page-screen-size-background_70155-118.jpg");
-	background-repeat: no-repeat;
-	background-size: cover;
-
-	margin-left : 2.5%;
-	margin-right : 2.5%;
+	background: rgb(0,212,255);
+  background: linear-gradient(180deg, rgba(96,228,255,1) 0%, rgba(255,255,255,1) 100%);
+	margin-left: 10.5%;
+	margin-right: 10.5%;
 	font-family: helvetica, sans-serif;
 }
 
-h1 {
+/* Style the header */
+.header {
+  padding: 50px;
   text-align: center;
-  font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
 
 p {
-  font-size: 30px;
-  text-align: center;
+  font-size: 15px;
 }
 
 a {
@@ -29,11 +27,49 @@ a {
     font-size: 30px;
 }
 
-a.homeButton {
+body {
+  font-family: helvetica;
+	text-align: center;
+  padding: 10px;
+}
+
+h5 {
+	font-family: Helvetica;
+	text-align: center;
+	font-size: 30px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1 {
+  text-align: center;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+.homebutton {
+	margin-left : -5%;
+	text-align: left;
+}
+
+a.button {
     text-decoration: none;
     border: 2px solid black;
     font-size: 20px;
     padding: 4px;
     color: black;
     background: white;
+}
+
+.meme {
+	text-align: center;
+}
+
+/* Footer */
+.footer {
+  padding: 20px;
+  text-align: center;
+  margin-top: 20px;
+	background: white;
 }

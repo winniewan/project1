@@ -1,11 +1,11 @@
 body {
-	background-image: url("https://phonebookofgrenoble.xyz/image/204225-full_65-baby-blue-ombre-wallpapers-download-at-wallpaperbro.jpg");
-	background-repeat: no-repeat;
-	background-size: cover;
-
+	background : rgb(0,212,255);
+  background: linear-gradient(180deg, rgba(96,228,255,1) 0%, rgba(255,255,255,1) 100%);
 	margin-left : 2.5%;
 	margin-right : 2.5%;
 	font-family: helvetica, sans-serif;
+	background-repeat: no-repeat;
+  background-size: auto;
 }
 
 /* Style the header */
@@ -89,10 +89,6 @@ th{
 .card a:hover {
   background-color: grey;
   color: white;
-}
-
-* {
-  box-sizing: border-box;
 }
 
 body {

@@ -4,8 +4,8 @@ from flask_login import UserMixin, AnonymousUserMixin
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import PrimaryKeyConstraint
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import relationship
 from werkzeug import security
-from sqlalchemy.ext.hybrid import hybrid_property
 
 db = SQLAlchemy()
 
@@ -167,7 +167,7 @@ class SubCnitt(db.Model):
         return output
 
     def __repr__(self):
-        return f"c/{self.name}"
+        return f"{self.name}"
 
     @staticmethod
     def add_required_subscriptions(user_id=None):
@@ -214,11 +214,10 @@ class Post(db.Model):
     cnitt_id = db.Column(db.Integer, db.ForeignKey('SubCnitts.cnitt_id'), nullable=False)
     content = db.Column(db.Text)
     is_link = db.Column(db.Boolean, nullable=False)
-
     created = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
-
     modified = db.Column(db.DateTime, nullable=True, default=None, onupdate=datetime.datetime.utcnow)
 
+    cnitt = relationship('SubCnitt', foreign_keys = 'Post.cnitt_id')
     def __repr__(self):
         cnitt = SubCnitt.query.filter(SubCnitt.cnitt_id == self.cnitt_id).first()
         votes = self.up_votes - self.down_votes

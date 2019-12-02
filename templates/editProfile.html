@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title> Edit Profile </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='editProfile.css') }}">
+    <!-- <script type="text/javascript" src="{{ url_for('static', filename='editProfile.js') }}"></script> -->
+</head>
+
+<body>
+  <div class="header">
+  <h1>Edit Profile</h1>
+  </div>
+    <form method="POST" id = "block">
+      <!-- TODO: Have prefilled information of user data -->
+        {{ form.hidden_tag() }}
+        {{ form.email.label }}: {{ form.email() }}<br><br>
+        {{ form.password.label }}: {{ form.password() }}<br><br>
+        <!-- TODO: Allow user to add a short bio -->
+        <a href = "/" class = "button">Back</a>
+        {{ form.submit() }} <br>
+    </form>
+</body>
+</html>

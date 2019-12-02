@@ -113,15 +113,22 @@ with app.app_context():
 
 #
 ##
-###app route functions    
+### app route functions
 ##
 #
 
 @app.route('/')
 def index():
-    posts = Post.query
-    return render_template('homePage.html', posts = posts)
+    posts = SubCnitt.get("Front").posts()
+    return render_template('home.html', posts=posts, cnitt_name="Front")
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/editProfile')
+def editProfile():
+    return render_template('editProfile.html')
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -306,13 +313,25 @@ def show_sub_cnitt(cnitt_name="Front", sort_type='Hot'):
 @app.route("/c/<string:cnitt_name>/comments/<int:post_id>/<string:sort_type>",  methods = ["GET", "POST"])
 def comments_for_post(cnitt_name, post_id, sort_type):
     post = Post.query.filter_by(pid = post_id).first()
-    baseC, commentC = Post.create_comment_chain()
+    comments = Comment.query.filter_by(post = post_id).all()
     if post != None:
-        print("")
-        return render_template("post.html", post = post,cnitt_name = cnitt_name, baseC = baseC, commentC = commentC)
-    else: 
+        return render_template("post.html", post = post,cnitt_name = cnitt_name, comments = comments)
+    else:
         print("oops")
         abort(404)
+
+
+@app.route("/subscribe/<string:cnitt>")
+@login_required
+def subscribe(cnitt):
+    get = SubCnitt.get(cnitt)
+    if get is None:
+        redirect("/")
+    elif current_user is not None:
+        get.subscribe(current_user.id)
+    return redirect("/c/" + cnitt)
+
+
 
 @app.route("/makeComment/<string:cnitt_name>/<int:post_id>",  methods = ["GET", "POST"])
 def makeComment(cnitt_name, post_id):
@@ -348,16 +367,19 @@ def initialize_app():
     rochester = SubCnitt(name="roch")
     leibenning = SubCnitt(name="leibenning")
     funny = SubCnitt(name="funny")
+    beauty = SubCnitt(name="beauty")
+    memes = SubCnitt(name="memes")
+    pokemon = SubCnitt(name="pokemon")
+    games = SubCnitt(name="games")
+    life = SubCnitt(name="life")
     with app.app_context():
         db.session.add_all([newt, follow, comment, write, mod, admin])
         db.session.add_all([gal_user, josh_user, matt_user,all_cnitt, front_cnitt, pictures, rochester, leibenning, funny])
+        db.session.add_all([beauty, memes, pokemon, games, life])
         db.session.commit()
         user = db.session.query(Users).filter(Users.email == "jradin16@gmail.com").first()
         #all_cnitt.subscribe(user.id)
-        '''
-        DELETE EVENTUALLY, THIS IS FOR TESTING PURPOSES ONLY
-        '''
-        load_user(user.id)
+
 
         SubCnitt.add_required_subscriptions()
         all_cnitt.create_link_post("TEST POST PLEASE IGNORE 1", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", user.id)
