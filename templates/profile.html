@@ -8,14 +8,15 @@
 	<body>
         {% if current_user.is_authenticated %}
 				<div class="header">
-				<h1 id = "welcome" > {{ current_user.first_name }}'s Profile!</h1>
+				<h1 id = "welcome" > {{ user.first_name }}'s Profile!</h1>
 				</div>
 				<div class="topnav">
 					 <a href = "/" class = "button">Home</a>
 					 <a href="/about" class = "button">About Us</a>
-
 					 <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
-					 <a href="/editProfile" class = "button" style="float:right">Edit Profile</a>
+					 {% if current_user.uid == user.uid %}
+					 	 <a href="/editProfile" class = "button" style="float:right">Edit Profile</a>
+						{% endif %}
 					 <a href = "{{ url_for('mtp', cnitt_name = cnitt_name ) }}" class = "button">Create Text Post</a>
            <a href = "{{ url_for('mlp', cnitt_name = cnitt_name ) }}" class = "button">Create Link Post</a>
 				</div>
@@ -23,11 +24,11 @@
 	  	<div class="leftcolumn">
 	    	<div class="card">
 		      <h2>Name</h2>
-		      <h5>{{ current_user.first_name }}</h5>
+		      <h5>{{ user.first_name }} {{ user.last_name }}</h5>
 		    </div>
 		    <div class="card">
 		      <h2>Email</h2>
-		      <h5>{{ current_user.Email }}</h5>
+		      <h5>{{ user.email }}</h5>
 		    </div>
 				<div class="card">
 		      <h2>Bio</h2>
@@ -65,8 +66,8 @@
 		<p> Rochester, NY 14627 </p>
 		<p> (585) 275-2121 </p>
 	</div>
-	{% else %}
+			{% else %}
 	 <!-- TODO: Lead them to login page. -->
-	{% endif %}
+			{% endif %}
     </body>
 </html>
