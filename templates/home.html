@@ -16,7 +16,6 @@
 	{% for sub in current_user.subscriptions %}
 		<a href = "{{ url_for('show_sub_cnitt')}}{{ sub }}" class = "button">{{sub}}</a>
 	{% endfor %}
-</div>
 <a href="/about" class = "button">About Us</a>
 
 <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
