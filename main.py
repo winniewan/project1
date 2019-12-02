@@ -284,7 +284,7 @@ def show_sub_cnitt(cnitt_name="Front", sort_type='Hot'):
     if cnitt is None:
         return redirect(url_for("index")), 404
 
-    if current_user is None:
+    if not current_user.is_authenticated:
         id = None
     else:
         id = current_user.id
@@ -305,8 +305,8 @@ def show_sub_cnitt(cnitt_name="Front", sort_type='Hot'):
     else:
         posts = cnitt.posts(sort_type=sort_type, quantity=num_posts, start=after, user_id=id)
     # SHOW POSTS HERE
-    return render_template("forum.html", posts=posts, cnitt_name=cnitt_name, cnitt=cnitt), 200
 
+    return render_template("forum.html", posts=posts, cnitt_name=cnitt_name, cnitt=cnitt, after=after), 200
 
 
 @app.route("/c/<string:cnitt_name>/comments/<int:post_id>",  methods = ["GET", "POST"], defaults={'sort_type': 'Hot'})

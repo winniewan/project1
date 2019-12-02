@@ -11,17 +11,21 @@
 <div class="header">
     <h1 id = "welcome" > {{ cnitt_name }} </h1>
 </div>
-{% if current_user.is_authenticated %}
-    <div class="topnav">
-        <a href = "/" class = "button">Home</a>
+<div class="topnav">
+
+    <a href = "/" class = "button">Home</a>
+    <a href = "{{ url_for('show_sub_cnitt')}}{{ cnitt_name }}" class = "button">{{ cnitt_name }}</a>
+
+    {% if current_user.is_authenticated %}
+
         {% for sub in current_user.subscriptions %}
-
-            <a href = "{{ url_for('show_sub_cnitt')}}{{ sub }}" class = "button">{{sub}}</a>
-
+            {% if sub.name != cnitt_name %}
+                <a href = "{{ url_for('show_sub_cnitt')}}{{ sub }}" class = "button">{{sub}}</a>
+            {% endif %}
 
         {% endfor %}
-    </div>
-    <a href="/about" class = "button">About Us</a>
+        </div>
+        <a href="/about" class = "button">About Us</a>
 
     <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
     <a href="{{url_for ('users', uid = current_user.id)}}" class = "button" style="float:right">Profile</a>
@@ -33,12 +37,18 @@
         <a href = "{{ url_for('show_sub_cnitt') }}/games" class = "button">games</a>
         <a href = "{{ url_for('show_sub_cnitt') }}/pokemon" class = "button">pokemon</a>
         <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">memes</a>
+        <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
+        <a href="users/{{current_user.id}}" class = "button" style="float:right">Profile</a>
+        <a href = "{{ url_for('mtp', cnitt_name = cnitt_name ) }}" class = "button">Create Text Post</a>
+        <a href = "{{ url_for('mlp', cnitt_name = cnitt_name ) }}" class = "button">Create Link Post</a>
+    {% else %}
+
         <a href= "/about" class = "button">About Us</a>
 
         <a href="{{ url_for('login') }}" class = "button" style="float:right">Login</a>
         <a href="/add_user" class = "button" style="float:right">Register</a>
-    </div>
-{% endif %}
+        </div>
+    {% endif %}
 
 <div class="row">
     <div class="leftcolumn">
