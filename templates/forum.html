@@ -13,6 +13,7 @@
   </div>
       {% if current_user.is_authenticated %}
         <div class="topnav">
+           <a href = "/" class = "button">Home</a>
            <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/games</a>
            <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/pokemon</a>
            <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/memes</a>
@@ -25,9 +26,10 @@
         </div>
       {% else %}
         <div class="topnav">
-          <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/games</a>
-          <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/pokemon</a>
-          <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/memes</a>
+           <a href = "/" class = "button">Home</a>
+           <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/games</a>
+           <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/pokemon</a>
+           <a href = "{{ url_for('show_sub_cnitt') }}" class = "button">c/memes</a>
            <a href= "/about" class = "button">About Us</a>
 
            <a href="{{ url_for('login') }}" class = "button" style="float:right">Login</a>
@@ -39,20 +41,18 @@
         <div class="leftcolumn">
       <ul>
           {% for post in posts%}
-          <span> {{post.cnitt.name}}</span>
-          <li>
-              <button class="up_arrow"  type="button">UP</button>
-              <b> {{ post.net_votes }}</b>
               <div class="card">
-              {% if post.is_link %}
-              <h2><a href = "{{post.content}}" class="button"> {{ post.title }} </a></h2>
-              {% else %}
-              <a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" class="button"> {{ post.title }} </a>
-              {% endif %}
-              <br>
-              <a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" class="button"> comments </a>
-            </div>
-          </li>
+                <span> {{post.cnitt.name}}</span>
+                <button class="up_arrow"  type="button">UP</button>
+                <b> {{ post.net_votes }}</b>
+                {% if post.is_link %}
+                <h2><a href = "{{post.content}}" class="button"> {{ post.title }} </a></h2>
+                {% else %}
+                <h2><a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" class="button"> {{ post.title }} </a></h2>
+                {% endif %}
+                <br>
+                <a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" class="button"> comments </a>
+              </div>
           {% endfor %}
       </ul>
     </div>
