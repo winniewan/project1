@@ -211,13 +211,16 @@ def add_user():
         form.email.data = None
         password = form.password.data
         form.password.data = None
-        user = Users(first_name=fname, last_name=lname, email=email, password=password)
-        db.session.add_all([user])
-        db.session.commit()
-        next = request.args.get("next")
-        if next is None or not next.startswith("/"):
-            next = url_for("index")
-        return redirect(next)
+        if Users.query.filter_by(email=email).first() is None:
+            user = Users(first_name=fname, last_name=lname, email=email, password=password)
+            db.session.add_all([user])
+            db.session.commit()
+            next = request.args.get("next")
+            if next is None or not next.startswith("/"):
+                next = url_for("index")
+            return redirect(next)
+        else:
+            return "user with this email already exists"
     return render_template("add_user.html", form=form)
 
 
