@@ -418,3 +418,9 @@ def run():
 
 if __name__ == '__main__':
     run()
+
+    
+# to do
+#    allow users to comment on comments
+#    allow users to delete posts, or comments
+#    get comment north and south votes working
