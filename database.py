@@ -4,9 +4,8 @@ from flask_login import UserMixin, AnonymousUserMixin
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import PrimaryKeyConstraint
 from sqlalchemy.ext.hybrid import hybrid_property
-from werkzeug import security
-from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
+from werkzeug import security
 
 db = SQLAlchemy()
 
@@ -168,7 +167,7 @@ class SubCnitt(db.Model):
         return output
 
     def __repr__(self):
-        return f"c/{self.name}"
+        return f"{self.name}"
 
     @staticmethod
     def add_required_subscriptions(user_id=None):
