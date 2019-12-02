@@ -17,8 +17,6 @@
 					 {% if current_user.uid == user.uid %}
 					 	 <a href="/editProfile" class = "button" style="float:right">Edit Profile</a>
 						{% endif %}
-					 <a href = "{{ url_for('mtp', cnitt_name = cnitt_name ) }}" class = "button">Create Text Post</a>
-           <a href = "{{ url_for('mlp', cnitt_name = cnitt_name ) }}" class = "button">Create Link Post</a>
 				</div>
 		<div class="row">
 	  	<div class="leftcolumn">
