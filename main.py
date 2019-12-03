@@ -416,5 +416,12 @@ initialize_app()
 def run():
     app.run(ssl_context=("cert.pem", "key.pem"))
 
+
 if __name__ == '__main__':
     run()
+
+    
+# TODO:
+#    allow users to comment on comments
+#    allow users to delete posts, or comments
+#    get north and south votes working for posts and comments

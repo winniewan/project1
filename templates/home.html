@@ -17,7 +17,6 @@
 	{% for sub in current_user.subscriptions %}
 		<a href = "{{ url_for('show_sub_cnitt')}}{{ sub }}" class = "button">{{sub}}</a>
 	{% endfor %}
-</div>
 <a href="/about" class = "button">About Us</a>
 
 <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
@@ -60,27 +59,27 @@
                 <button class="up_arrow"  type="button">UP</button>
                 <b> {{ post.net_votes }}</b>
                 {% if post.is_link %}
-                    <h2><a href = "{{post.content}}" class="button"> {{ post.title }} </a></h2>
+                    <h2><a href = "{{post.content}}" class="button" id = "blur"> {{ post.title }} </a></h2>
                 {% else %}
-                    <h2><a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" class="button"> {{ post.title }} </a></h2>
+                    <h2><a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" id = "blur" class="button"> {{ post.title }} </a></h2>
                 {% endif %}
                 <br>
-                <a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" class="button"> comments </a>
+                <a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" id = "blur" class="button"> comments </a>
             </div>
         {% endfor %}
 	</div>
 	<div class="rightcolumn">
 		<div class="card">
 			<h2>Trending Posts</h2>
-			<a href="c/beauty" class = "button">c/beauty</a>
-			<a href="c/memes" class = "button">c/memes</a>
-			<a href="c/pokemon" class = "button">c/pokemon</a>
+			<a href="c/beauty" class = "button" id = "blur">c/beauty</a>
+			<a href="c/memes" class = "button" id = "blur">c/memes</a>
+			<a href="c/pokemon" class = "button" id = "blur">c/pokemon</a>
 		</div>
 		<div class="card">
 			<h2>Trending Communities</h2>
-			<a href="c/games" class = "button">c/games</a>
-			<a href="c/funny" class = "button">c/funny</a>
-			<a href="c/life" class = "button">c/life</a>
+			<a href="c/games" class = "button" id = "blur">c/games</a>
+			<a href="c/funny" class = "button" id = "blur">c/funny</a>
+			<a href="c/life" class = "button" id = "blur">c/life</a>
 		</div>
 		<div class="card">
 			<h2>Submit a Feedback Form! </h2>
