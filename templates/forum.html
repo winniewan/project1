@@ -41,9 +41,9 @@
     {% endif %}
 
 <div class="row">
-    <a href = "{{ url_for('show_sub_cnitt', cnitt_name=cnitt_name, sort_type="Hot")}}" class ="button">Hot</a>
-    <a href = "{{ url_for('show_sub_cnitt', cnitt_name=cnitt_name, sort_type="Top")}}" class ="button">Top</a>
-    <a href = "{{ url_for('show_sub_cnitt', cnitt_name=cnitt_name, sort_type="New")}}" class ="button">New</a>
+    <a href = "{{ url_for('show_sub_cnitt', cnitt_name=cnitt_name, sort_type='Hot')}}" class ="button">Hot</a>
+    <a href = "{{ url_for('show_sub_cnitt', cnitt_name=cnitt_name, sort_type='Top')}}" class ="button">Top</a>
+    <a href = "{{ url_for('show_sub_cnitt', cnitt_name=cnitt_name, sort_type='New')}}" class ="button">New</a>
 
 </div>
 
@@ -51,7 +51,8 @@
     <div class="leftcolumn">
         {% for post in posts%}
             <div class="card">
-                <a href = "{{ url_for('show_sub_cnitt', cnitt_name=cnitt_name, sort_type="Hot")}}" class ="button">Hot</a>
+                <h2><a href = "users/{{post.creator}}" > {{users.query.filter_by(id=post.creator).first().username }} </a></h2>
+                <a href = "{{ url_for('show_sub_cnitt', cnitt_name=cnitt_name, sort_type='Hot')}}" class ="button">Hot</a>
                 <button class="up_arrow"  type="button">UP</button>
                 <b> {{ post.net_votes }}</b>
                 {% if post.is_link %}

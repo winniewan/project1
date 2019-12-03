@@ -14,7 +14,7 @@
 					 <a href = "/" class = "button">Home</a>
 					 <a href="/about" class = "button">About Us</a>
 					 <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
-					 {% if current_user.uid == user.uid %}
+					 {% if current_user.id == user.id %}
 					 	 <a href="/editProfile" class = "button" style="float:right">Edit Profile</a>
 						{% endif %}
 				</div>
@@ -46,11 +46,11 @@
 					        <b> {{ post.net_votes }}</b>
 					        {% if post.is_link %}
 					        <a href = "{{post.content}}"> {{ post.title }} </a>
-					        {% else %}
-					        <a href = "c/{{post.cnitt_name}}/comments/{{post.pid}}"> {{ post.title }} </a>
+							{% else %}
+							<a href = "{{url_for('comments_for_post',cnitt_name=post.cnitt_name,post_id=post.pid)}}"> {{ post.title }} </a>
 					        {% endif %}
 					        <br>
-					        <a href = "c/{{post.cnitt_name}}/comments/{{post.pid}}"> comments </a>
+					        <a href = "{{url_for('comments_for_post',cnitt_name=post.cnitt_name,post_id=post.pid)}}"> comments </a>
 					    </li>
 							 </div>
 					    {% endfor %}

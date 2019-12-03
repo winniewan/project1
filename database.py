@@ -28,6 +28,7 @@ class Users(UserMixin, db.Model):
     name = db.column_property(first_name + ' ' + last_name)
     email = db.Column(db.Unicode(256), nullable=False, unique=True)
     password_hash = db.Column(db.String(128))
+    bio = db.Column(db.Text)
     role_id = db.Column(db.Integer, db.ForeignKey("Roles.rid"), default=1)
 
     def change_user_role(self, new_role):
@@ -309,10 +310,11 @@ class Post(db.Model):
         return child_tree, base_comments
 
 
-class Moderator(db.Model):
+class Director(db.Model):
     mod_number = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
     uid = db.Column(db.Integer, db.ForeignKey("Users.id"), nullable=False)
     cnitt_id = db.Column(db.Integer, db.ForeignKey('SubCnitts.cnitt_id'), nullable=False)
+    isDir = db.Column(db.Boolean, nullable=False)
 
 
 class Comment(db.Model):

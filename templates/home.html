@@ -54,7 +54,7 @@
 	<div class="leftcolumn">
 		{% for post in posts%}
             <div class="card">
-				<span> {{post.cnitt.name}}</span>
+				<span> <h2><a href = "{{url_for('show_sub_cnitt', cnitt_name = post.cnitt.name, sort_type = 'Hot')}}" > {{post.cnitt.name}} </a></h2></span>
 				<h2><a href = "users/{{post.creator}}" > {{users.query.filter_by(id=post.creator).first().username }} </a></h2>
                 <button class="up_arrow"  type="button">UP</button>
                 <b> {{ post.net_votes }}</b>
