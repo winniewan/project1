@@ -3,4 +3,9 @@ function update_votes(){
 }
 
 
-$(".up_arrow").on("click", update_votes());
+$(".up_arrow").each(function () {
+        $(this).on('click', function () {
+            update_votes();
+        })
+    }
+);

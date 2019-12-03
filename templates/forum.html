@@ -4,8 +4,8 @@
     <meta charset="utf-8"/>
     <title> {{ cnitt_name }} </title>
     <link rel="stylesheet" href="{{ url_for('static', filename='forum.css') }}">
-    <script type="text/javascript" src="{{ url_for('static', filename='forum.js') }}"></script>
-</head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+   </head>
 
 <body>
 <div class="header">
@@ -51,8 +51,8 @@
     <div class="leftcolumn">
         {% for post in posts%}
             <div class="card">
+                <div class="up_arrow">UP</div>
                 <h2><a href = "users/{{post.creator}}" > {{users.query.filter_by(id=post.creator).first().username }} </a></h2>
-                <a href = "{{ url_for('show_sub_cnitt', cnitt_name=cnitt_name, sort_type='Hot')}}" class ="button">Hot</a>
                 <button class="up_arrow"  type="button">UP</button>
                 <b> {{ post.net_votes }}</b>
                 {% if post.is_link %}
@@ -97,5 +97,7 @@
     <p> Rochester, NY 14627 </p>
     <p> (585) 275-2121 </p>
 </div>
+ <script type="text/javascript" src="{{ url_for('static', filename='forum.js') }}"></script>
+
 </body>
 </html>
