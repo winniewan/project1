@@ -22,6 +22,7 @@ class Users(UserMixin, db.Model):
     __tablename__ = "Users"
     id = db.Column(db.Integer(), primary_key=True,
                    autoincrement=True)
+    username = db.Column(db.Unicode(64), nullable=False,unique=True)
     first_name = db.Column(db.Unicode(64), nullable=False)
     last_name = db.Column(db.Unicode(64), nullable=False)
     name = db.column_property(first_name + ' ' + last_name)
@@ -122,14 +123,14 @@ class SubCnitt(db.Model):
     posts = db.relationship('Post', backref ='SubCnitts')
 
     def create_link_post(self, title, link, user_id):
-        post = Post(title=title, content=link, is_link=True, poster=user_id, cnitt_id=self.cnitt_id)
+        post = Post(title=title, content=link, is_link=True, poster=user_id, cnitt_id=self.cnitt_id,creator=user_id)
         db.session.add(post)
         db.session.commit()
         post.up_vote(user_id)
         return post
 
     def create_text_post(self, title, content, user_id):
-        post = Post(title=title, content=content, is_link=False, poster=user_id, cnitt_id=self.cnitt_id)
+        post = Post(title=title, content=content, is_link=False, poster=user_id, cnitt_id=self.cnitt_id,creator=user_id)
         db.session.add(post)
         db.session.commit()
         post.up_vote(user_id)
@@ -230,6 +231,7 @@ class Post(db.Model):
     __tablename__ = "Posts"
     title = db.Column(db.String, nullable=False)
     pid = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
+    creator = db.Column(db.Integer, db.ForeignKey("Users.id"), nullable=False,)
     up_votes = db.Column(db.Integer, nullable=False, default=0)
     down_votes = db.Column(db.Integer, nullable=False, default=0)
     net_votes = db.column_property(up_votes - down_votes)

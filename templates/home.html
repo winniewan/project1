@@ -11,6 +11,7 @@
 	<h1 id = "welcome" >Welcome, {{ current_user.first_name }}!</h1>
 </div>
 
+
 <div class="topnav">
 	<a href = "/" class = "button">Home</a>
 	{% for sub in current_user.subscriptions %}
@@ -40,13 +41,22 @@
 	<a href="{{ url_for('login') }}" class = "button" style="float:right">Login</a>
 	<a href="/add_user" class = "button" style="float:right">Register</a>
 </div>
-{% endif %}
+{% endif %} 
+
+		<span id="searchbar">
+			<form method="POST">
+				{{ searchform.hidden_tag() }}
+        		{{ searchform.wanted() }}
+				{{ searchform.submit() }}
+			</form>
+		</span>
 
 <div class="row">
 	<div class="leftcolumn">
 		{% for post in posts%}
             <div class="card">
-                <span> {{post.cnitt.name}}</span>
+				<span> {{post.cnitt.name}}</span>
+				<h2><a href = "users/{{post.creator}}" > {{users.query.filter_by(id=post.creator).first().username }} </a></h2>
                 <button class="up_arrow"  type="button">UP</button>
                 <b> {{ post.net_votes }}</b>
                 {% if post.is_link %}
