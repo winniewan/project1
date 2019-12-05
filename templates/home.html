@@ -68,24 +68,22 @@
 	</nav>
 
 <!-- The navigation for subscription c links -->
-	<div class="container-fluid">
-		<div class="row jumbotron">
-			<!-- <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-10">
-				<p class="lead"> Random text goes here </p>
-			</div> -->
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+		<div class="collpase navbar-collpase" id="navbarResponsive">
+			<li class="navbar-nav ml-auto">
 			{% for sub in current_user.subscriptions %}
-			<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-2">
+			<div>
 				<a href="{{ url_for('show_sub_cnitt')}}{{ sub }}"><button type="button" class="btn btn-outline-secondary btn-lg">{{sub}}</button></a>
 			</div>
 			{% endfor %}
 			{% for c in top_cnitts %}
-			<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-2">
+			<div>
 				<a href="{{ url_for('show_sub_cnitt') }}{{ c.name }}"><button type="button" class="btn btn-outline-secondary btn-lg">{{c.name}}</button></a>
 			</div>
 	    {% endfor %}
-		</div>
+		</li>
 	</div>
-
+</nav>
 <!-- Add the pretty home page carousel  -->
 	<div id="slides" class="carousel slide" data-ride="carousel">
 		<ul class="carousel-indicators">
@@ -124,99 +122,106 @@
 		</div>
 	</div>
 
-
-
-
-<!--
-	{% if current_user.is_authenticated %}
-	<div class="header">
-		<h1 id = "welcome" >Welcome, {{ current_user.first_name }}!</h1>
-	</div>
-
-
-	<div class="topnav">
-		<a href = "/" class = "button">Home</a>
-		{% for sub in current_user.subscriptions %}
-			<a href = "{{ url_for('show_sub_cnitt')}}{{ sub }}" class = "button">{{sub}}</a>
-		{% endfor %}
-	<a href="/about" class = "button">About Us</a>
-
-	<a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
-	<a href="users/{{current_user.id}}" class = "button" style="float:right">Profile</a>
-	<a href = "{{ url_for('mtp', cnitt_name = cnitt_name ) }}" class = "button">Create Text Post</a>
-	<a href = "{{ url_for('mlp', cnitt_name = cnitt_name ) }}" class = "button">Create Link Post</a>
-	<a href="/about" class = "button">About Us</a>
-	</div>
-	{% else %}
-	<div class="header">
-		<h1 id = "welcome">Welcome, anon!</h1>
-	</div>
-	<div class="topnav">
-	    {% for c in top_cnitts %}
-	        <a href = "{{ url_for('show_sub_cnitt') }}{{ c.name }}" class = "button">{{c.name}}</a>
-	    {% endfor %}
-
-
-		<a href= "/about" class = "button">About Us</a>
-
-		<a href="{{ url_for('login') }}" class = "button" style="float:right">Login</a>
-		<a href="/add_user" class = "button" style="float:right">Register</a>
-	</div>
-	{% endif %}
-
-			<span id="searchbar">
-				<form method="POST">
-					{{ searchform.hidden_tag() }}
-	        		{{ searchform.wanted() }}
-					{{ searchform.submit() }}
-				</form>
-			</span>
-
-	<div class="row">
-		<div class="leftcolumn">
-			{% for post in posts%}
-	            <div class="card">
-					<span> <h2><a href = "{{url_for('show_sub_cnitt', cnitt_name = post.cnitt.name, sort_type = 'Hot')}}" > {{post.cnitt.name}} </a></h2></span>
-					<h2><a href = "users/{{post.creator}}" > {{users.query.filter_by(id=post.creator).first().username }} </a></h2>
-	                <button class="up_arrow"  type="button">UP</button>
-	                <b> {{ post.net_votes }}</b>
-	                {% if post.is_link %}
-	                    <h2><a href = "{{post.content}}" class="button" id = "blur"> {{ post.title }} </a></h2>
-	                {% else %}
-	                    <h2><a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" id = "blur" class="button"> {{ post.title }} </a></h2>
-	                {% endif %}
-	                <br>
-	                <a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" id = "blur" class="button"> comments </a>
-	            </div>
-	        {% endfor %}
+<!-- Cnitt posts -->
+	{% for post in posts%}
+		<div class="container-fluid padding">
+			<div class="row padding">
+				<div class="col-lg-12">
+					{% if post.is_link %}
+					<h2><a href = "{{post.content}}"> {{ post.title }} </a></h2>
+					{% else %}
+					<h2><a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}"> {{ post.title }} </a></h2>
+					{% endif %}
+					<a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" id = "blur" class="btn btn-primary"> Comments </a>
+					<button class="up_arrow"  type="button">UP</button>
+					<b> {{ post.net_votes }}</b>
+				</div>
+			</div>
 		</div>
-		<div class="rightcolumn">
+		</br>
+		</br>
+		</br>
+	{% endfor %}
+
+<!-- Recommended pages -->
+<div class="container-fluid padding">
+	<div class="row welcome text-center">
+		<div class="col-12">
+			<h1 class="display-4">Recommended</h1>
+		</div>
+		<hr>
+	</div>
+</div>
+
+<div class="container-fluid padding">
+	<div class="row padding">
+		<div class="col-md-4">
 			<div class="card">
-				<h2>Trending Posts</h2>
-				<a href="c/beauty" class = "button" id = "blur">c/beauty</a>
-				<a href="c/memes" class = "button" id = "blur">c/memes</a>
-				<a href="c/pokemon" class = "button" id = "blur">c/pokemon</a>
+				<img class="card-img-top" src="https://cdn.bleacherreport.net/images/team_logos/328x328/gaming.png">
+				<div class="card-body">
+					<h4 class="card-title"> c/games</h4>
+					<p class="card-text"> Check out what other gamers are doing! </p>
+					<a href="c/games" class="btn btn-outline-secondary">Check it out</a>
+				</div>
 			</div>
+		</div>
+
+		<div class="col-md-4">
 			<div class="card">
-				<h2>Trending Communities</h2>
-				<a href="c/games" class = "button" id = "blur">c/games</a>
-				<a href="c/funny" class = "button" id = "blur">c/funny</a>
-				<a href="c/life" class = "button" id = "blur">c/life</a>
+				<img class="card-img-top" src="https://t4.rbxcdn.com/cf3eeba32d913fc484dc230b0efe6670">
+				<div class="card-body">
+					<h4 class="card-title"> c/funny</h4>
+					<p class="card-text"> Check out some funny content! </p>
+					<a href="c/funny" class="btn btn-outline-secondary">Check it out</a>
+				</div>
 			</div>
+		</div>
+
+		<div class="col-md-4">
 			<div class="card">
-				<h2>Submit a Feedback Form! </h2>
-				<a href="/Feedback Form" class = "button">Feedback Form</a>
+				<img class="card-img-top" src="http://www.pngall.com/wp-content/uploads/1/Life.png">
+				<div class="card-body">
+					<h4 class="card-title"> c/life</h4>
+					<p class="card-text"> Check out some inspirational life talk! </p>
+					<a href="c/life" class="btn btn-outline-secondary">Check it out</a>
+				</div>
 			</div>
 		</div>
 	</div>
+</div>
 
-	<div class="footer">
-		<h2>Contact Us!</h2>
-		<p> University of Rochester </p>
-		<p> 500 Joseph C. Wilson Blvd. </p>
-		<p> Rochester, NY 14627 </p>
-		<p> (585) 275-2121 </p>
-	</div> -->
+<!-- Connect to social media -->
+<div class="container-fluid padding">
+	<div class="row text-center padding">
+		<div class="col-12">
+			<h2>Connect</h2>
+		</div>
+		<div class="col-12 social padding">
+			<a href="facebook.com"><i class="fab fa-facebook"></i></a>
+			<a href="twitter.com"><i class="fab fa-twitter"></i></a>
+			<a href="instagram.com"><i class="fab fa-instagram"></i></a>
+			<a href="youtube.com"><i class="fab fa-youtube"></i></a>
+		</div>
+	</div>
+</div>
 
+<footer>
+	<div class="container-fluid padding">
+		<div class="row text-center">
+			<div class="col-12">
+				<hr class="light">
+				<img src="https://images-urw.azureedge.net/-/media/Corporate~o~Sites/Unibail-Rodamco-Corporate/Images/Homepage/PORTFOLIO/Standing-Assets/Standing-portfolio/Shopping-center/CNIT/CNIT-Logo.ashx?h=168&la=en&w=340&revision=28cd3881-9b72-48f1-b89e-0ce987cad128&crop=1">
+				<p> University of Rochester </p>
+				<p> 500 Joseph C. Wilson Blvd. </p>
+				<p> Rochester, NY 14627 </p>
+				<p> (585) 275-2121 </p>
+			</div>
+			<div class="col-12">
+				<hr class="light">
+				<h5>&copy; cnitt.com </h5>
+			</div>
+		</div>
+	</div>
+</footer>
 </body>
 </html>
