@@ -1,100 +1,222 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-	<meta charset="utf-8"/>
-	<title> Home </title>
-	<link rel = "stylesheet" href = "{{ url_for('static', filename='home.css') }}">
+		<meta charset="utf-8"/>
+	<!-- <link rel = "stylesheet" href = "{{ url_for('static', filename='home.css') }}"> -->
+	<!-- Required meta tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+		<title> Home </title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+		<!-- Allows us to use social media icons -->
+		<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+		<link rel = "stylesheet" href = "{{ url_for('static', filename='home.css') }}">
 </head>
 <body>
-{% if current_user.is_authenticated %}
-<div class="header">
-	<h1 id = "welcome" >Welcome, {{ current_user.first_name }}!</h1>
-</div>
 
-
-<div class="topnav">
-	<a href = "/" class = "button">Home</a>
-	{% for sub in current_user.subscriptions %}
-		<a href = "{{ url_for('show_sub_cnitt')}}{{ sub }}" class = "button">{{sub}}</a>
-	{% endfor %}
-<a href="/about" class = "button">About Us</a>
-
-<a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
-<a href="users/{{current_user.id}}" class = "button" style="float:right">Profile</a>
-<a href = "{{ url_for('mtp', cnitt_name = cnitt_name ) }}" class = "button">Create Text Post</a>
-<a href = "{{ url_for('mlp', cnitt_name = cnitt_name ) }}" class = "button">Create Link Post</a>
-<a href="/about" class = "button">About Us</a>
-</div>
-{% else %}
-<div class="header">
-	<h1 id = "welcome">Welcome, anon!</h1>
-</div>
-<div class="topnav">
-    {% for c in top_cnitts %}
-        <a href = "{{ url_for('show_sub_cnitt') }}{{ c.name }}" class = "button">{{c.name}}</a>
-    {% endfor %}
-
-
-	<a href= "/about" class = "button">About Us</a>
-
-	<a href="{{ url_for('login') }}" class = "button" style="float:right">Login</a>
-	<a href="/add_user" class = "button" style="float:right">Register</a>
-</div>
-{% endif %} 
-
-		<span id="searchbar">
-			<form method="POST">
-				{{ searchform.hidden_tag() }}
-        		{{ searchform.wanted() }}
-				{{ searchform.submit() }}
-			</form>
-		</span>
-
-<div class="row">
-	<div class="leftcolumn">
-		{% for post in posts%}
-            <div class="card">
-				<span> <h2><a href = "{{url_for('show_sub_cnitt', cnitt_name = post.cnitt.name, sort_type = 'Hot')}}" > {{post.cnitt.name}} </a></h2></span>
-				<h2><a href = "users/{{post.creator}}" > {{users.query.filter_by(id=post.creator).first().username }} </a></h2>
-                <button class="up_arrow"  type="button">UP</button>
-                <b> {{ post.net_votes }}</b>
-                {% if post.is_link %}
-                    <h2><a href = "{{post.content}}" class="button" id = "blur"> {{ post.title }} </a></h2>
-                {% else %}
-                    <h2><a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" id = "blur" class="button"> {{ post.title }} </a></h2>
-                {% endif %}
-                <br>
-                <a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" id = "blur" class="button"> comments </a>
-            </div>
-        {% endfor %}
-	</div>
-	<div class="rightcolumn">
-		<div class="card">
-			<h2>Trending Posts</h2>
-			<a href="c/beauty" class = "button" id = "blur">c/beauty</a>
-			<a href="c/memes" class = "button" id = "blur">c/memes</a>
-			<a href="c/pokemon" class = "button" id = "blur">c/pokemon</a>
+	<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/"><img src="https://images-urw.azureedge.net/-/media/Corporate~o~Sites/Unibail-Rodamco-Corporate/Images/Homepage/PORTFOLIO/Standing-Assets/Standing-portfolio/Shopping-center/CNIT/CNIT-Logo.ashx?h=168&la=en&w=340&revision=28cd3881-9b72-48f1-b89e-0ce987cad128&crop=1"></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+					<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collpase navbar-collpase" id="navbarResponsive">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="/">Home</a>
+					</li>
+					<li>
+						<a class="nav-link" href="/about">About Us</a>
+					</li>
+					{% if current_user.is_authenticated %}
+					<li>
+						<a class="nav-link" href="users/{{current_user.id}}">Profile</a>
+					</li>
+					<li>
+						<a class="nav-link" href="{{ url_for('mtp', cnitt_name = cnitt_name ) }}">Create Text Post</a>
+					</li>
+					<li>
+						<a class="nav-link" href="{{ url_for('mlp', cnitt_name = cnitt_name ) }}">Create Link Post</a>
+					</li>
+					<li>
+						<a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+					</li>
+					{% else %}
+					<li>
+						<a class="nav-link" href="/add_user">Register</a>
+					</li>
+					<li>
+						<a class="nav-link" href="{{ url_for('login') }}">Login</a>
+					</li>
+					{% endif %}
+					<li>
+						<span id="searchbar">
+							<form method="POST">
+								{{ searchform.hidden_tag() }}
+										{{ searchform.wanted() }}
+								{{ searchform.submit() }}
+							</form>
+						</span>
+					</li>
+				</ul>
+			</div>
 		</div>
-		<div class="card">
-			<h2>Trending Communities</h2>
-			<a href="c/games" class = "button" id = "blur">c/games</a>
-			<a href="c/funny" class = "button" id = "blur">c/funny</a>
-			<a href="c/life" class = "button" id = "blur">c/life</a>
-		</div>
-		<div class="card">
-			<h2>Submit a Feedback Form! </h2>
-			<a href="/Feedback Form" class = "button">Feedback Form</a>
+	</nav>
+
+<!-- The navigation for subscription c links -->
+	<div class="container-fluid">
+		<div class="row jumbotron">
+			<!-- <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-10">
+				<p class="lead"> Random text goes here </p>
+			</div> -->
+			{% for sub in current_user.subscriptions %}
+			<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-2">
+				<a href="{{ url_for('show_sub_cnitt')}}{{ sub }}"><button type="button" class="btn btn-outline-secondary btn-lg">{{sub}}</button></a>
+			</div>
+			{% endfor %}
+			{% for c in top_cnitts %}
+			<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-2">
+				<a href="{{ url_for('show_sub_cnitt') }}{{ c.name }}"><button type="button" class="btn btn-outline-secondary btn-lg">{{c.name}}</button></a>
+			</div>
+	    {% endfor %}
 		</div>
 	</div>
-</div>
 
-<div class="footer">
-	<h2>Contact Us!</h2>
-	<p> University of Rochester </p>
-	<p> 500 Joseph C. Wilson Blvd. </p>
-	<p> Rochester, NY 14627 </p>
-	<p> (585) 275-2121 </p>
-</div>
+<!-- Add the pretty home page carousel  -->
+	<div id="slides" class="carousel slide" data-ride="carousel">
+		<ul class="carousel-indicators">
+			<li data-target="#slides" data-slide-to="0" class="active"></li>
+			<li data-target="#slides" data-slide-to="1"></li>
+			<li data-target="#slides" data-slide-to="2"></li>
+		</ul>
+		<div class="carousel-inner">
+			<div class="carousel-item active">
+				<img src="https://pngimage.net/wp-content/uploads/2018/06/logo-cute-png-3.png">
+				<div class="carousel-caption">
+					<h1 class="display-2">Welcome to Cnitt</h1>
+					<h3>Excellent resource to connect and share with people from around the world!</h3>
+					<button type="button" class="btn btn-outline-dark btn-lg">Register</button>
+					<button type="button" class="btn btn-outline-dark btn-lg">Login</button>
+				</div>
+			</div>
+			<div class="carousel-item">
+				<img src="https://pngimage.net/wp-content/uploads/2018/06/png-logo-cute-1.png">
+				<div class="carousel-caption">
+					<h1 class="display-2">Cnitt Pages</h1>
+					<h3>Check out the top rated pages!</h3>
+					<button type="button" class="btn btn-outline-dark btn-lg">c/games</button>
+					<button type="button" class="btn btn-outline-dark btn-lg">c/funny</button>
+				</div>
+			</div>
+			<div class="carousel-item">
+				<img src="https://cdn2.iconfinder.com/data/icons/dog-2/32/husky-512.png">
+				<div class="carousel-caption">
+					<h1 class="display-2">Subscribe</h1>
+					<h3>Subscribe to any of the pages!</h3>
+					<button type="button" class="btn btn-outline-dark btn-lg">c/memes</button>
+					<button type="button" class="btn btn-outline-dark btn-lg">c/rochester</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+<!--
+	{% if current_user.is_authenticated %}
+	<div class="header">
+		<h1 id = "welcome" >Welcome, {{ current_user.first_name }}!</h1>
+	</div>
+
+
+	<div class="topnav">
+		<a href = "/" class = "button">Home</a>
+		{% for sub in current_user.subscriptions %}
+			<a href = "{{ url_for('show_sub_cnitt')}}{{ sub }}" class = "button">{{sub}}</a>
+		{% endfor %}
+	<a href="/about" class = "button">About Us</a>
+
+	<a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
+	<a href="users/{{current_user.id}}" class = "button" style="float:right">Profile</a>
+	<a href = "{{ url_for('mtp', cnitt_name = cnitt_name ) }}" class = "button">Create Text Post</a>
+	<a href = "{{ url_for('mlp', cnitt_name = cnitt_name ) }}" class = "button">Create Link Post</a>
+	<a href="/about" class = "button">About Us</a>
+	</div>
+	{% else %}
+	<div class="header">
+		<h1 id = "welcome">Welcome, anon!</h1>
+	</div>
+	<div class="topnav">
+	    {% for c in top_cnitts %}
+	        <a href = "{{ url_for('show_sub_cnitt') }}{{ c.name }}" class = "button">{{c.name}}</a>
+	    {% endfor %}
+
+
+		<a href= "/about" class = "button">About Us</a>
+
+		<a href="{{ url_for('login') }}" class = "button" style="float:right">Login</a>
+		<a href="/add_user" class = "button" style="float:right">Register</a>
+	</div>
+	{% endif %}
+
+			<span id="searchbar">
+				<form method="POST">
+					{{ searchform.hidden_tag() }}
+	        		{{ searchform.wanted() }}
+					{{ searchform.submit() }}
+				</form>
+			</span>
+
+	<div class="row">
+		<div class="leftcolumn">
+			{% for post in posts%}
+	            <div class="card">
+					<span> <h2><a href = "{{url_for('show_sub_cnitt', cnitt_name = post.cnitt.name, sort_type = 'Hot')}}" > {{post.cnitt.name}} </a></h2></span>
+					<h2><a href = "users/{{post.creator}}" > {{users.query.filter_by(id=post.creator).first().username }} </a></h2>
+	                <button class="up_arrow"  type="button">UP</button>
+	                <b> {{ post.net_votes }}</b>
+	                {% if post.is_link %}
+	                    <h2><a href = "{{post.content}}" class="button" id = "blur"> {{ post.title }} </a></h2>
+	                {% else %}
+	                    <h2><a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" id = "blur" class="button"> {{ post.title }} </a></h2>
+	                {% endif %}
+	                <br>
+	                <a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" id = "blur" class="button"> comments </a>
+	            </div>
+	        {% endfor %}
+		</div>
+		<div class="rightcolumn">
+			<div class="card">
+				<h2>Trending Posts</h2>
+				<a href="c/beauty" class = "button" id = "blur">c/beauty</a>
+				<a href="c/memes" class = "button" id = "blur">c/memes</a>
+				<a href="c/pokemon" class = "button" id = "blur">c/pokemon</a>
+			</div>
+			<div class="card">
+				<h2>Trending Communities</h2>
+				<a href="c/games" class = "button" id = "blur">c/games</a>
+				<a href="c/funny" class = "button" id = "blur">c/funny</a>
+				<a href="c/life" class = "button" id = "blur">c/life</a>
+			</div>
+			<div class="card">
+				<h2>Submit a Feedback Form! </h2>
+				<a href="/Feedback Form" class = "button">Feedback Form</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="footer">
+		<h2>Contact Us!</h2>
+		<p> University of Rochester </p>
+		<p> 500 Joseph C. Wilson Blvd. </p>
+		<p> Rochester, NY 14627 </p>
+		<p> (585) 275-2121 </p>
+	</div> -->
 
 </body>
 </html>
