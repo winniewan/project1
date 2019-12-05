@@ -1,15 +1,114 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,700');
 
-/*---Media Queries --*/
-@media (max-width: 992px) {
 
+html, body {
+	height: 100%;
+	width: 100%;
+	font-family: 'Poppins', sans-serif;
+	color: #222;
+}
+
+.navbar {
+	padding: .8rem;
+}
+
+.navbar-nav li {
+	padding-right: 20px;
+}
+
+.nav-link {
+	font-size: 1.1em !important;
+}
+
+.carousel-inner img {
+	width: 50%;
+	height: 50%;
+}
+
+.carousel-caption {
+	position:absolute;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.carousel-caption h1 {
+	font-size: 500%;
+	text-transform: uppercase;
+	text-shadow: 1px 1px 15px #000;
+}
+
+.carousel-caption h3 {
+	font-size: 200%;
+	font-weight: 500;
+	text-shadow: 1px 1px 10x #000;
+	padding-bottom: 1em;
+}
+
+/* Comment buttons */
+/* .btn-primary {
+	background-color: #6648b1;
+	border: 1px solid #563d7c;
+}
+
+.btn-primary:hover {
+	background-color: #563d7c;
+	border: 1px solid #563d7c;
+} */
+
+.jumbotron {
+	padding: 1rem;
+	border-radius: 0;
+}
+
+.social a {
+	font-size: 4.5em;
+	padding: 3rem;
+}
+
+.fa-facebook {
+	color: #3b5998;
+}
+
+.fa-twitter {
+	color: #00aced;
+}
+
+.fa-instagram {
+	color: #517fa4
+}
+
+.fa-youtube {
+	color: #bb0000;
+}
+
+.fa-facebook:hover,
+.fa-twitter:hover,
+.fa-instagram:hover,
+.fa-youtube:hover {
+	color: #d5d5d5;
+}
+
+footer {
+	background-color: #3f3f3f;
+	color: #d5d5d5;
+	padding-top: 2rem;
+}
+
+hr.light {
+	border-top: 1px solid #d5d5d5;
+	width: 75%
+	margin-top: .8rem;
+	margin-bottom: 1rem;
+}
+
+/*---Media Queries --*/
+/* @media (max-width: 992px) {
 }
 @media (max-width: 768px) {
 
 }
 @media (max-width: 576px) {
-
-}
+} */
 
 /*--- Bootstrap Padding Fix --*/
 [class*="col-"] {
@@ -23,157 +122,3 @@ h1 {
 h3 {
 	color: black;
 }
-
-/* These are references to create bootstrap things.
-Extra small (xs) devices (portrait phones, less than 576px)
-No media query since this is the default in Bootstrap
-
-Small (sm) devices (landscape phones, 576px and up)
-@media (min-width: 576px) { ... }
-
-Medium (md) devices (tablets, 768px and up)
-@media (min-width: 768px) { ... }
-
-Large (lg) devices (desktops, 992px and up)
-@media (min-width: 992px) { ... }
-
-Extra (xl) large devices (large desktops, 1200px and up)
-@media (min-width: 1200px) { ... }
-*/
-/*
-body {
-	background : rgb(0,212,255);
-  background: linear-gradient(180deg, rgba(96,228,255,1) 0%, rgba(255,255,255,1) 100%);
-	margin-left : 2.5%;
-	margin-right : 2.5%;
-	font-family: helvetica, sans-serif;
-}
-
-/* Style the header */
-/* .header {
-  padding: 50px;
-  text-align: center;
-}
-
-p {
-  font-size: 15px;
-}
-
-#blur{
-
-    box-shadow: 10px 10px 5px #aaaaaa;
-} */
-
-/* a {
-	background-color: #4CAF50;
-	border: none;
-	color: white;
-	padding: 15px 32px;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	font-size: 30px;
-} */
-/* a.button {
-    text-decoration: none;
-    border: 2px solid black;
-    font-size: 20px;
-    padding: 4px;
-    color: black;
-    background: white;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-#block {
-  background-color: lightgray;
-  border: 2px solid black;
-  font-size: 20px;
-  color: black;
-  padding: 20px;
-  text-align: left;
-}
-
-table, th, td{
-	background: lightgray;
-	border-collapse: collapse;
-	padding: 6px;
-	border: 2px solid black;
-	text-align: left;
-	font-family: Arial, helvetica, sans-serif;
-}
-
-th{
-	width: auto;
-} */
-
-/* Style the top navigation bar */
-/* .topnav {
-  overflow: hidden;
-  background-color: hidden;
-} */
-
-/* Style the topnav links */
-/* .topnav a {
-  float: left;
-  display: block;
-  color: black;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-} */
-
-/* Change color on hover */
-/* .topnav a:hover {
-  background-color: grey;
-  color: white;
-}
-
-.card a:hover {
-  background-color: grey;
-  color: white;
-}
-
-body {
-  font-family: Arial;
-  padding: 10px;
-} */
-
-/* Create two unequal columns that floats next to each other */
-/* Left column */
-/* .leftcolumn {
-  float: left;
-  width: 75%;
-} */
-
-/* Right column */
-/* .rightcolumn {
-  float: left;
-  width: 25%;
-  padding-left: 20px;
-} */
-
-
-/* Add a card effect for articles */
-/* .card {
-  padding: 20px;
-  margin-top: 20px;
-	background: white;
-} */
-
-/* Clear floats after the columns */
-/* .row:after {
-  content: "";
-  display: table;
-  clear: both;
-} */
-
-/* Footer */
-/* .footer {
-  padding: 20px;
-  text-align: center;
-  margin-top: 20px;
-	background: white;
-}  */
