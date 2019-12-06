@@ -223,6 +223,7 @@ def add_user():
             user = Users(first_name=fname, last_name=lname, email=email, password=password,username=username)
             db.session.add_all([user])
             db.session.commit()
+            SubCnitt.add_required_subscriptions()
             next = request.args.get("next")
             if next is None or not next.startswith("/"):
                 next = url_for("index")
