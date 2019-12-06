@@ -8,12 +8,14 @@ html, body {
 	color: #222;
 }
 
+/* rem and em is similar 16px */
+
 .navbar {
 	padding: .8rem;
 }
 
 .navbar-nav li {
-	padding-right: 20px;
+	padding-right: 30px;
 }
 
 .nav-link {
@@ -21,20 +23,21 @@ html, body {
 }
 
 .carousel-inner img {
-	width: 50%;
-	height: 50%;
+	width: 100%;
+	height: 100%;
 }
 
 .carousel-caption {
-	position:absolute;
+	position: absolute;
 	top: 50%;
-	transform: translateY(-50%);
+	transform: translateY(-80%);
 }
 
 .carousel-caption h1 {
 	font-size: 500%;
 	text-transform: uppercase;
 	text-shadow: 1px 1px 15px #000;
+	padding-bottom: 0.15em;
 }
 
 .carousel-caption h3 {
@@ -42,6 +45,18 @@ html, body {
 	font-weight: 500;
 	text-shadow: 1px 1px 10x #000;
 	padding-bottom: 1em;
+}
+
+.navbar-brand img {
+	width: 50%;
+	height: 50%;
+}
+
+.searchbar {
+	width: 100%;
+	height: 100%;
+	color: #222;
+	padding-top: 0.5em;
 }
 
 /* Comment buttons */
@@ -56,7 +71,9 @@ html, body {
 } */
 
 .jumbotron {
-	padding: 1rem;
+	padding-left: 30px;
+	padding: .8rem;
+	font-size: 500em;
 	border-radius: 0;
 }
 
@@ -101,6 +118,11 @@ hr.light {
 	margin-bottom: 1rem;
 }
 
+.footerlogo {
+	width: 50%;
+	height: 50%;
+}
+
 /*---Media Queries --*/
 /* @media (max-width: 992px) {
 }
@@ -115,10 +137,10 @@ hr.light {
     padding: 1rem;
 }
 
-h1 {
+/* h1 {
 	color: black;
 }
 
 h3 {
 	color: black;
-}
+} */

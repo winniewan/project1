@@ -1,20 +1,51 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title> Login </title>
-        <link rel = "stylesheet" href = "{{ url_for('static', filename='login.css') }}">
-    </head>
-    <body>
-      <div class="header">
-      <h1 id = "welcome">Log in to Cnitt!</h1>
-      </div>
-        <form method="POST" id = "block">
-            {{ form.hidden_tag() }}
-            {{ form.email.label }}: {{ form.email() }}<br><br>
-            {{ form.password.label }}: {{ form.password() }}<br><br>
-            {{ form.remember_me.label }}: {{ form.remember_me() }}<br><br>
-            <a href = "/" class = "button">Back</a>
-            {{ form.submit() }} <br>
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+		<meta charset="utf-8"/>
+	<!-- <link rel = "stylesheet" href = "{{ url_for('static', filename='home.css') }}"> -->
+	<!-- Required meta tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+		<title> Login </title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+		<!-- Allows us to use social media icons -->
+		<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+		<link rel = "stylesheet" href = "{{ url_for('static', filename='login.css') }}">
+</head>
+<body>
+  <div class="model-dialog text-center">
+    <div class="col-sm-8 main-section">
+      <div class="modal-content">
+
+        <div class="col-12 user-img">
+          <img src="/static/img/mylogo.png">
+        </div>
+
+        <form method="POST" class="col-12">
+          {{ form.hidden_tag() }}
+          <div class="form-group">
+            {{ form.email.label }}: {{ form.email(placeholder="Enter Email") }}
+          </div>
+          <div class="form-group">
+            {{ form.password.label }}: {{ form.password(placeholder="Enter Password") }}
+          </div>
+          <div class="col-12 forgot">
+            <a href="/">Forgot Password?</a>
+          </div>
+          <div class="col-12">
+            {{ form.remember_me.label }}: {{ form.remember_me() }}
+          </div>
+          <div>
+            {{ form.submit() }}
+          </div>
         </form>
-    </body>
+
+      </div>
+    </div>
+  </div>
+</body>
 </html>

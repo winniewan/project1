@@ -81,13 +81,13 @@ class Edit_User_Form(FlaskForm):
 class LoginForm(FlaskForm):
     email = wtf.StringField("Email", validators=[valid.DataRequired(), valid.Length(1, 64), valid.Email()])
     password = wtf.PasswordField("Password", validators=[valid.DataRequired()])
-    remember_me = wtf.BooleanField("Keep me logged in")
-    submit = wtf.SubmitField("Log In")
+    remember_me = wtf.BooleanField("Remember me")
+    submit = wtf.SubmitField("Log in")
 
 class SearchBar(FlaskForm):
     wanted = wtf.StringField("wanted", validators=[valid.DataRequired()])
-    submit = wtf.SubmitField("search")
-    
+    submit = wtf.SubmitField("Search")
+
 class RoleForm(FlaskForm):
     email = wtf.StringField("Email", validators=[valid.DataRequired(), valid.Length(1, 64), valid.Email()])
     role_name = wtf.StringField("Role", validators=[valid.DataRequired()])
