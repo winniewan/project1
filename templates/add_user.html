@@ -1,22 +1,59 @@
 <!DOCTYPE HTML>
 <html lang="en">
-	<head>
-			<title> Register </title>
-			<link rel = "stylesheet" href = "{{ url_for('static', filename='addUser.css') }}">
-	</head>
-	<body>
-		<div class="header">
-		<h1 id = "welcome">Register to Cnitt!</h1>
-		</div>
-			<form method="POST" id = "block">
-					{{ form.hidden_tag() }}
-					Username : {{ form.username() }}<br><br>
-					First Name : {{ form.first_name() }}<br><br>
-					Last Name: {{ form.last_name() }}<br><br>
-					Email: {{ form.email() }}<br><br>
-					Password: {{ form.password() }}<br><br>
-					<a href = "/" class = "button">Back</a>
-					{{ form.submit() }} <br>
-			</form>
-	</body>
+<head>
+		<meta charset="utf-8"/>
+	<!-- Required meta tags -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<!-- Bootstrap CSS -->
+		<title> Register </title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+		<!-- Allows us to use social media icons -->
+		<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+		<link rel = "stylesheet" href = "{{ url_for('static', filename='addUser.css') }}">
+</head>
+<body>
+  <div class="model-dialog text-center">
+    <div class="col-sm-4 main-section">
+      <div class="modal-content">
+
+        <div class="col-12 user-img">
+          <img src="/static/img/mylogo.png">
+        </div>
+
+        <form method="POST" class="col-12">
+          {{ form.hidden_tag() }}
+          <div class="form-group">
+            Username : {{ form.username() }}
+          </div>
+          <div class="form-group">
+            First Name : {{ form.first_name() }}
+          </div>
+          <div class="form-group">
+            Last Name: {{ form.last_name() }}
+          </div>
+					<div class="form-group">
+            Email: {{ form.email() }}
+          </div>
+          <div class="form-group">
+            Password: {{ form.password() }}
+          </div>
+          <div>
+            {{ form.submit(class_="btn") }}
+          </div>
+          <div>
+            <!-- <div class="row text-center"> -->
+              <div class="col-12 gif-img">
+                <img src="/static/img/gif/welcome.gif">
+              </div>
+            <!-- </div> -->
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
 </html>
