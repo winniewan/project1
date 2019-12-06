@@ -1,41 +1,144 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>About Us</title>
-    <link rel="stylesheet" href="/static/about.css">
-  </head>
-  <body>
-  <h5>About Us</h5>
-  <div class="homebutton">
-    <a href = "/" class = "button">Home</a>
+<head>
+		<meta charset="utf-8"/>
+	<!-- Required meta tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+		<title> About </title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+		<!-- Allows us to use social media icons -->
+		<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+		<link rel = "stylesheet" href = "{{ url_for('static', filename='about.css') }}">
+</head>
+<body>
+  <div class="container-fluid padding">
+    <div class="row welcome text-center">
+      <div class="col-12">
+        <h1 class="display-4"> About Us </h1>
+      </div>
+      <hr>
+      <div class="col-12">
+        <p class="lead"> Interactive forums platform with Reddit
+          inspired features such as threads, comments, sub-forums and posts. </p>
+      </div>
+    </div>
   </div>
- <div>
-  <h2>What do we do?</h2>
-    <p>Our goal is to connect you with others of similar/different ideas or opinions.</p>
-  </br>
- </div>
- <div>
-   <h2>How do I use it?</h2>
-    <p>If your're wondering how it all works it's quite simple! You can choose on the tabs which topic you want to view. You can Like, Comment, or Create your own post! </p>
-  </br>
- </div>
- <div>
-    <h2>Our Message</h2>
-    <p>Sometimes complications may arise where we cannot find you an event or activity taking place near you that falls under your preferred activities. To solve this we offer something outside of your comfort zone in the hopes for you to try something new!</p>
-  </br>
- </div>
 
-<div class="meme">
-  <img src="https://i.imgflip.com/1w43gd.jpg">
-  </br>
-</div>
+  <div class="container-fluid padding">
+    <div class="row text-center padding">
 
- <div class="footer">
-   <h2>Contact Us!</h2>
-   <p> University of Rochester </p>
-   <p> 500 Joseph C. Wilson Blvd. </p>
-   <p> Rochester, NY 14627 </p>
-   <p> (585) 275-2121 </p>
- </div>
- </body>
+      <div class="col-md-4">
+        <div class="card">
+  			 <img class="card-img-top" src="/static/img/gif/post.gif">
+				   <div class="card-body">
+  				  <h4 class="card-title"> Post </h4>
+  				  <p class="card-text"> You can create posts! </p>
+  			   </div>
+  		</div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card">
+       <img class="card-img-top" src="/static/img/gif/comment.gif">
+         <div class="card-body">
+          <h4 class="card-title"> Comment </h4>
+          <p class="card-text"> You can comment on posts! </p>
+         </div>
+    </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card">
+       <img class="card-img-top" src="/static/img/gif/subscribe.gif">
+         <div class="card-body">
+          <h4 class="card-title"> Subscribe </h4>
+          <p class="card-text"> You can subscribe to pages! </p>
+         </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="container-fluid padding">
+    <div class="row padding">
+      <div class="col-md-12 col-lg-6">
+        <h2>Our message</h2>
+        <p>
+          Sometimes complications may arise where we cannot find you an event
+          or activity taking place near you that falls under your preferred
+          activities. To solve this we offer something outside of your comfort
+          zone in the hopes for you to try something new!
+        </p>
+
+        <p>
+          This is a personal project from a group of 5 undergraduate students
+          from the University of Rochester. We aim to create something similar
+          to reddit, except it's cnitt! As U of R students, there are
+          several opinions and ideas and we would love to create a platform
+          that allows anyone to share, communicate, and learn from each other.
+        </p>
+
+        <p>
+          The University of Rochester is one of the country's top-tier research
+          universities. Our campuses are home to 200 academic majors, more than
+          2,000 faculty and instructional staff, and some 10,000
+          students—approximately half of whom are women.
+        </p>
+        </br>
+        <a href="https://www.rochester.edu/" class="btn btn-primary"> Learn More </a>
+      </div>
+
+      <div class="col-lg-6">
+        <img src="/static/img/mylogo.png" class="img-fluid">
+      </div>
+    </div>
+  </div>
+
+  <!-- <hr class="my-4"> -->
+  <!-- <figure>
+    <div class="fixed-wrap">
+      <div id="fixed">
+      </div>
+    </div>
+  </figure> -->
+
+
+  <!-- Connect to social media -->
+  <div class="container-fluid padding">
+  	<div class="row text-center padding">
+  		<div class="col-12">
+  			<h2>FIND US ON SOCIAL MEDIA</h2>
+  		</div>
+  		<div class="col-12 social padding">
+  			<a href="https://www.facebook.com"><i class="fab fa-facebook"></i></a>
+  			<a href="https://www.twitter.com"><i class="fab fa-twitter"></i></a>
+  			<a href="https://www.instagram.com"><i class="fab fa-instagram"></i></a>
+  			<a href="https://www.youtube.com"><i class="fab fa-youtube"></i></a>
+  		</div>
+  	</div>
+  </div>
+
+  <footer>
+  	<div class="container-fluid padding">
+  		<div class="row text-center">
+  			<div class="col-12">
+  				<img class="footerlogo" src="/static/img/mylogo.png">
+  				<p> </br> </p>
+  				<p> University of Rochester </p>
+  				<p> 500 Joseph C. Wilson Blvd. </p>
+  				<p> Rochester, NY 14627 </p>
+  				<p> (585) 275-2121 </p>
+  			</div>
+  			<div class="col-12">
+  				<hr class="light">
+  				<h5>&copy; cnitt.com </h5>
+  			</div>
+  		</div>
+  	</div>
+  </footer>
+</body>
 </html>

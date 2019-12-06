@@ -38,10 +38,10 @@
 						<a class="nav-link" href="users/{{current_user.id}}">Profile</a>
 					</li>
 					<li>
-						<a class="nav-link" href="{{ url_for('mtp', cnitt_name = cnitt_name ) }}">Create Text Post</a>
+						<a class="nav-link" href="{{ url_for('mtp', cnitt_name = cnitt_name ) }}">Create-Text-Post</a>
 					</li>
 					<li>
-						<a class="nav-link" href="{{ url_for('mlp', cnitt_name = cnitt_name ) }}">Create Link Post</a>
+						<a class="nav-link" href="{{ url_for('mlp', cnitt_name = cnitt_name ) }}">Create-Link-Post</a>
 					</li>
 					<li>
 						<a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
@@ -54,16 +54,16 @@
 						<a class="nav-link" href="{{ url_for('login') }}">Login</a>
 					</li>
 					{% endif %}
-					<li>
-						<div class="searchbar">
-							<form method="POST">
-								{{ searchform.hidden_tag() }}
-								{{ searchform.wanted(placeholder="Search") }}
-								<!-- {{ searchform.submit() }} -->
-							</form>
-						</div>
-					</li>
 				</ul>
+				<!-- <li>
+					<div class="searchbar"> -->
+						<form method="POST" class="form-inline my-2 my-lg-0">
+							{{ searchform.hidden_tag() }}
+							{{ searchform.wanted(class="form-control mr-sm-2") }}
+							{{ searchform.submit(class="nav-link") }}
+						</form>
+					<!-- </div>
+				</li> -->
 			</div>
 		</div>
 	</nav>
@@ -209,13 +209,13 @@
 <div class="container-fluid padding">
 	<div class="row text-center padding">
 		<div class="col-12">
-			<h2>Connect</h2>
+			<h2>FIND US ON SOCIAL MEDIA</h2>
 		</div>
 		<div class="col-12 social padding">
-			<a href="facebook.com"><i class="fab fa-facebook"></i></a>
-			<a href="twitter.com"><i class="fab fa-twitter"></i></a>
-			<a href="instagram.com"><i class="fab fa-instagram"></i></a>
-			<a href="youtube.com"><i class="fab fa-youtube"></i></a>
+			<a href="https://www.facebook.com"><i class="fab fa-facebook"></i></a>
+			<a href="https://www.twitter.com"><i class="fab fa-twitter"></i></a>
+			<a href="https://www.instagram.com"><i class="fab fa-instagram"></i></a>
+			<a href="https://www.youtube.com"><i class="fab fa-youtube"></i></a>
 		</div>
 	</div>
 </div>

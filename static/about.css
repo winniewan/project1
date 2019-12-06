@@ -1,75 +1,77 @@
-body {
-	background: rgb(0,212,255);
-  background: linear-gradient(180deg, rgba(96,228,255,1) 0%, rgba(255,255,255,1) 100%);
-	margin-left: 10.5%;
-	margin-right: 10.5%;
-	font-family: helvetica, sans-serif;
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,700');
+
+
+html, body {
+	height: 100%;
+	width: 100%;
+	font-family: 'Poppins', sans-serif;
+	color: #222;
 }
 
-/* Style the header */
-.header {
-  padding: 50px;
-  text-align: center;
+.welcome {
+	width: 75%;
+	margin: 0 auto;
+	padding-top: 2rem;
 }
 
-p {
-  font-size: 15px;
+.welcome hr {
+	border-top: 2px solid #b4b4b4;
+	width: 95%;
+	margin-top: .3rem;
+	margin-bottom: 1rem;
 }
 
-a {
-  	background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 30px;
+.padding {
+	padding-bottom: 2rem;
 }
 
-body {
-  font-family: helvetica;
-	text-align: center;
-  padding: 10px;
+.social a {
+	font-size: 4.5em;
+	padding: 3rem;
 }
 
-h5 {
-	font-family: Helvetica;
-	text-align: center;
-	font-size: 30px;
+.fa-facebook {
+	color: #3b5998;
 }
 
-* {
-  box-sizing: border-box;
+.fa-twitter {
+	color: #00aced;
 }
 
-h1 {
-  text-align: center;
-  font-family: "Trebuchet MS", Helvetica, sans-serif;
+.fa-instagram {
+	color: #517fa4
 }
 
-.homebutton {
-	margin-left : -5%;
-	text-align: left;
+.fa-youtube {
+	color: #bb0000;
 }
 
-a.button {
-    text-decoration: none;
-    border: 2px solid black;
-    font-size: 20px;
-    padding: 4px;
-    color: black;
-    background: white;
+.fa-facebook:hover,
+.fa-twitter:hover,
+.fa-instagram:hover,
+.fa-youtube:hover {
+	color: #d5d5d5;
 }
 
-.meme {
-	text-align: center;
+footer {
+	background-color: #3f3f3f;
+	color: #d5d5d5;
+	padding-top: 2rem;
 }
 
-/* Footer */
-.footer {
-  padding: 20px;
-  text-align: center;
-  margin-top: 20px;
-	background: white;
+hr.light {
+	border-top: 1px solid #d5d5d5;
+	width: 75%
+	margin-top: .8rem;
+	margin-bottom: 1rem;
+}
+
+.footerlogo {
+	width: 50%;
+	height: 50%;
+}
+
+/*--- Bootstrap Padding Fix --*/
+[class*="col-"] {
+    padding: 1rem;
 }
