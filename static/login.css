@@ -1,70 +1,43 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
 body {
-	background : rgb(0,212,255);
-  background: linear-gradient(180deg, rgba(96,228,255,1) 0%, rgba(255,255,255,1) 100%);
-	margin-left : 2.5%;
-	margin-right : 2.5%;
-	font-family: helvetica, sans-serif;
-	background-repeat: no-repeat;
-  background-size: auto;
-	text-align: center;
+	font-family: 'Roboto', sans-serif;
+	background: url(/static/img/login_bg.png) no-repeat center center fixed;
+	background-size: cover;
 }
 
-h1 {
-  text-align: center;
-  font-family: "Trebuchet MS", Helvetica, sans-serif;
+.main-section {
+	margin: 0 auto;
+	margin-top: 130px;
+	padding: 0;
 }
 
-/* Style the header */
-.header {
-  padding: 50px;
-  text-align: center;
+.modal-content {
+	background-color: gray;
+	opacity: .95;
+	padding: 0 18px;
+	box-shadow: 0 px 0px 3px #848484;
 }
 
-p {
-  font-size: 30px;
-  text-align: center;
+.user-img {
+	margin-top: -50px;
+	margin-bottom:35px;
 }
 
-a.button {
-    text-decoration: none;
-    border: 2px solid black;
-    font-size: 20px;
-    padding: 4px;
-    color: black;
-    background: white;
+.user-img img {
+	height: 200px;
+	width: 400px;
+	border-radius: 25px;
+	box-shadow: 0px 0px 3px #848484;
 }
 
-/* Change color on hover */
-a:hover {
-  background-color: grey;
-  color: white;
+.form-group {
+	margin-bottom: 25px;
 }
 
-a {
-    text-decoration: none;
-    border: 2px solid black;
-    font-size: 20px;
-    padding: 4px;
-    color: black;
-    background: white;
-}
-
-input[type=submit] {
-	text-decoration: none;
-	font-size: 20px;
-	padding: 4px;
-	color: white;
-	background: #2196F3;
-  cursor: pointer;
-}
-
-
-input[type=submit]:hover {
-	opacity: 0.8;
-}
-
-.form {
-    border-radius: 6px;
-    overflow: hidden;
-		text-align: center;
+.form-group input {
+	height:42px;
+	border-radius: 5px;
+	border: 0;
+	font-size: 18px;
 }
