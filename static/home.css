@@ -8,8 +8,6 @@ html, body {
 	color: #222;
 }
 
-/* rem and em is similar 16px */
-
 .navbar {
 	padding: .8rem;
 }
@@ -59,22 +57,21 @@ html, body {
 	padding-top: 0.5em;
 }
 
-/* Comment buttons */
-/* .btn-primary {
-	background-color: #6648b1;
-	border: 1px solid #563d7c;
-}
-
-.btn-primary:hover {
-	background-color: #563d7c;
-	border: 1px solid #563d7c;
-} */
-
 .jumbotron {
 	padding-left: 30px;
 	padding: .8rem;
 	font-size: 500em;
 	border-radius: 0;
+}
+
+.padding {
+	padding-bottom: 2rem;
+}
+
+.recommended {
+	width: 75%;
+	margin: 0 auto;
+	padding-top: 1rem;
 }
 
 .social a {
@@ -123,24 +120,7 @@ hr.light {
 	height: 50%;
 }
 
-/*---Media Queries --*/
-/* @media (max-width: 992px) {
-}
-@media (max-width: 768px) {
-
-}
-@media (max-width: 576px) {
-} */
-
 /*--- Bootstrap Padding Fix --*/
 [class*="col-"] {
     padding: 1rem;
 }
-
-/* h1 {
-	color: black;
-}
-
-h3 {
-	color: black;
-} */

@@ -18,7 +18,7 @@
 </head>
 <body>
   <div class="model-dialog text-center">
-    <div class="col-sm-8 main-section">
+    <div class="col-sm-4 main-section">
       <div class="modal-content">
 
         <div class="col-12 user-img">
@@ -33,17 +33,23 @@
           <div class="form-group">
             {{ form.password.label }}: {{ form.password(placeholder="Enter Password") }}
           </div>
-          <div class="col-12 forgot">
-            <a href="/">Forgot Password?</a>
-          </div>
-          <div class="col-12">
+          <div class="col-12 rememberme">
             {{ form.remember_me.label }}: {{ form.remember_me() }}
           </div>
           <div>
-            {{ form.submit() }}
+            {{ form.submit(class_="btn") }}
+          </div>
+          <div class="col-12 forgot">
+            <a href="/">Forgot Password?</a>
+          </div>
+          <div>
+            <!-- <div class="row text-center"> -->
+              <div class="col-12 gif-img">
+                <img src="/static/img/gif/login.gif">
+              </div>
+            <!-- </div> -->
           </div>
         </form>
-
       </div>
     </div>
   </div>

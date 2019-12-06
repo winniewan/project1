@@ -133,6 +133,7 @@
 					{% else %}
 					<h2><a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}"> {{ post.title }} </a></h2>
 					{% endif %}
+					<p> </br> </p>
 					<a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" id = "blur" class="btn btn-primary"> Comments </a>
 					<button class="up_arrow"  type="button">UP</button>
 					<b> {{ post.net_votes }}</b>

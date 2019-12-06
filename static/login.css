@@ -8,7 +8,7 @@ body {
 
 .main-section {
 	margin: 0 auto;
-	margin-top: 130px;
+	margin-top: 100px;
 	padding: 0;
 }
 
@@ -16,19 +16,19 @@ body {
 	background-color: gray;
 	opacity: .95;
 	padding: 0 18px;
-	box-shadow: 0 px 0px 3px #848484;
+	box-shadow: 0px 0px 3px #848484;
 }
 
 .user-img {
 	margin-top: -50px;
-	margin-bottom:35px;
+	margin-bottom: 35px;
 }
 
 .user-img img {
 	height: 200px;
 	width: 400px;
 	border-radius: 25px;
-	box-shadow: 0px 0px 3px #848484;
+	box-shadow: 0px 0px 3px gray;
 }
 
 .form-group {
@@ -40,4 +40,48 @@ body {
 	border-radius: 5px;
 	border: 0;
 	font-size: 18px;
+	padding-left: 5px;
+}
+
+button {
+	width: 40%;
+	margin: 5px 0 25px;
+}
+
+.btn {
+	background-color: lightblue;
+	color: #fff;
+	font-size: 25px;
+	padding: 7px 14px;
+	border-radius: 10px;
+	border-bottom: 4px solid #fff;
+}
+
+.btn:hover, .btn:focus {
+	background-color: lightblue !important;
+	border-bottom: 2px solid lightblue !important;
+}
+
+.gif-img {
+	margin-top: 10px;
+	margin-bottom:25px;
+}
+
+.gif-img img {
+	height: 100px;
+	width: 125px;
+	border-radius: 50px;
+	box-shadow: 0px 0px 3px #848484;
+}
+
+.rememberme {
+	padding: 0px 0 10px;
+}
+
+.forgot {
+	padding: 25px 0 5px;
+}
+
+.forgot a{
+	color: #c2fbfe;
 }
