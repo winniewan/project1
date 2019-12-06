@@ -15,7 +15,7 @@
 					 <a href="/about" class = "button">About Us</a>
 					 <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
 					 {% if current_user.id == user.id %}
-					 	 <a href="/editProfile" class = "button" style="float:right">Edit Profile</a>
+					 	 <a href="{{ url_for('editProfile', uid = current_user.id) }}" class = "button" style="float:right">Edit Profile</a>
 						{% endif %}
 				</div>
 		<div class="row">
@@ -30,7 +30,9 @@
 		    </div>
 				<div class="card">
 		      <h2>Bio</h2>
-		      <h5>Allow user to put a short bio of themselves.</h5>
+		      	<span>
+					{{current_user.bio}}
+			  	</span>
 		    </div>
 	  	</div>
 	 		<div class="rightcolumn">

@@ -1,24 +1,77 @@
 <!DOCTYPE HTML>
 <html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <title> Edit Profile </title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='editProfile.css') }}">
-    <!-- <script type="text/javascript" src="{{ url_for('static', filename='editProfile.js') }}"></script> -->
-</head>
-
-<body>
-  <div class="header">
-  <h1>Edit Profile</h1>
-  </div>
-    <form method="POST" id = "block">
-      <!-- TODO: Have prefilled information of user data -->
-        {{ form.hidden_tag() }}
-        {{ form.email.label }}: {{ form.email() }}<br><br>
-        {{ form.password.label }}: {{ form.password() }}<br><br>
-        <!-- TODO: Allow user to add a short bio -->
-        <a href = "/" class = "button">Back</a>
-        {{ form.submit() }} <br>
-    </form>
-</body>
+	<head>
+		<meta charset="utf-8"/>
+        <title> Your User Profile </title>
+        <link rel = "stylesheet" href = "{{ url_for('static', filename='profile.css') }}">
+    </head>
+	<body>
+        {% if current_user.is_authenticated %}
+				<div class="header">
+				<h1 id = "welcome" > {{ user.first_name }}'s Profile!</h1>
+				</div>
+				<div class="topnav">
+					 <a href = "/" class = "button">Home</a>
+					 <a href="/about" class = "button">About Us</a>
+					 <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
+					 {% if current_user.id == user.id %}
+					 	  <a href="{{ url_for('users', uid = current_user.id) }}" class = "button" style="float:right">Profile</a>
+						{% endif %}
+				</div>
+		<div class="row">
+	  	<div class="leftcolumn">
+	    	<div class="card">
+		      <h2>Name</h2>
+		      <form method="POST" id = "block">
+					{{ form.hidden_tag() }}
+                    First Name : {{ form.first_name() }}<br><br>
+					Last Name: {{ form.last_name() }}<br><br>
+                    {{ form.submit() }} <br>
+              </form>
+		    </div>
+		    <div class="card">
+		      <h2>Email</h2>
+		      <h5>{{ user.email }}</h5>
+		    </div>
+				<div class="card">
+		      <h2>Bio</h2>
+		      	<span>
+					{{current_user.bio}}
+			  	</span>
+		    </div>
+	  	</div>
+	 		<div class="rightcolumn">
+				<div class="card">
+					<h2>User Posts Will Go Here</h2>
+		      <h5>Description.</h5>
+				</div>
+					<ul>
+					    {% for post in posts%}
+							<div class="card">
+					    <li>
+					        <button class="up_arrow"  type="button">UP</button>
+					        <b> {{ post.net_votes }}</b>
+					        {% if post.is_link %}
+					        <a href = "{{post.content}}"> {{ post.title }} </a>
+							{% else %}
+							<a href = "{{url_for('comments_for_post',cnitt_name=post.cnitt_name,post_id=post.pid)}}"> {{ post.title }} </a>
+					        {% endif %}
+					        <br>
+					        <a href = "{{url_for('comments_for_post',cnitt_name=post.cnitt_name,post_id=post.pid)}}"> comments </a>
+					    </li>
+							 </div>
+					    {% endfor %}
+					</ul>
+	  </div>
+	</div>
+	<div class="footer">
+		<h2>Contact Us!</h2>
+		<p> University of Rochester </p>
+		<p> 500 Joseph C. Wilson Blvd. </p>
+		<p> Rochester, NY 14627 </p>
+		<p> (585) 275-2121 </p>
+	</div>
+			{% else %}
+			{% endif %}
+    </body>
 </html>
