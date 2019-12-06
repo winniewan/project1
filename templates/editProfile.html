@@ -6,6 +6,17 @@
         <link rel = "stylesheet" href = "{{ url_for('static', filename='profile.css') }}">
     </head>
 	<body>
+		{% block content %}
+		<div class="container">
+			{% for message in get_flashed_messages() %}
+			<div class="alert alert_warning">
+				<button type="button" onclick="self.close()" class="close" data-dismiss="alert">&times;</button>
+				{{message}}
+			</div>
+			{% endfor %}
+			{% block page_content %}{% endblock %}
+		</div>
+		{% endblock %}
         {% if current_user.is_authenticated %}
 				<div class="header">
 				<h1 id = "welcome" > {{ user.first_name }}'s Profile!</h1>
@@ -26,18 +37,17 @@
 					{{ form.hidden_tag() }}
                     First Name : {{ form.first_name() }}<br><br>
 					Last Name: {{ form.last_name() }}<br><br>
-                    {{ form.submit() }} <br>
-              </form>
 		    </div>
 		    <div class="card">
 		      <h2>Email</h2>
-		      <h5>{{ user.email }}</h5>
+
+                    Email : {{ form.email() }}<br><br>
 		    </div>
 				<div class="card">
 		      <h2>Bio</h2>
-		      	<span>
-					{{current_user.bio}}
-			  	</span>
+                    Bio : {{ form.bio() }}<br><br>
+                    {{ form.submit() }} <br>
+              </form>
 		    </div>
 	  	</div>
 	 		<div class="rightcolumn">

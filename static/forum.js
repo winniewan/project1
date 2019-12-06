@@ -9,3 +9,4 @@ $(".up_arrow").each(function () {
         })
     }
 );
+

@@ -8,7 +8,6 @@ from flask import Flask, render_template, abort, redirect, request, url_for, fla
 from flask_login import login_user, logout_user, LoginManager, login_required, \
     current_user
 from flask_wtf import FlaskForm
-from sqlalchemy import update
 from database import *
 from werkzeug.datastructures import MultiDict
 
@@ -74,8 +73,8 @@ class New_User_Form(FlaskForm):
 class Edit_User_Form(FlaskForm):
     first_name = wtf.StringField("first_name", validators=[valid.DataRequired()])
     last_name = wtf.StringField("last_name", validators=[valid.DataRequired()])
-    # email = wtf.StringField("Email", validators=[valid.DataRequired(), valid.Email()])
-    # bio = wtf.PasswordField("Bio", validators=[valid.DataRequired()])
+    email = wtf.StringField("Email", validators=[valid.DataRequired(), valid.Email()])
+    bio = wtf.StringField("Bio", default="Write something about yourself!")
     submit = wtf.SubmitField("Submit")
 
 class LoginForm(FlaskForm):
@@ -152,30 +151,34 @@ def editProfile(uid):
     user = Users.query.filter_by(id=uid).first()
     posts = Post.query.filter_by(poster=uid).all()
     if request.method == 'GET':
-        form = Edit_User_Form(formdata=MultiDict({'first_name': current_user.first_name, 'last_name': current_user.last_name}))
-    else :
+        form = Edit_User_Form(formdata=MultiDict({'first_name': current_user.first_name, \
+                                                  'last_name': current_user.last_name, \
+                                                  'email': current_user.email, \
+                                                  'bio': current_user.bio}))
+    else:
         form = Edit_User_Form()
-    # form.email_name.data = current_user.first_name
-    # form.bio_name.data = current_user.first_name
     if form.validate_on_submit():
-        # username = form.username.data
-        # form.username.data = None
         fname = form.first_name.data
         form.first_name.data = None
         lname = form.last_name.data
         form.last_name.data = None
-        # email = form.email.data
-        # form.email.data = None
-        # password = form.password.data
-        # form.password.data = None
-        #if Users.query.filter_by(email=email).first() is None and Users.query.filter_by(username=username).first() is None:
+        email = form.email.data
+        form.email.data = None
+        bio = form.bio.data
+        form.bio.data = None
         user.first_name = fname
         user.last_name = lname
-        db.session.commit()
-        return redirect(url_for("users", uid=current_user.id))
-    if (user != None and posts != None):
+        user.bio = bio
+        if Users.query.filter_by(email=email).first() is None or current_user.email == email:
+            user.email = email
+            db.session.commit()
+            return redirect(url_for("users", uid=current_user.id))
+        else:
+            flash("user with this email already exists")
+            return redirect(url_for("editProfile", uid=current_user.id))
+    if user and posts:
         return render_template("editProfile.html", uid=uid, user=user, posts=posts, form=form), 200
-    elif (user != None):
+    elif user:
         return render_template("editProfile.html", uid=uid, user=user, form=form), 200
     else:
         print("oops")
