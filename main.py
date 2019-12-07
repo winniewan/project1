@@ -75,7 +75,7 @@ class Edit_User_Form(FlaskForm):
     last_name = wtf.StringField("last_name", validators=[valid.DataRequired()])
     email = wtf.StringField("Email", validators=[valid.DataRequired(), valid.Email()])
     bio = wtf.StringField("Bio", default="Write something about yourself!")
-    submit = wtf.SubmitField("Submit")
+    submit = wtf.SubmitField("Save")
 
 class LoginForm(FlaskForm):
     email = wtf.StringField("Email", validators=[valid.DataRequired(), valid.Length(1, 64), valid.Email()])

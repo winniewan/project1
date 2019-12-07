@@ -1,87 +1,119 @@
 <!DOCTYPE HTML>
 <html lang="en">
-	<head>
-		<meta charset="utf-8"/>
-        <title> Your User Profile </title>
-        <link rel = "stylesheet" href = "{{ url_for('static', filename='profile.css') }}">
-    </head>
-	<body>
-		{% block content %}
-		<div class="container">
-			{% for message in get_flashed_messages() %}
-			<div class="alert alert_warning">
-				<button type="button" onclick="self.close()" class="close" data-dismiss="alert">&times;</button>
-				{{message}}
-			</div>
-			{% endfor %}
-			{% block page_content %}{% endblock %}
-		</div>
-		{% endblock %}
-        {% if current_user.is_authenticated %}
-				<div class="header">
-				<h1 id = "welcome" > {{ user.first_name }}'s Profile!</h1>
-				</div>
-				<div class="topnav">
-					 <a href = "/" class = "button">Home</a>
-					 <a href="/about" class = "button">About Us</a>
-					 <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
-					 {% if current_user.id == user.id %}
-					 	  <a href="{{ url_for('users', uid = current_user.id) }}" class = "button" style="float:right">Profile</a>
-						{% endif %}
-				</div>
-		<div class="row">
-	  	<div class="leftcolumn">
-	    	<div class="card">
-		      <h2>Name</h2>
-		      <form method="POST" id = "block">
-					{{ form.hidden_tag() }}
-                    First Name : {{ form.first_name() }}<br><br>
-					Last Name: {{ form.last_name() }}<br><br>
-		    </div>
-		    <div class="card">
-		      <h2>Email</h2>
 
-                    Email : {{ form.email() }}<br><br>
-		    </div>
-				<div class="card">
-		      <h2>Bio</h2>
-                    Bio : {{ form.bio() }}<br><br>
-                    {{ form.submit() }} <br>
-              </form>
-		    </div>
-	  	</div>
-	 		<div class="rightcolumn">
-				<div class="card">
-					<h2>User Posts Will Go Here</h2>
-		      <h5>Description.</h5>
+
+<head>
+		<meta charset="utf-8"/>
+	<!-- <link rel = "stylesheet" href = "{{ url_for('static', filename='home.css') }}"> -->
+	<!-- Required meta tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+		<title> Profile </title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+		<!-- Allows us to use social media icons -->
+		<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+		<link rel = "stylesheet" href = "{{ url_for('static', filename='profile.css') }}">
+</head>
+<body>
+
+	<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/"><img src="/static/img/mylogo.png"></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+					<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collpase navbar-collpase" id="navbarResponsive">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="/">Home</a>
+					</li>
+					<li>
+						<a class="nav-link" href="/about">About</a>
+					</li>
+					{% if current_user.is_authenticated %}
+					<li>
+						<a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+					</li>
+					{% else %}
+					<li>
+						<a class="nav-link" href="/add_user">Register</a>
+					</li>
+					<li>
+						<a class="nav-link" href="{{ url_for('login') }}">Login</a>
+					</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+  <div class="container-fluid padding">
+    <div class="row welcome text-center">
+      <div class="col-12">
+        <h1 class="profileTitle"> Edit {{ user.first_name }}'s Profile </h1>
+      </div>
+      <hr>
+    </div>
+  </div>
+
+	{% block content %}
+	<div class="container">
+		{% for message in get_flashed_messages() %}
+		<div class="alert alert_warning">
+			<button type="button" onclick="self.close()" class="close" data-dismiss="alert">&times;</button>
+			{{message}}
+		</div>
+		{% endfor %}
+		{% block page_content %}{% endblock %}
+	</div>
+	{% endblock %}
+
+	{% if current_user.is_authenticated %}
+	<div class="model-dialog text-center">
+		<div class="col-sm-4 main-section">
+			<div class="modal-content">
+				<div class="col-12 user-img">
+					<img src="/static/img/gif/userimg.gif">
 				</div>
-					<ul>
-					    {% for post in posts%}
-							<div class="card">
-					    <li>
-					        <button class="up_arrow"  type="button">UP</button>
-					        <b> {{ post.net_votes }}</b>
-					        {% if post.is_link %}
-					        <a href = "{{post.content}}"> {{ post.title }} </a>
+				<form method="POST" class="col-12">
+					{{ form.hidden_tag() }}
+						<div class="form-group">
+							First Name : {{ form.first_name() }}</br></br>
+							Last Name: {{ form.last_name() }}
+						</div>
+						<div class="form-group">
+							Email : {{ form.email() }}
+						</div>
+						<div class="form-group">
+							Bio : {{ form.bio() }}
+						</div>
+						<div>
+							{{ form.submit(class_="btn") }}
+						</div>
+				</form>
+					{% for post in posts%}
+					<div>
+					<li>
+							<button class="up_arrow"  type="button">UP</button>
+							<b> {{ post.net_votes }}</b>
+							{% if post.is_link %}
+							<a href = "{{post.content}}"> {{ post.title }} </a>
 							{% else %}
 							<a href = "{{url_for('comments_for_post',cnitt_name=post.cnitt_name,post_id=post.pid)}}"> {{ post.title }} </a>
-					        {% endif %}
-					        <br>
-					        <a href = "{{url_for('comments_for_post',cnitt_name=post.cnitt_name,post_id=post.pid)}}"> comments </a>
-					    </li>
-							 </div>
-					    {% endfor %}
-					</ul>
-	  </div>
+							{% endif %}
+							<br>
+							<a href = "{{url_for('comments_for_post',cnitt_name=post.cnitt_name,post_id=post.pid)}}"> comments </a>
+					</li>
+					</div>
+					{% endfor %}
+					{% else %}
+					{% endif %}
+			</div>
+		</div>
 	</div>
-	<div class="footer">
-		<h2>Contact Us!</h2>
-		<p> University of Rochester </p>
-		<p> 500 Joseph C. Wilson Blvd. </p>
-		<p> Rochester, NY 14627 </p>
-		<p> (585) 275-2121 </p>
-	</div>
-			{% else %}
-			{% endif %}
-    </body>
+</body>
 </html>
