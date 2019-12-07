@@ -1,41 +1,205 @@
 <!DOCTYPE HTML>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8"/>
-    <title> Forum</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='forum.css') }}">
-    <script type="text/javascript" src="{{ url_for('static', filename='forum.js') }}"></script>
+		<meta charset="utf-8"/>
+	<!-- <link rel = "stylesheet" href = "{{ url_for('static', filename='home.css') }}"> -->
+	<!-- Required meta tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+		<title> Forum </title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+		<!-- Allows us to use social media icons -->
+		<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+		<link rel = "stylesheet" href = "{{ url_for('static', filename='home.css') }}">
 </head>
-
 <body>
-<br/>
-<a href = "/" id = "home" class = "button">Back to Home</a>
-{% if current_user.is_authenticated %}
-    <a href = "{{ url_for('logout') }}" class = "button">Log out</a>
-{% else %}
-    <a href = "{{ url_for('add_user') }}" class = "button">Register</a>
-{% endif %}
-{% if post.is_link %}
-    <h1>
-        <h2><a href = "{{post.content}}" class="button"> {{ post.title }} </a></h2>
-    </h1>
-{% else %}
-    <h2>{{ post.title }}</h2>
-    <h3>{{ post.content }}</h3>
-{% endif %}
-<ul>
-    {% for comment in comments %}
-        <li>
-            <div class="card">
-                <b> {{comment.votes}}</b>
 
-                <p>{{comment.text}}</p>
-            </div>
-        </li>
-    {% endfor %}
-</ul>
-{% if current_user.is_authenticated %}
-    <a href = "{{ url_for('makeComment', cnitt_name = cnitt_name,post_id = post.pid ) }}" class = "button">Add Comment</a>
-{% endif %}
+	<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/"><img src="/static/img/mylogo.png"></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+					<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collpase navbar-collpase" id="navbarResponsive">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="/">Home</a>
+					</li>
+					<li>
+						<a class="nav-link" href="/about">About</a>
+					</li>
+					{% if current_user.is_authenticated %}
+					<li>
+						<a class="nav-link" href="users/{{current_user.id}}">Profile</a>
+					</li>
+					<li>
+						<a class="nav-link" href="{{ url_for('mtp', cnitt_name = cnitt_name ) }}">Create Text Post</a>
+					</li>
+					<li>
+						<a class="nav-link" href="{{ url_for('mlp', cnitt_name = cnitt_name ) }}">Create Link Post</a>
+					</li>
+					<li>
+						<a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+					</li>
+					{% else %}
+					<li>
+						<a class="nav-link" href="/add_user">Register</a>
+					</li>
+					<li>
+						<a class="nav-link" href="{{ url_for('login') }}">Login</a>
+					</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+<!-- The navigation for subscription c links -->
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+		<div class="collpase navbar-collpase" id="navbarResponsive">
+			<li class="navbar-nav ml-auto">
+				<!-- TODO: All and Front is repeated because it is subscribed and top-cnitts. Please fix. -->
+				{% for sub in current_user.subscriptions %}
+				<div>
+					<a class="nav-link" href="{{ url_for('show_sub_cnitt')}}{{ sub }}"><button type="button" class="btn btn-outline-dark btn-md">{{sub}}</button></a>
+				</div>
+				{% endfor %}
+				{% for c in top_cnitts %}
+				<div>
+					<a class="nav-link" href="{{ url_for('show_sub_cnitt') }}{{ c.name }}"><button type="button" class="btn btn-outline-dark btn-md">{{c.name}}</button></a>
+				</div>
+		    {% endfor %}
+		</li>
+	</div>
+</nav>
+
+	<p> </br> </br> </p>
+<!-- Cnitt posts -->
+	<div class="container-fluid padding">
+		<div class="row padding">
+			<div class="col-lg-12">
+				{% if post.is_link %}
+				<h2><a href = "{{post.content}}"> {{ post.title }} </a></h2>
+				{% else %}
+				<h2> {{ post.title }} </h2>
+        <h3> {{ post.content }} </h3>
+				{% endif %}
+				<p> </br> </p>
+        {% for comment in comments %}
+            <li>
+                <div class="card">
+                    <b> {{comment.votes}} </b>
+                    <p>{{comment.text}}</p>
+                </div>
+            </li>
+        {% endfor %}
+        {% if current_user.is_authenticated %}
+            <a href = "{{ url_for('makeComment', cnitt_name = cnitt_name,post_id = post.pid ) }}" class = "button">Comment</a>
+        {% endif %}
+			</div>
+		</div>
+		<hr class="light">
+	</div>
+	</br>
+	</br>
+	</br>
+
+<!-- Recommended pages -->
+<div class="container-fluid padding">
+	<div class="row recommended text-center">
+		<div class="col-12">
+			<h1 class="display-4">Recommended</h1>
+		</div>
+		<hr>
+	</div>
+</div>
+
+<div class="container-fluid padding">
+	<div class="row padding">
+		<div class="col-md-3">
+			<div class="card">
+				<img class="card-img-top" src="/static/img/gameicon.png">
+				<div class="card-body">
+					<h4 class="card-title"> c/games</h4>
+					<p class="card-text"> Check out what other gamers are doing! </p>
+					<a href="c/games" class="btn btn-outline-secondary">Check it out</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-3">
+			<div class="card">
+				<img class="card-img-top" src="/static/img/funny.png">
+				<div class="card-body">
+					<h4 class="card-title"> c/funny</h4>
+					<p class="card-text"> Check out what others are laughing at! </p>
+					<a href="c/funny" class="btn btn-outline-secondary">Check it out</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-3">
+			<div class="card">
+				<img class="card-img-top" src="/static/img/life.png">
+				<div class="card-body">
+					<h4 class="card-title"> c/life</h4>
+					<p class="card-text"> Check out some inspirational life talk! </p>
+					<a href="c/life" class="btn btn-outline-secondary">Check it out</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-3">
+			<div class="card">
+				<img class="card-img-top" src="/static/img/beauty.png">
+				<div class="card-body">
+					<h4 class="card-title"> c/beauty</h4>
+					<p class="card-text"> Check out what the beauty gurus have to say! </p>
+					<a href="c/beauty" class="btn btn-outline-secondary">Check it out</a>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<!-- Connect to social media -->
+<div class="container-fluid padding">
+	<div class="row text-center padding">
+		<div class="col-12">
+			<h2>FIND US ON SOCIAL MEDIA</h2>
+		</div>
+		<div class="col-12 social padding">
+			<a href="https://www.facebook.com"><i class="fab fa-facebook"></i></a>
+			<a href="https://www.twitter.com"><i class="fab fa-twitter"></i></a>
+			<a href="https://www.instagram.com"><i class="fab fa-instagram"></i></a>
+			<a href="https://www.youtube.com"><i class="fab fa-youtube"></i></a>
+		</div>
+	</div>
+</div>
+
+<footer>
+	<div class="container-fluid padding">
+		<div class="row text-center">
+			<div class="col-12">
+				<img class="footerlogo" src="/static/img/mylogo.png">
+				<p> </br> </p>
+				<p> University of Rochester </p>
+				<p> 500 Joseph C. Wilson Blvd. </p>
+				<p> Rochester, NY 14627 </p>
+				<p> (585) 275-2121 </p>
+			</div>
+			<div class="col-12">
+				<hr class="light">
+				<h5>&copy; cnitt.com </h5>
+			</div>
+		</div>
+	</div>
+</footer>
 </body>
 </html>
