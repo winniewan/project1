@@ -1,144 +1,132 @@
-body {
-	background: rgb(0,212,255);
-  background: linear-gradient(180deg, rgba(96,228,255,1) 0%, rgba(255,255,255,1) 100%);
-	margin-left: 2.5%;
-	margin-right: 2.5%;
-	font-family: helvetica, sans-serif;
-}
-
-/* Style the header */
-.header {
-  padding: 50px;
-  text-align: center;
-	/* background: white; */
-}
-
-p {
-  font-size: 20px;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-h5 {
-	font-size: 15px;
-	font-weight: normal;
-	font-family: helvetica, sans-serif;
-}
-
-a {
-  	background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 30px;
-}
-
-a.button {
-    text-decoration: none;
-    border: 2px solid black;
-    font-size: 20px;
-    padding: 4px;
-    color: black;
-    background: white;
-}
-
-* {
-  box-sizing: border-box;
-}
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,700');
 
 
-#block {
-  background-color: lightgray;
-  border: 2px solid black;
-  font-size: 20px;
-  color: black;
-  padding: 20px;
-  text-align: left;
+html {
+	height: 100%;
+	width: 100%;
+	font-family: 'Poppins', sans-serif;
+	color: #222;
 }
 
-table, th, td{
-	background: lightgray;
-	border-collapse: collapse;
-	padding: 6px;
-	border: 2px solid black;
-	text-align: left;
-	font-family: Arial, helvetica, sans-serif;
-}
-
-th{
-	width: auto;
-}
-
-/* Style the top navigation bar */
-.topnav {
-  overflow: hidden;
-  background-color: hidden;
-}
-
-/* Style the topnav links */
-.topnav a {
-  float: left;
-  display: block;
-  color: black;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-/* Change color on hover */
-.topnav a:hover {
-  background-color: grey;
-  color: white;
-}
-
-* {
-  box-sizing: border-box;
-}
 
 body {
-  font-family: Arial;
-  padding: 10px;
+	font-family: 'Roboto', sans-serif;
+	background: url(/static/img/profilebg.jpg) no-repeat center center fixed;
+	background-size: cover;
 }
 
-/* Create two unequal columns that floats next to each other */
-/* Left column */
-.leftcolumn {
-  float: left;
-  width: 25%;
-	padding-right: 10px;
+.profileTitle {
+	text-align: center;
+	text-shadow: 0px 0px 3px #848484;
+	font-family: 'Roboto', sans-serif;
 }
 
-/* Right column */
-.rightcolumn {
-  float: left;
-  width: 75%;
-  padding-left: 10px;
+.main-section {
+	margin: 0 auto;
+	margin-top: 25px;
+	margin-bottom: 25px;
+	padding: 0;
+}
+
+.modal-content {
+	background-color: lightgray;
+	opacity: .90;
+	padding: 0 18px;
+	box-shadow: 0px 0px 3px #848484;
+}
+
+.user-img {
+	margin-top: -50px;
+	margin-bottom: 35px;
+}
+
+.user-img img {
+	height: 200px;
+	width: 200px;
+	border-radius: 25px;
+	box-shadow: 0px 0px 3px gray;
+}
+
+.form-group {
+	margin-bottom: 25px;
+}
+
+.form-group input {
+	height:42px;
+	border-radius: 5px;
+	border: 0;
+	font-size: 18px;
+	padding-left: 5px;
+}
+
+button {
+	width: 40%;
+	margin: 5px 0 25px;
+}
+
+.btn {
+	background-color: lightblue;
+	color: #fff;
+	font-size: 25px;
+	padding: 7px 14px;
+	border-radius: 10px;
+	border-bottom: 4px solid #fff;
+	text-align: center;
+	margin-bottom: 25px;
+}
+
+.btn:hover, .btn:focus {
+	background-color: lightblue !important;
+	border-bottom: 2px solid lightblue !important;
 }
 
 
-/* Add a card effect for articles */
-.card {
-  padding: 5px;
-  margin-top: 5px;
-	background: white;
+.welcome {
+	width: 75%;
+	margin: 0 auto;
+	padding-top: 2rem;
 }
 
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
+.welcome hr {
+	border-top: 2px solid #b4b4b4;
+	width: 95%;
+	margin-top: .3rem;
+	margin-bottom: 1rem;
 }
 
-/* Footer */
-.footer {
-  padding: 20px;
-  text-align: center;
-  margin-top: 20px;
-	background: white;
+
+.navbar {
+	padding: .8rem;
+}
+
+.navbar-nav li {
+	padding-right: 30px;
+}
+
+.nav-link {
+	font-size: 1em !important;
+}
+
+.navbar-brand img {
+	width: 50%;
+	height: 50%;
+}
+
+.padding {
+	padding-bottom: 2rem;
+}
+
+.recommended {
+	width: 75%;
+	margin: 0 auto;
+	padding-top: 1rem;
+}
+
+.social a {
+	font-size: 4.5em;
+	padding: 3rem;
+
+/*--- Bootstrap Padding Fix --*/
+[class*="col-"] {
+    padding: 1rem;
 }
