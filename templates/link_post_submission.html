@@ -1,40 +1,59 @@
 <!DOCTYPE html>
 	<html>
 	<head>
-		<title> Post a Link </title>
-		<link rel="stylesheet" href="{{ url_for('static', filename='commentForm.css') }}">
+			<meta charset="utf-8"/>
+		<!-- Required meta tags -->
+			<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+			<!-- Bootstrap CSS -->
+			<title> Create Link Post </title>
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+			<!-- Allows us to use social media icons -->
+			<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+			<link rel = "stylesheet" href = "{{ url_for('static', filename='createPost.css') }}">
 	</head>
 	<body>
-		<div class="header">
-		<h1 id = "welcome" > Cnitt </h1>
-	</div>
-			{% if current_user.is_authenticated %}
-				<div class="topnav">
-					 <a href = "/" class = "button">Home</a>
-					 <a href="/about" class = "button">About Us</a>
+		<div class="model-dialog text-center">
+			<div class="col-sm-4 main-section">
+				<div class="modal-content">
 
-					 <a href="{{ url_for('logout') }}" class = "button" style="float:right">Logout</a>
-					 <a href="users/{{current_user.id}}" class = "button" style="float:right">Profile</a>
-				</div>
+					<div class="col-12 user-img">
+						<img src="/static/img/mylogo.png">
+					</div>
 
-				</br></br>
-
-				<form method="POST" id = "block">
-	            {{ form.hidden_tag() }}
-	            Title: {{ form.title() }}</br></br>
-	            Link: {{ form.content() }}</br></br>
-	            {{ form.submit() }}</br>
-	      </form>
-
-			{% else %}
-				<div class="topnav">
-					 <a href = "/" class = "button">Home</a>
-
-					 <h2> Please Login or Register to Post! </h2>
-
-					 <a href="{{ url_for('login') }}" class = "button" style="float:right">Login</a>
+					{% if current_user.is_authenticated %}
+					<form method="POST" class="col-12">
+						{{ form.hidden_tag() }}
+						<div class="form-group">
+							Title: {{ form.title(placeholder="Enter Post Title") }}
+						</div>
+						<div class="form-group">
+							Link: {{ form.content(placeholder="Enter Post Link") }}
+						</div>
+						<div>
+							{{ form.submit(class_="btn") }}
+						</div>
+						<div>
+							<div class="col-12 gif-img">
+								<img src="/static/img/gif/joyful.gif">
+							</div>
+						</div>
+					</form>
+					{% else %}
+					<div class="col-12 nonuser-img">
+						<p> Please login to post! </br></p>
+						<img src="/static/img/gif/hello.gif">
+					</div>
+					<div>
+						<a href="{{ url_for('login') }}" class = "button" style="float:right">Login</a>
 					 <a href="/add_user" class = "button" style="float:right">Register</a>
+					</div>
+					{% endif %}
 				</div>
-			{% endif %}
+			</div>
+		</div>
 	</body>
-	</html>
+</html>

@@ -95,16 +95,16 @@ class RoleForm(FlaskForm):
 class TextPostForm(FlaskForm):
     title = wtf.StringField("Title", validators= [valid.DataRequired(), valid.Length(1, 64)])
     content = wtf.TextAreaField("Content", validators= [valid.DataRequired()])
-    submit = wtf.SubmitField("Make Post")
+    submit = wtf.SubmitField("Post")
 
 class LinkPostForm(FlaskForm):
     title = wtf.StringField("Title", validators= [valid.DataRequired(), valid.Length(1, 64)])
     content = wtf.TextAreaField("Link", validators= [valid.DataRequired(), valid.URL()])
-    submit = wtf.SubmitField("Make Post")
+    submit = wtf.SubmitField("Post")
 
 class CommentForm(FlaskForm):
     content = wtf.TextAreaField("Write Comment Here", validators = [valid.DataRequired()])
-    submit = wtf.SubmitField("Make Post")
+    submit = wtf.SubmitField("Comment")
 
 
 # clearing the database
