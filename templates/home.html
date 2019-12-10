@@ -74,15 +74,17 @@
 				<!-- TODO: All and Front is repeated because it is subscribed and top-cnitts. Please fix. -->
 				{% for sub in current_user.subscriptions %}
 				<div>
-					<a class="nav-link" href="{{ url_for('show_sub_cnitt')}}{{ sub }}"><button type="button" class="btn btn-outline-dark btn-md">{{sub}}</button></a>
+					{% if sub in top_cnitts %}
+					{% else %}
+						<a class="nav-link" href="{{ url_for('show_sub_cnitt')}}{{ sub }}"><button type="button" class="btn btn-outline-dark btn-md">{{sub}}</button></a>
+					{% endif %}
 				</div>
 				{% endfor %}
-
-                    {% for c in top_cnitts %}
-                    <div>
-                        <a class="nav-link" href="{{ url_for('show_sub_cnitt') }}{{ c.name }}"><button type="button" class="btn btn-outline-dark btn-md">{{c.name}}</button></a>
-                    </div>
-		    {% endfor %}
+				{% for c in top_cnitts %}
+				<div>
+					<a class="nav-link" href="{{ url_for('show_sub_cnitt') }}{{ c.name }}"><button type="button" class="btn btn-outline-dark btn-md">{{c.name}}</button></a>
+				</div>
+		    	{% endfor %}
 		</li>
 	</div>
 </nav>
@@ -108,8 +110,8 @@
 				<div class="carousel-caption">
 					<h1 class="display-2">Cnitt Pages</h1>
 					<h3>Check out the top rated pages!</h3>
-					<button type="button" class="btn btn-outline-light btn-lg">c/games</button>
-					<button type="button" class="btn btn-outline-light btn-lg">c/funny</button>
+					<a href = "{{url_for('show_sub_cnitt', cnitt_name = 'games') }}"><button type="button" class="btn btn-outline-light btn-lg">c/games</button></a>
+					<a href = "{{url_for('show_sub_cnitt', cnitt_name = 'funny') }}"><button type="button" class="btn btn-outline-light btn-lg">c/funny</button></a>
 				</div>
 			</div>
 			<div class="carousel-item">
@@ -117,8 +119,8 @@
 				<div class="carousel-caption">
 					<h1 class="display-2">Subscribe</h1>
 					<h3>Subscribe to any of the pages!</h3>
-					<button type="button" class="btn btn-outline-light btn-lg">c/memes</button>
-					<button type="button" class="btn btn-outline-light btn-lg">c/rochester</button>
+					<a href = "{{url_for('show_sub_cnitt', cnitt_name = 'memes') }}"><button type="button" class="btn btn-outline-light btn-lg">c/memes</button></a>
+					<a href = "{{url_for('show_sub_cnitt', cnitt_name = 'roch') }}"><button type="button" class="btn btn-outline-light btn-lg">c/roch</button></a>
 				</div>
 			</div>
 		</div>

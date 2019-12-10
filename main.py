@@ -254,7 +254,7 @@ def add_user():
         fname = form.first_name.data
         form.first_name.data = None
         lname = form.last_name.data
-        form.last_name.data = None
+        form.last_name.data = Nonex
         email = form.email.data
         form.email.data = None
         password = form.password.data
