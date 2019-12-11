@@ -15,7 +15,7 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 		<!-- Allows us to use social media icons -->
 		<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-		<link rel = "stylesheet" href = "{{ url_for('static', filename='forum.css') }}">
+		<link rel = "stylesheet" href = "{{ url_for('static', filename='mega.css') }}">
 </head>
 <body>
   	<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
@@ -24,7 +24,7 @@
   			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
   					<span class="navbar-toggler-icon"></span>
   			</button>
-        <div class="collpase navbar-collpase" id="navbarResponsive">
+        <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
         <li class="nav-item">
           <a class="nav-link" href="/">Home</a>
@@ -36,7 +36,7 @@
 
         {% if current_user.is_authenticated %}
         <li>
-          <a class="nav-link" href="users/{{current_user.id}}">Profile</a>
+          <a class="nav-link" href="{{ url_for('users', uid = current_user.id ) }}">Profile</a>
         </li>
         <li>
           <a class="nav-link" href="{{ url_for('mtp', cnitt_name = cnitt_name ) }}">Create-Text-Post</a>
@@ -107,16 +107,16 @@
     </nav>
 
   <!-- Cnitt posts -->
+	<br/>
   	{% for post in posts%}
   		<div class="container-fluid padding">
   			<div class="row padding">
   				<div class="col-lg-12">
   					{% if post.is_link %}
-  					<h2><a href = "users/{{post.creator}}"> {{users.query.filter_by(id=post.creator).first().username }} </a></h2>
+  					<h3><a href = "users/{{post.creator}}"> {{users.query.filter_by(id=post.creator).first().username }} </a></h3>
   					{% else %}
-  					<h2><a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}"> {{ post.title }} </a></h2>
+  					<h3><a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}"> {{ post.title }} </a></h3>
   					{% endif %}
-  					<p> </br> </p>
   					<a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" id = "blur" class="btn btn-primary"> Comments </a>
   					<button class="up_arrow"  type="button">UP</button>
   					<b> {{ post.net_votes }}</b>
@@ -124,9 +124,6 @@
   			</div>
   			<hr class="light">
   		</div>
-  		</br>
-  		</br>
-  		</br>
   	{% endfor %}
 
 
@@ -147,8 +144,8 @@
 				<img class="card-img-top" src="/static/img/gameicon.png">
 				<div class="card-body">
 					<h4 class="card-title"> c/games</h4>
-					<p class="card-text"> Check out what other gamers are doing! </p>
-					<a href="c/games" class="btn btn-outline-secondary">Check it out</a>
+					<p id = "our_message" class="card-text"> Check out what other gamers are doing! </p>
+					<a href="{{url_for('show_sub_cnitt', cnitt_name = 'games')}}" class="btn btn-outline-secondary">Check it out</a>
 				</div>
 			</div>
 		</div>
@@ -158,8 +155,8 @@
 				<img class="card-img-top" src="/static/img/funny.png">
 				<div class="card-body">
 					<h4 class="card-title"> c/funny</h4>
-					<p class="card-text"> Check out what others are laughing at! </p>
-					<a href="c/funny" class="btn btn-outline-secondary">Check it out</a>
+					<p id = "our_message" class="card-text"> Check out what others are laughing at! </p>
+					<a href="{{url_for('show_sub_cnitt', cnitt_name = 'funny')}}" class="btn btn-outline-secondary">Check it out</a>
 				</div>
 			</div>
 		</div>
@@ -169,8 +166,8 @@
 				<img class="card-img-top" src="/static/img/life.png">
 				<div class="card-body">
 					<h4 class="card-title"> c/life</h4>
-					<p class="card-text"> Check out some inspirational life talk! </p>
-					<a href="c/life" class="btn btn-outline-secondary">Check it out</a>
+					<p id = "our_message" class="card-text"> Check out some inspirational life talk! </p>
+					<a href="{{url_for('show_sub_cnitt', cnitt_name = 'life')}}" class="btn btn-outline-secondary">Check it out</a>
 				</div>
 			</div>
 		</div>
@@ -180,8 +177,8 @@
 				<img class="card-img-top" src="/static/img/beauty.png">
 				<div class="card-body">
 					<h4 class="card-title"> c/beauty</h4>
-					<p class="card-text"> Check out what the beauty gurus have to say! </p>
-					<a href="c/beauty" class="btn btn-outline-secondary">Check it out</a>
+					<p id = "our_message" class="card-text"> Check out what the beauty gurus have to say! </p>
+					<a href="{{url_for('show_sub_cnitt', cnitt_name = 'beauty')}}" class="btn btn-outline-secondary">Check it out</a>
 				</div>
 			</div>
 		</div>
