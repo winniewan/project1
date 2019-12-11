@@ -1,14 +1,13 @@
 import datetime
 
+from flask import current_app
 from flask_login import UserMixin, AnonymousUserMixin
 from flask_sqlalchemy import SQLAlchemy
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from sqlalchemy import PrimaryKeyConstraint
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 from werkzeug import security
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from flask import current_app
-
 
 db = SQLAlchemy()
 
@@ -68,6 +67,9 @@ class Users(UserMixin, db.Model):
 
     def is_administrator(self):
         return self.can(Permission.ADMIN)
+
+    def is_moderator(self):
+        return self.can(Permission.MODERATE)
 
     def get_subscriptions(self):
         return SubCnitt.query.join(Subscriber).filter(Subscriber.user_id == self.id).all()

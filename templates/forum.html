@@ -152,7 +152,7 @@
     {% for post in posts%}
 		<div class="container-fluid padding">
 			<div class="row padding">
-				<div class="col-lg-12">
+				<div class="col-lg-12" id="{{ post.pid }}_post">
                     <button class="up_arrow" id="{{ post.pid }}_up"  type="button">UP</button>
 					<b id="{{ post.pid }}_votes"> {{ post.net_votes }}</b>
                     <button class="down_arrow"  id="{{ post.pid }}_down" type="button">DOWN</button>
@@ -164,7 +164,9 @@
 					{% endif %}
 					<p> </br> </p>
 					<a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" id = "blur" class="btn btn-primary"> Comments </a>
-
+                    {% if current_user.is_moderator() %}
+                        <button class="btn btn-primary delete" id="{{ post.pid }}_delete"  type="button">delete</button>
+                    {% endif %}
 				</div>
 			</div>
 			<hr class="light">

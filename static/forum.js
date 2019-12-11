@@ -37,6 +37,21 @@ $(".down_arrow").each(function () {
     }
 );
 
+$(".delete").each( function() {
+    $(this).on('click', function () {
+         var id = $(this).attr('id').split('_')[0];
+
+        $.ajax({
+            "url": "/delete_post/" + id,
+            "type": "POST",
+            "dataType": "text"
+        }).done(function(response) {
+            var $post = $("#" + id + "_post");
+            $post.remove();
+        });
+    });
+});
+
 var loaded = 25;
 var amountNextToLoad = 25;
 var lock = false;

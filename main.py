@@ -405,10 +405,11 @@ def show_sub_cnitt(cnitt_name="Front", sort_type='Hot'):
         posts = cnitt.posts(sort_type=sort_type, quantity=num_posts, start=after, user_id=id)
     # SHOW POSTS HERE
 
+
     socketio.on_event('joined', joined, namespace=('/c/'+cnitt_name))
     socketio.on_event('text', text, namespace=('/c/'+cnitt_name))
     socketio.on_event('left', left, namespace=('/c/'+cnitt_name))
-    return render_template("forum.html", hasMore=True,posts=posts, cnitt_name=cnitt_name, cnitt=cnitt, after=after,users=Users, name=name,room=cnitt_name), 200
+    return render_template("forum.html", hasMore=not len(posts) < 25,posts=posts, cnitt_name=cnitt_name, cnitt=cnitt, after=after,users=Users, name=name,room=cnitt_name), 200
 
 
 @app.route("/get_posts/c/<string:cnitt_name>", methods=["GET"])
@@ -428,6 +429,17 @@ def get_posts_for_infinite(cnitt_name="Front", sort_type='Hot'):
     return template
 
 
+@app.route("/delete_post/<int:pid>", methods=["POST"])
+@permission_required(Permission.MODERATE)
+def delete_post(pid):
+    post = Post.query.filter_by(pid=pid).first()
+    if post is not None:
+        db.session.delete(post)
+        db.session.commit()
+        return "", 202
+    return "", 404
+
+
 @login_required
 #@socketio.on('joined', namespace=("/c/"+ session.get('curScene',"")))
 def joined(message):
@@ -443,7 +455,8 @@ def text(message):
     """Sent by a client when the user entered a new message.
     The message is sent to all people in the room."""
     room = session.get('room')
-    emit('message', {'msg': current_user.username + ':' + message['msg']}, room=room)
+    if len(message['msg']) > 0:
+        emit('message', {'msg': current_user.username + ': ' + message['msg']}, room=room)
 
 @login_required
 #@socketio.on('left', namespace=("/c/"+ session.get('curScene',"")))
