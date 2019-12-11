@@ -150,7 +150,7 @@
     <div class="column left">
   <!-- Cnitt posts -->
     {% for post in posts%}
-		<div class="container-fluid padding">
+		<div class="container-fluid padding" id="{{ post.pid }}_post">
 			<div class="row padding">
 				<div class="col-lg-12" id="{{ post.pid }}_post">
                     <button class="up_arrow" id="{{ post.pid }}_up"  type="button">UP</button>
@@ -164,17 +164,19 @@
 					{% endif %}
 					<p> </br> </p>
 					<a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" id = "blur" class="btn btn-primary"> Comments </a>
-                    {% if current_user.is_moderator() %}
+                    {% if not current_user.is_anonymous and current_user.is_moderator() %}
                         <button class="btn btn-primary delete" id="{{ post.pid }}_delete"  type="button">delete</button>
                     {% endif %}
 				</div>
 			</div>
 			<hr class="light">
+        </br>
+		</br>
+		</br>
 		</div>
-		</br>
-		</br>
-		</br>
+
 	{% endfor %}
+
 
     {% if hasMore %}
         <p id="moretarget">

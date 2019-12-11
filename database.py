@@ -108,6 +108,9 @@ class AnonymousUser(AnonymousUserMixin):
     def is_administrator(self):
         return False
 
+    def is_moderator(self):
+        return False
+
 
 class Roles(db.Model):
     __tablename__ = "Roles"
