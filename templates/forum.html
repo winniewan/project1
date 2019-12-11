@@ -1,29 +1,29 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-  <meta http-equiv="Cache-control" content="no-cache">
-		<meta charset="utf-8"/>
-	<!-- <link rel = "stylesheet" href = "{{ url_for('static', filename='home.css') }}"> -->
-	<!-- Required meta tags -->
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta charset="utf-8"/>
+    <!-- <link rel = "stylesheet" href = "{{ url_for('static', filename='home.css') }}"> -->
+    <!-- Required meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-		<title> {{ cnitt_name }} </title>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-		<!-- Allows us to use social media icons -->
-		<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-		<link rel = "stylesheet" href = "{{ url_for('static', filename='mega.css') }}">
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
-		{% if current_user.is_authenticated %}
-		<script type="text/javascript" charset="utf-8">
+    <title> {{ cnitt_name }} </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <!-- Allows us to use social media icons -->
+    <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <link rel = "stylesheet" href = "{{ url_for('static', filename='mega.css') }}">
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    {% if current_user.is_authenticated %}
+        <script type="text/javascript" charset="utf-8">
             var socket;
             $(document).ready(function(){
                 socket = io.connect(window.location.href);
                 socket.on('connect', function() {
-					socket.emit('joined', {});
+                    socket.emit('joined', {});
                 });
                 socket.on('status', function(data) {
                     $('#chat').val($('#chat').val() + '<' + data.msg + '>\n');
@@ -47,142 +47,144 @@
                     socket.disconnect();
                 });
 
-				var element = document.getElementById('chatroom');
-    			element.parentNode.removeChild(element);
+                var element = document.getElementById('chatroom');
+                element.parentNode.removeChild(element);
             }
-		</script>
-		{% endif %}
+        </script>
+    {% endif %}
 </head>
 <body>
-  	<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
-      <div class="container-fluid">
-  			<a class="navbar-brand" href="/"><img src="/static/img/mylogo.png"></a>
-  			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-  					<span class="navbar-toggler-icon"></span>
-  			</button>
+<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/"><img src="/static/img/mylogo.png"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collpase navbar-collpase" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="/">Home</a>
-        </li>
-        <li>
-          <a class="nav-link" href="/about">About</a>
-        </li>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="/about">About</a>
+                </li>
 
 
-        {% if current_user.is_authenticated %}
-        <li>
-          <a class="nav-link" href="users/{{current_user.id}}">Profile</a>
-        </li>
-        <li>
-          <a class="nav-link" href="{{ url_for('mtp', cnitt_name = cnitt_name ) }}">Create-Text-Post</a>
-        </li>
-        <li>
-          <a class="nav-link" href="{{ url_for('mlp', cnitt_name = cnitt_name ) }}">Create-Link-Post</a>
-        </li>
-        <li>
-          <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
-        </li>
-        {% else %}
-        <li>
-          <a class="nav-link" href="/add_user">Register</a>
-        </li>
-        <li>
-          <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-        </li>
+                {% if current_user.is_authenticated %}
+                    <li>
+                        <a class="nav-link" href="users/{{current_user.id}}">Profile</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="{{ url_for('mtp', cnitt_name = cnitt_name ) }}">Create-Text-Post</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="{{ url_for('mlp', cnitt_name = cnitt_name ) }}">Create-Link-Post</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a class="nav-link" href="/add_user">Register</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- The navigation for subscription c links -->
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+    <li class="navbar-nav ml-auto">
+        {% for sub in current_user.subscriptions %}
+            <div>
+                <a class="nav-link" href="{{ url_for('show_sub_cnitt')}}{{ sub }}"><button type="button" class="btn btn-outline-dark btn-md">{{sub}}</button></a>
+            </div>
+        {% endfor %}
+    </li>
+</nav>
+
+<h1> {{ cnitt_name }}</h1>
+
+<!--- top hot and new -->
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+    <li class="navbar-nav ml-12">
+        <div>
+            <a class="nav-link" href="{{ url_for('show_sub_cnitt', cnitt_name=cnitt_name, sort_type='Hot')}}" class ="button">Hot</a>
+        </div>
+
+        <div>
+            <a class="nav-link" href="{{ url_for('show_sub_cnitt', cnitt_name=cnitt_name, sort_type='Top')}}" class ="button">Top</a>
+        </div>
+
+        <div>
+            <a class="nav-link" href="{{ url_for('show_sub_cnitt', cnitt_name=cnitt_name, sort_type='New')}}" class ="button">New</a>
+        </div>
+
+        {% if not cnitt.required_subscription %}
+            {% if current_user.is_authenticated %}
+                {% if cnitt.is_subscribed(current_user) %}
+                    <div>
+                        <a class="nav-link" href="{{ url_for('unsubscribe', cnitt=cnitt_name) }}" class ="button">Unsubscribe</a>
+                    </div>
+                {% else %}
+                    <div>
+                        <a class="nav-link" href="{{ url_for('subscribe', cnitt=cnitt_name) }}" class ="button">Subscribe</a>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div>
+                    <a class="nav-link" href="{{ url_for('login') }}" class ="button">Please login to subscribe!</a>
+                </div>
+            {% endif %}
         {% endif %}
-      </ul>
-      </div>
-  		</div>
-  	</nav>
+    </li>
+</nav>
 
-    <!-- The navigation for subscription c links -->
-    <nav class="navbar navbar-expand-md navbar-light bg-light">
-    		<li class="navbar-nav ml-auto">
-    			{% for sub in current_user.subscriptions %}
-    			<div>
-    				<a class="nav-link" href="{{ url_for('show_sub_cnitt')}}{{ sub }}"><button type="button" class="btn btn-outline-dark btn-md">{{sub}}</button></a>
-    			</div>
-    			{% endfor %}
-    		</li>
-    </nav>
-
-    <!--- top hot and new -->
-    <nav class="navbar navbar-expand-md navbar-light bg-light">
-    			<li class="navbar-nav ml-12">
-    			<div>
-    				<a class="nav-link" href="{{ url_for('show_sub_cnitt', cnitt_name=cnitt_name, sort_type='Hot')}}" class ="button">Hot</a>
-    			</div>
-
-          <div>
-    				<a class="nav-link" href="{{ url_for('show_sub_cnitt', cnitt_name=cnitt_name, sort_type='Top')}}" class ="button">Top</a>
-    			</div>
-
-          <div>
-    				<a class="nav-link" href="{{ url_for('show_sub_cnitt', cnitt_name=cnitt_name, sort_type='New')}}" class ="button">New</a>
-    			</div>
-
-          {% if not cnitt.required_subscription %}
-              {% if current_user.is_authenticated %}
-                  {% if cnitt.is_subscribed(current_user) %}
-                      <div>
-                          <a class="nav-link" href="{{ url_for('unsubscribe', cnitt=cnitt_name) }}" class ="button">Unsubscribe</a>
-                      </div>
-                  {% else %}
-                      <div>
-                          <a class="nav-link" href="{{ url_for('subscribe', cnitt=cnitt_name) }}" class ="button">Subscribe</a>
-                      </div>
-                  {% endif %}
-              {% else %}
-                  <div>
-                      <a class="nav-link" href="{{ url_for('login') }}" class ="button">Please login to subscribe!</a>
-                  </div>
-              {% endif %}
-          {% endif %}
-    		</li>
-	</nav>
-
-    <div class="columns">
+<div class="columns">
 
 
 
 
     <div class="column left">
-  <!-- Cnitt posts -->
-    {% for post in posts%}
-		<div class="container-fluid padding" id="{{ post.pid }}_post">
-			<div class="row padding">
-				<div class="col-lg-12" id="{{ post.pid }}_post">
-                    <button class="up_arrow" id="{{ post.pid }}_up"  type="button">UP</button>
-					<b id="{{ post.pid }}_votes"> {{ post.net_votes }}</b>
-                    <button class="down_arrow"  id="{{ post.pid }}_down" type="button">DOWN</button>
-                    <h2><a href = "users/{{post.creator}}"> {{users.query.filter_by(id=post.creator).first().username }} </a></h2>
-					{% if post.is_link %}
-                        <h2><a href = "{{post.content}}"> {{ post.title }} </a></h2>
-					{% else %}
-					<h2><a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}"> {{ post.title }} </a></h2>
-					{% endif %}
-					<p> </br> </p>
-					<a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" id = "blur" class="btn btn-primary"> Comments </a>
-                    {% if not current_user.is_anonymous and current_user.is_moderator() %}
-                        <button class="btn btn-primary delete" id="{{ post.pid }}_delete"  type="button">delete</button>
-                    {% endif %}
-				</div>
-			</div>
-			<hr class="light">
-        </br>
-		</br>
-		</br>
-		</div>
+        <!-- Cnitt posts -->
+        {% for post in posts%}
+            <div class="container-fluid padding" id="{{ post.pid }}_post">
+                <div class="row padding">
+                    <div class="col-lg-12" id="{{ post.pid }}_post">
+                        <button class="up_arrow" id="{{ post.pid }}_up"  type="button">UP</button>
+                        <b id="{{ post.pid }}_votes"> {{ post.net_votes }}</b>
+                        <button class="down_arrow"  id="{{ post.pid }}_down" type="button">DOWN</button>
+                        <h2><a href = "users/{{post.creator}}"> {{users.query.filter_by(id=post.creator).first().username }} </a></h2>
+                        {% if post.is_link %}
+                            <h2><a href = "{{post.content}}"> {{ post.title }} </a></h2>
+                        {% else %}
+                            <h2><a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}"> {{ post.title }} </a></h2>
+                        {% endif %}
+                        <p> </br> </p>
+                        <a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" id = "blur" class="btn btn-primary"> Comments </a>
+                        {% if not current_user.is_anonymous and current_user.is_moderator() %}
+                            <button class="btn btn-primary delete" id="{{ post.pid }}_delete"  type="button">delete</button>
+                        {% endif %}
+                    </div>
+                </div>
+                <hr class="light">
+                </br>
+                </br>
+                </br>
+            </div>
 
-	{% endfor %}
+        {% endfor %}
 
 
-    {% if hasMore %}
-        <p id="moretarget">
-            loading
-        </p>
-    {% endif %}
+        {% if hasMore %}
+            <p id="moretarget">
+                loading
+            </p>
+        {% endif %}
     </div>
 
     <div class="column right">
@@ -196,27 +198,27 @@
         {% endif %}
     </div>
 
-    </div>
+</div>
 
 <div class="block"></div>
 
 <footer>
-	<div class="container-fluid padding">
-		<div class="row text-center">
-			<div class="col-12">
-				<img class="footerlogo" src="/static/img/mylogo.png">
-				<p> </br> </p>
-				<p> University of Rochester </p>
-				<p> 500 Joseph C. Wilson Blvd. </p>
-				<p> Rochester, NY 14627 </p>
-				<p> (585) 275-2121 </p>
-			</div>
-			<div class="col-12">
-				<hr class="light">
-				<h5>&copy; cnitt.com </h5>
-			</div>
-		</div>
-	</div>
+    <div class="container-fluid padding">
+        <div class="row text-center">
+            <div class="col-12">
+                <img class="footerlogo" src="/static/img/mylogo.png">
+                <p> </br> </p>
+                <p> University of Rochester </p>
+                <p> 500 Joseph C. Wilson Blvd. </p>
+                <p> Rochester, NY 14627 </p>
+                <p> (585) 275-2121 </p>
+            </div>
+            <div class="col-12">
+                <hr class="light">
+                <h5>&copy; cnitt.com </h5>
+            </div>
+        </div>
+    </div>
 </footer>
 <script src=" {{ url_for('static', filename='forum.js') }}"></script>
 </body>

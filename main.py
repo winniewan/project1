@@ -148,7 +148,7 @@ with app.app_context():
 def index():
     searchform = SearchBar()
     posts = SubCnitt.get("Front").posts()
-    subscribed = SubCnitt.get_top_n_subscribed(8)
+    subscribed = SubCnitt.get_top_n_subscribed(15)
     session['curScene'] = None
     if searchform.validate_on_submit():
         next = search(searchform.wanted.data)
@@ -445,7 +445,7 @@ def delete_post(pid):
 def joined(message):
     """Sent by clients when they enter a room.
     A status message is broadcast to all people in the room."""
-    room = session.get('room')
+    room = session.get('curScene')
     join_room(room)
     emit('status', {'msg': current_user.username + ' has entered the room.'}, room=room)
 
@@ -454,7 +454,7 @@ def joined(message):
 def text(message):
     """Sent by a client when the user entered a new message.
     The message is sent to all people in the room."""
-    room = session.get('room')
+    room = session.get('curScene')
     if len(message['msg']) > 0:
         emit('message', {'msg': current_user.username + ': ' + message['msg']}, room=room)
 
@@ -463,7 +463,7 @@ def text(message):
 def left(message):
     """Sent by clients when they leave a room.
     A status message is broadcast to all people in the room."""
-    room = session.get('room')
+    room = session.get('curScene')
     leave_room(room)
     emit('status', {'msg': current_user.username + ' has left the room.'}, room=room)
 
@@ -559,11 +559,12 @@ def initialize_app():
     pokemon = SubCnitt(name="pokemon")
     games = SubCnitt(name="games")
     life = SubCnitt(name="life")
+    me_irl = SubCnitt(name="me_irl")
     with app.app_context():
         db.session.add_all([newt, follow, comment, write, mod, admin])
         db.session.add_all([gal_user, josh_user, matt_user])
         db.session.add_all([all_cnitt, front_cnitt, pictures, rochester, leibenning, funny])
-        db.session.add_all([beauty, memes, pokemon, games, life])
+        db.session.add_all([beauty, memes, pokemon, games, life, me_irl])
         db.session.commit()
         user = db.session.query(Users).filter(Users.email == "jradin16@gmail.com").first()
         #all_cnitt.subscribe(user.id)

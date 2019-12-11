@@ -96,14 +96,17 @@
 			<li data-target="#slides" data-slide-to="2"></li>
 		</ul>
 		<div class="carousel-inner">
+
 			<div class="carousel-item active">
 				<img src="/static/img/slide1.jpg">
 				<div class="carousel-caption">
 					<h1 class="display-2">Welcome to Cnitt</h1>
 					<h3>Excellent resource to connect and share with people from around the world!</h3>
-					<a href="/add_user"><button type="button" class="btn btn-outline-light btn-lg">Register</button></a>
+					{% if current_user.is_anonymous %}
+                    <a href="/add_user"><button type="button" class="btn btn-outline-light btn-lg">Register</button></a>
 					<a href="{{ url_for('login') }}"><button type="button" class="btn btn-outline-light btn-lg">Login</button></a>
-				</div>
+				    {% endif %}
+                </div>
 			</div>
 			<div class="carousel-item">
 				<img src="/static/img/slide2.jpg">
