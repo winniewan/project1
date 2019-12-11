@@ -16,6 +16,44 @@
 		<!-- Allows us to use social media icons -->
 		<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 		<link rel = "stylesheet" href = "{{ url_for('static', filename='forum.css') }}">
+		<script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+		{% if current_user.is_authenticated %}
+		<script type="text/javascript" charset="utf-8">
+            var socket;
+            $(document).ready(function(){
+                socket = io.connect(window.location.href);
+                socket.on('connect', function() {
+                    socket.emit('joined', {});
+                });
+                socket.on('status', function(data) {
+                    $('#chat').val($('#chat').val() + '<' + data.msg + '>\n');
+                    $('#chat').scrollTop($('#chat')[0].scrollHeight);
+                });
+                socket.on('message', function(data) {
+                    $('#text').val('dids it');
+                    $('#chat').val($('#chat').val() + data.msg + '\n');
+                    $('#chat').scrollTop($('#chat')[0].scrollHeight);
+                });
+                $('#text').keypress(function(e) {
+                    var code = e.keyCode || e.which;
+                    if (code == 13) {
+                        text = $('#text').val();
+                        $('#text').val('');
+                        socket.emit('text', {msg: text});
+                    }
+                });
+            });
+            function leave_room() {
+                socket.emit('left', {}, function() {
+                    socket.disconnect();
+                });
+
+				var element = document.getElementById('chatroom');
+    			element.parentNode.removeChild(element);
+            }
+		</script>
+		{% endif %}
 </head>
 <body>
   	<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
@@ -104,7 +142,16 @@
               {% endif %}
           {% endif %}
     		</li>
-    </nav>
+	</nav>
+
+	{% if current_user.is_authenticated %}
+	<div id = "chatroom">
+		<h1>c\{{ room }} chatroom</h1>
+		<textarea id="chat" cols="80" rows="20" readonly></textarea><br><br>
+		<input id="text" size="80" placeholder="Enter your message here"><br><br>
+		<button onClick = "leave_room()"> leave chat </button> 
+	</div>
+	{% endif %}
 
   <!-- Cnitt posts -->
   	{% for post in posts%}
