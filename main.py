@@ -428,7 +428,6 @@ def get_posts_for_infinite(cnitt_name="Front", sort_type='Hot'):
     return template
 
 
-
 @login_required
 #@socketio.on('joined', namespace=("/c/"+ session.get('curScene',"")))
 def joined(message):
@@ -454,13 +453,6 @@ def left(message):
     room = session.get('room')
     leave_room(room)
     emit('status', {'msg': current_user.username + ' has left the room.'}, room=room)
-
-
-
-
-
-
-
 
 
 @app.route("/c/<string:cnitt_name>/comments/<int:post_id>",  methods = ["GET", "POST"], defaults={'sort_type': 'Hot'})
