@@ -1,0 +1,286 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,700');
+
+/*--- Bootstrap Padding Fix --*/
+[class*="col-"] {
+    padding: 1rem;
+}
+
+html, body {
+	height: 100%;
+	width: 100%;
+	font-family: 'Poppins', sans-serif;
+	color: #222;
+}
+
+.welcome {
+	width: 75%;
+	margin: 0 auto;
+	padding-top: 2rem;
+}
+
+.welcome hr {
+	border-top: 2px solid #b4b4b4;
+	width: 95%;
+	margin-top: .3rem;
+	margin-bottom: 1rem;
+}
+
+.padding {
+	padding-bottom: 2rem;
+}
+
+.social a {
+	font-size: 4.5em;
+	padding: 3rem;
+}
+
+hr.light {
+	border-top: 1px solid #d5d5d5;
+	width: 75%
+	margin-top: .8rem;
+	margin-bottom: 1rem;
+}
+
+.body-background {
+	font-family: 'Roboto', sans-serif;
+	background: url(/static/img/login_bg.png) no-repeat center center fixed;
+	background-size: cover;
+}
+
+.comment-background {
+	font-family: 'Roboto', sans-serif;
+	background: url(/static/img/commentformbg.jpg) no-repeat center center fixed;
+	background-size: cover;
+}
+
+.profile-background {
+	font-family: 'Roboto', sans-serif;
+	background: url(/static/img/commentformbg2.jpg) no-repeat center center fixed;
+	background-size: cover;
+}
+
+.main-section {
+	margin: 0 auto;
+	margin-top: 90px;
+	padding: 0;
+}
+
+.modal-content {
+
+	background-color: light_gray;
+	opacity: .95;
+	box-shadow: 0px 0px 3px #848484;
+}
+
+.user-img {
+	margin-top: -50px;
+	margin-bottom: 35px;
+}
+
+
+.user-img img {
+	height: 200px;
+	width: 400px;
+	border-radius: 25px;
+	box-shadow: 0px 0px 3px gray;
+}
+
+.form-group {
+	margin-bottom: 10px;
+}
+
+.form-group input {
+	height:42px;
+	border-radius: 5px;
+	border: 0;
+	font-size: 18px;
+	padding-left: 5px;
+}
+
+.rememberme {
+	padding: 0px 0 10px;
+}
+
+.forgot {
+	padding: 25px 0 5px;
+}
+
+.forgot a{
+	color: #c2fbfe;
+}
+
+.content {
+  text-align: center;
+  border-radius: 50px;
+}
+
+.gif-img {
+	margin-top: 10px;
+	margin-bottom:25px;
+}
+
+.gif-img img {
+	height: 100px;
+	width: 125px;
+	border-radius: 50px;
+	box-shadow: 0px 0px 3px #848484;
+}
+h1 {
+  text-align: center;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+/* Style the header */
+.header {
+  padding: 50px;
+  text-align: center;
+}
+
+p {
+  font-size: 30px;
+  text-align: center;
+}
+
+#our_message{
+
+  font-size: 15px;
+  text-align: center;
+}
+
+#comment-text {
+
+    font-size: 15px;
+    text-align: left;
+
+}
+
+input[type=submit] {
+	text-decoration: none;
+	font-size: 20px;
+	padding: 4px;
+	color: white;
+	background: #2196F3;
+  cursor: pointer;
+}
+
+
+input[type=submit]:hover {
+	opacity: 0.8;
+}
+
+.form {
+    border-radius: 6px;
+    overflow: hidden;
+		text-align: center;
+}
+
+.navbar {
+	padding: .8rem;
+}
+
+.navbar-nav li {
+	padding-right: 30px;
+}
+
+.searchbar {
+	width: 100%;
+	height: 100%;
+	color: #222;
+	padding-top: 0.5em;
+}
+
+.jumbotron {
+	padding-left: 30px;
+	padding: .8rem;
+	font-size: 500em;
+	border-radius: 0;
+}
+
+.recommended {
+	width: 75%;
+	margin: 0 auto;
+	padding-top: 1rem;
+}
+
+
+footer {
+	background-color: #3f3f3f;
+	color: #d5d5d5;
+	padding-top: 2rem;
+}
+
+.footerlogo {
+	width: 50%;
+	height: 50%;
+}
+
+.subscribeerror {
+	font-size: 0.7em;
+}
+
+.carousel-inner img {
+	width: 100%;
+	height: 100%;
+}
+
+.carousel-caption {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-80%);
+}
+
+.carousel-caption h1 {
+	font-size: 500%;
+	text-transform: uppercase;
+	text-shadow: 1px 1px 15px #000;
+	padding-bottom: 0.15em;
+}
+
+.carousel-caption h3 {
+	font-size: 200%;
+	font-weight: 500;
+	text-shadow: 1px 1px 10x #000;
+	padding-bottom: 1em;
+}
+
+.navbar-brand img {
+	width: 50%;
+	height: 50%;
+}
+
+
+.fa-facebook {
+	color: #3b5998;
+}
+
+.fa-twitter {
+	color: #00aced;
+}
+
+.fa-instagram {
+	color: #517fa4
+}
+
+.fa-youtube {
+	color: #bb0000;
+}
+
+.fa-facebook:hover,
+.fa-twitter:hover,
+.fa-instagram:hover,
+.fa-youtube:hover {
+	color: #d5d5d5;
+}
+
+html {
+	height: 100%;
+	width: 100%;
+	font-family: 'Poppins', sans-serif;
+	color: #222;
+}
+
+.profileTitle {
+	text-align: center;
+	text-shadow: 0px 0px 3px #848484;
+	font-family: 'Roboto', sans-serif;
+}
