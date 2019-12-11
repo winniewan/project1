@@ -1,5 +1,9 @@
-
 import os
+import ssl
+import smtplib
+
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from functools import wraps
 
 import wtforms as wtf
@@ -107,6 +111,26 @@ class CommentForm(FlaskForm):
     content = wtf.TextAreaField("Write Comment Here", validators = [valid.DataRequired()])
     submit = wtf.SubmitField("Comment")
 
+def send_email(to, subject, template, **kwargs):
+	#scarlatoscarlato@gmail.com
+    gmail_user = 'brandnewmillstone@gmail.com'
+    gmail_pwd = "Danimals8!"
+    smtpserver = smtplib.SMTP("smtp.gmail.com", 587)
+    smtpserver.ehlo()
+    smtpserver.starttls()
+    smtpserver.ehlo
+    smtpserver.login(gmail_user, gmail_pwd)
+
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = subject
+    msg['From'] = gmail_user
+    msg['To'] = to
+    part1 = MIMEText(render_template(template + '.html' ,**kwargs), 'html')
+
+    msg.attach(part1)
+
+    smtpserver.sendmail(gmail_user, to, msg.as_string())
+    smtpserver.close()
 
 # clearing the database
 with app.app_context():
@@ -254,7 +278,7 @@ def add_user():
         fname = form.first_name.data
         form.first_name.data = None
         lname = form.last_name.data
-        form.last_name.data = Nonex
+        form.last_name.data = None
         email = form.email.data
         form.email.data = None
         password = form.password.data
@@ -263,6 +287,9 @@ def add_user():
             user = Users(first_name=fname, last_name=lname, email=email, password=password,username=username)
             db.session.add_all([user])
             db.session.commit()
+            token = user.generate_confirmation_token()
+            send_email(user.email, 'Confirm Your Account','ConfirmAccount', user = user, token = token)
+            flash('A confirmation email has been sent to your account.')
             SubCnitt.add_required_subscriptions()
             next = request.args.get("next")
             if next is None or not next.startswith("/"):
@@ -272,6 +299,16 @@ def add_user():
              flash("user with this email or username already exists")
     return render_template("add_user.html", form=form)
 
+@app.route('/confirm/<token>')
+@login_required   
+def confirm(token):
+    if current_user.confirmed:
+        return redirect(url_for('index'))
+    if current_user.confirm(token):
+        flash('You have confirmed your account. Thanks!')
+    else:
+        flash('The confirmation link is invalid or has expired.')
+    return redirect(url_for('index'))
 
 @app.route("/users/<int:uid>")
 @login_required
@@ -327,6 +364,10 @@ def mlp(cnitt_name):
         return redirect(next)
     return render_template ("link_post_submission.html", form = form), 200
 
+@app.route("/email")
+def email():
+    send_email(current_user.email, "Testing", "emailTest", user = current_user)
+    return render_template('about.html')
 
 @app.route("/c", methods=["GET"])
 @app.route("/c/", defaults={'cnitt_name': 'Front'}, methods=["GET"])
@@ -438,9 +479,9 @@ def initialize_app():
     write = Roles(name="write", permissions=7)
     mod = Roles(name="moderator", permissions=15)
     admin = Roles(name="admin", permissions=31)
-    gal_user = Users(username = "gcherki",first_name="Gal", last_name="Cherki", email="gal.cherki@hotmail.com", password="math", role_id=6)
-    josh_user = Users(username = "jradin",first_name="Josh", last_name="Radin", email="jradin16@gmail.com", password="helloworld",role_id=6)
-    matt_user = Users(username = "mleone",first_name="Matthew", last_name="Leone", email="mleone10@u.rochester.edu", password="scopophobic",role_id=6)
+    gal_user = Users(username = "gcherki",first_name="Gal", last_name="Cherki", email="gal.cherki@hotmail.com", password="math", role_id=6, confirmed = True)
+    josh_user = Users(username = "jradin",first_name="Josh", last_name="Radin", email="jradin16@gmail.com", password="helloworld",role_id=6,  confirmed = True)
+    matt_user = Users(username = "mleone",first_name="Matthew", last_name="Leone", email="mleone10@u.rochester.edu", password="scopophobic",role_id=6,  confirmed = True)
     all_cnitt = SubCnitt(name="All", required_subscription=True)
     front_cnitt = SubCnitt(name="Front", required_subscription=True)
     pictures = SubCnitt(name="pics")

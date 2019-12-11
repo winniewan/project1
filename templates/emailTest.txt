@@ -1,0 +1,47 @@
+import ssl
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+
+def send_email():
+	#scarlatoscarlato@gmail.com
+    to = 'brandnewmillstone@gmail.com'
+
+    gmail_user = 'brandnewmillstone@gmail.com'
+    gmail_pwd = "Danimals8!"
+    smtpserver = smtplib.SMTP("smtp.gmail.com", 587)
+    smtpserver.ehlo()
+    smtpserver.starttls()
+    smtpserver.ehlo
+    smtpserver.login(gmail_user, gmail_pwd)
+
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = "Link"
+    msg['From'] = gmail_user
+    msg['To'] = to
+    text_body =  "Hi! \n This is a link to google"
+    html_body = """<html lang="en">
+            	<head> 
+            	</head>
+            	<body>
+            		<p> Hi! <br>
+            		This is a link to <a href = "http://www.google.com"> google</a>
+            		</p>
+            	</body>
+            </html>"""
+
+    part1 = MIMEText(text_body, "plain")
+    part2 = MIMEText(html_body, "html")
+    msg.attach(part1)
+    msg.attach(part2)
+
+    smtpserver.sendmail(gmail_user, to, msg.as_string())
+    smtpserver.close()
+    
+@app.route("/email")
+def email():
+    send_email()
+    return render_template('about.html')
+
+
