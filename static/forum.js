@@ -37,3 +37,39 @@ $(".down_arrow").each(function () {
     }
 );
 
+var loaded = 25;
+var amountNextToLoad = 25;
+
+function isScrolledIntoView(elem)
+{
+    var docViewTop = $(window).scrollTop();
+    var docViewBottom = docViewTop + $(window).height();
+
+    var elemTop = $(elem).offset().top;
+    var elemBottom = elemTop + $(elem).height();
+
+    return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+}
+
+window.onscroll = function ()  {
+    let $moretarget = $("#moretarget");
+    if($moretarget.length && isScrolledIntoView($moretarget)) {
+           // ajax call get data from server and append to the div
+
+
+        $.ajax({
+            "url": "/get_posts" + window.location.pathname,
+            "type": "GET",
+            "dataType": "text",
+            "data": {
+                "count": amountNextToLoad,
+                "after": loaded
+            },
+            success: function(response) {
+                $("#moretarget").replaceWith(response);
+                loaded = loaded + amountNextToLoad
+            }
+        });
+    }
+};
+

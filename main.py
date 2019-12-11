@@ -4,13 +4,13 @@ from functools import wraps
 
 import wtforms as wtf
 import wtforms.validators as valid
-from flask import Flask, render_template, abort, redirect, request, url_for, flash
+from flask import Flask, render_template, abort, redirect, request, url_for, flash, session
 from flask_login import login_user, logout_user, LoginManager, login_required, \
     current_user
-from flask_wtf import FlaskForm
-from werkzeug.datastructures import MultiDict
 from flask_socketio import SocketIO
 from flask_socketio import emit, join_room, leave_room
+from flask_wtf import FlaskForm
+from werkzeug.datastructures import MultiDict
 
 from database import *
 
@@ -256,7 +256,7 @@ def add_user():
         fname = form.first_name.data
         form.first_name.data = None
         lname = form.last_name.data
-        form.last_name.data = Nonex
+        form.last_name.data = None
         email = form.email.data
         form.email.data = None
         password = form.password.data
@@ -336,6 +336,7 @@ def mlp(cnitt_name):
 @app.route("/c/<string:cnitt_name>/<string:sort_type>", methods=["GET"])
 def show_sub_cnitt(cnitt_name="Front", sort_type='Hot'):
     cnitt = SubCnitt.get(cnitt_name)
+    session['room'] = cnitt_name
     if cnitt is None:
         return redirect(url_for("index")), 404
 
@@ -363,31 +364,49 @@ def show_sub_cnitt(cnitt_name="Front", sort_type='Hot'):
         posts = cnitt.posts(sort_type=sort_type, quantity=num_posts, start=after, user_id=id)
     # SHOW POSTS HERE
 
-    return render_template("forum.html", posts=posts, cnitt_name=cnitt_name, cnitt=cnitt, after=after,users=Users, name=name,room=cnitt_name), 200
+    return render_template("forum.html", hasMore=True,posts=posts, cnitt_name=cnitt_name, cnitt=cnitt, after=after,users=Users, name=name,room=cnitt_name), 200
+
+
+@app.route("/get_posts/c/<string:cnitt_name>", methods=["GET"])
+@app.route("/get_posts/c/<string:cnitt_name>/<string:sort_type>", methods=["GET"])
+def get_posts_for_infinite(cnitt_name="Front", sort_type='Hot'):
+    cnitt = SubCnitt.get(cnitt_name)
+    if cnitt is None:
+        return redirect(url_for("index")), 404
+    num_posts = request.args.get("count")
+    after = request.args.get("after")
+    posts = cnitt.posts(sort_type=sort_type, quantity=num_posts, start=after, user_id=id)
+    more = True
+    if len(posts) == 0:
+        more = False
+    template = render_template("post_basic_template.html", posts=posts, hasMore=more)
+
+    return template
+
 
 @login_required
-@socketio.on('joined', namespace='/c')
+@socketio.on('joined')
 def joined(message):
     """Sent by clients when they enter a room.
     A status message is broadcast to all people in the room."""
-    room = "temp"
+    room = session.get('room')
     join_room(room)
     emit('status', {'msg': current_user.username + ' has entered the room.'}, room=room)
 
-@login_required
-@socketio.on('text', namespace='/c')
+
+@socketio.on('text')
 def text(message):
     """Sent by a client when the user entered a new message.
     The message is sent to all people in the room."""
-    room = "temp"
+    room = session.get('room')
     emit('message', {'msg': current_user.username + ':' + message['msg']}, room=room)
 
 @login_required
-@socketio.on('left', namespace='/c')
+@socketio.on('left')
 def left(message):
     """Sent by clients when they leave a room.
     A status message is broadcast to all people in the room."""
-    room = "temp"
+    room = session.get('room')
     leave_room(room)
     emit('status', {'msg': current_user.username + ' has left the room.'}, room=room)
 
@@ -416,6 +435,7 @@ def subscribe(cnitt):
     elif current_user is not None:
         get.subscribe(current_user.id)
     return redirect("/c/" + cnitt)
+
 
 
 @app.route("/unsubscribe/<string:cnitt>")

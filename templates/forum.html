@@ -37,7 +37,9 @@
                 });
                 $('#text').keypress(function(e) {
                     var code = e.keyCode || e.which;
+
                     if (code == 13) {
+                        alert("sending");
                         text = $('#text').val();
                         $('#text').val('');
                         socket.emit('text', {msg: text});
@@ -179,80 +181,11 @@
 		</br>
 	{% endfor %}
 
-
-<!-- Recommended pages -->
-<div class="container-fluid padding">
-	<div class="row recommended text-center">
-		<div class="col-12">
-			<h1 class="display-4">Recommended</h1>
-		</div>
-		<hr>
-	</div>
+    {% if hasMore %}
+    <div id="moretarget">
+    loading
 </div>
-
-<div class="container-fluid padding">
-	<div class="row padding">
-		<div class="col-md-3">
-			<div class="card">
-				<img class="card-img-top" src="/static/img/gameicon.png">
-				<div class="card-body">
-					<h4 class="card-title"> c/games</h4>
-					<p class="card-text"> Check out what other gamers are doing! </p>
-					<a href="c/games" class="btn btn-outline-secondary">Check it out</a>
-				</div>
-			</div>
-		</div>
-
-		<div class="col-md-3">
-			<div class="card">
-				<img class="card-img-top" src="/static/img/funny.png">
-				<div class="card-body">
-					<h4 class="card-title"> c/funny</h4>
-					<p class="card-text"> Check out what others are laughing at! </p>
-					<a href="c/funny" class="btn btn-outline-secondary">Check it out</a>
-				</div>
-			</div>
-		</div>
-
-		<div class="col-md-3">
-			<div class="card">
-				<img class="card-img-top" src="/static/img/life.png">
-				<div class="card-body">
-					<h4 class="card-title"> c/life</h4>
-					<p class="card-text"> Check out some inspirational life talk! </p>
-					<a href="c/life" class="btn btn-outline-secondary">Check it out</a>
-				</div>
-			</div>
-		</div>
-
-		<div class="col-md-3">
-			<div class="card">
-				<img class="card-img-top" src="/static/img/beauty.png">
-				<div class="card-body">
-					<h4 class="card-title"> c/beauty</h4>
-					<p class="card-text"> Check out what the beauty gurus have to say! </p>
-					<a href="c/beauty" class="btn btn-outline-secondary">Check it out</a>
-				</div>
-			</div>
-		</div>
-
-	</div>
-</div>
-
-<!-- Connect to social media -->
-<div class="container-fluid padding">
-	<div class="row text-center padding">
-		<div class="col-12">
-			<h2>FIND US ON SOCIAL MEDIA</h2>
-		</div>
-		<div class="col-12 social padding">
-			<a href="https://www.facebook.com"><i class="fab fa-facebook"></i></a>
-			<a href="https://www.twitter.com"><i class="fab fa-twitter"></i></a>
-			<a href="https://www.instagram.com"><i class="fab fa-instagram"></i></a>
-			<a href="https://www.youtube.com"><i class="fab fa-youtube"></i></a>
-		</div>
-	</div>
-</div>
+    {% endif %}
 
 <footer>
 	<div class="container-fluid padding">

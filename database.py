@@ -243,8 +243,8 @@ class Post(db.Model):
     is_link = db.Column(db.Boolean, nullable=False)
     created = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
     modified = db.Column(db.DateTime, nullable=True, default=None, onupdate=datetime.datetime.utcnow)
-
     cnitt = relationship('SubCnitt', foreign_keys = 'Post.cnitt_id')
+
     def __repr__(self):
         cnitt = SubCnitt.query.filter(SubCnitt.cnitt_id == self.cnitt_id).first()
         votes = self.up_votes - self.down_votes
@@ -325,6 +325,9 @@ class Comment(db.Model):
     text = db.Column(db.Text, nullable=False)
     votes = db.Column(db.Integer, nullable=False, default=0)
     parent = db.Column(db.Integer, db.ForeignKey('Comments.cmnt_id'), nullable=True)
+
+    def user_name(self):
+        return Users.query.filter_by(id=self.user).first().username
 
 
 def subscribe(app, uid, cnitt_id):
