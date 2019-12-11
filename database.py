@@ -6,6 +6,9 @@ from sqlalchemy import PrimaryKeyConstraint
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 from werkzeug import security
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from flask import current_app
+
 
 db = SQLAlchemy()
 
@@ -30,6 +33,24 @@ class Users(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     bio = db.Column(db.Text)
     role_id = db.Column(db.Integer, db.ForeignKey("Roles.rid"), default=1)
+    confirmed = db.Column(db.Boolean, default=False)
+
+    def generate_confirmation_token(self, expiration=3600):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'confirm': self.id})
+
+    def confirm(self, token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return False
+        if data.get('confirm') != self.id:
+            return False
+        self.confirmed = True
+        db.session.add(self)
+        return True
+
 
     def change_user_role(self, new_role):
         role = Roles.query.filter_by(rid=new_role).first()
@@ -243,8 +264,8 @@ class Post(db.Model):
     is_link = db.Column(db.Boolean, nullable=False)
     created = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
     modified = db.Column(db.DateTime, nullable=True, default=None, onupdate=datetime.datetime.utcnow)
-
     cnitt = relationship('SubCnitt', foreign_keys = 'Post.cnitt_id')
+
     def __repr__(self):
         cnitt = SubCnitt.query.filter(SubCnitt.cnitt_id == self.cnitt_id).first()
         votes = self.up_votes - self.down_votes
@@ -325,6 +346,9 @@ class Comment(db.Model):
     text = db.Column(db.Text, nullable=False)
     votes = db.Column(db.Integer, nullable=False, default=0)
     parent = db.Column(db.Integer, db.ForeignKey('Comments.cmnt_id'), nullable=True)
+
+    def user_name(self):
+        return Users.query.filter_by(id=self.user).first().username
 
 
 def subscribe(app, uid, cnitt_id):

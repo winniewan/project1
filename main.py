@@ -1,5 +1,7 @@
-
 import os
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from functools import wraps
 
 import wtforms as wtf
@@ -7,10 +9,10 @@ import wtforms.validators as valid
 from flask import Flask, render_template, abort, redirect, request, url_for, flash, session
 from flask_login import login_user, logout_user, LoginManager, login_required, \
     current_user
-from flask_wtf import FlaskForm
-from werkzeug.datastructures import MultiDict
 from flask_socketio import SocketIO
 from flask_socketio import emit, join_room, leave_room
+from flask_wtf import FlaskForm
+from werkzeug.datastructures import MultiDict
 
 from database import *
 
@@ -109,6 +111,26 @@ class CommentForm(FlaskForm):
     content = wtf.TextAreaField("Write Comment Here", validators = [valid.DataRequired()])
     submit = wtf.SubmitField("Comment")
 
+def send_email(to, subject, template, **kwargs):
+	#scarlatoscarlato@gmail.com
+    gmail_user = 'brandnewmillstone@gmail.com'
+    gmail_pwd = "Danimals8!"
+    smtpserver = smtplib.SMTP("smtp.gmail.com", 587)
+    smtpserver.ehlo()
+    smtpserver.starttls()
+    smtpserver.ehlo
+    smtpserver.login(gmail_user, gmail_pwd)
+
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = subject
+    msg['From'] = gmail_user
+    msg['To'] = to
+    part1 = MIMEText(render_template(template + '.html' ,**kwargs), 'html')
+
+    msg.attach(part1)
+
+    smtpserver.sendmail(gmail_user, to, msg.as_string())
+    smtpserver.close()
 
 # clearing the database
 with app.app_context():
@@ -257,7 +279,7 @@ def add_user():
         fname = form.first_name.data
         form.first_name.data = None
         lname = form.last_name.data
-        form.last_name.data = Nonex
+        form.last_name.data = None
         email = form.email.data
         form.email.data = None
         password = form.password.data
@@ -266,6 +288,9 @@ def add_user():
             user = Users(first_name=fname, last_name=lname, email=email, password=password,username=username)
             db.session.add_all([user])
             db.session.commit()
+            token = user.generate_confirmation_token()
+            send_email(user.email, 'Confirm Your Account','ConfirmAccount', user = user, token = token)
+            flash('A confirmation email has been sent to your account.')
             SubCnitt.add_required_subscriptions()
             next = request.args.get("next")
             if next is None or not next.startswith("/"):
@@ -275,6 +300,16 @@ def add_user():
              flash("user with this email or username already exists")
     return render_template("add_user.html", form=form)
 
+@app.route('/confirm/<token>')
+@login_required   
+def confirm(token):
+    if current_user.confirmed:
+        return redirect(url_for('index'))
+    if current_user.confirm(token):
+        flash('You have confirmed your account. Thanks!')
+    else:
+        flash('The confirmation link is invalid or has expired.')
+    return redirect(url_for('index'))
 
 @app.route("/users/<int:uid>")
 @login_required
@@ -328,7 +363,12 @@ def mlp(cnitt_name):
         if next is None or not next.startswith("/"):
             next = url_for("show_sub_cnitt", cnitt_name = cnitt_name, sort_type = 'Hot')
         return redirect(next)
-    return render_template ("link_post_submission.html", form = form), 200
+    return render_template("link_post_submission.html", form = form), 200
+
+@app.route("/email")
+def email():
+    send_email(current_user.email, "Testing", "emailTest", user = current_user)
+    return render_template('about.html')
 
 
 @app.route("/c", methods=["GET"])
@@ -368,7 +408,25 @@ def show_sub_cnitt(cnitt_name="Front", sort_type='Hot'):
     socketio.on_event('joined', joined, namespace=('/c/'+cnitt_name))
     socketio.on_event('text', text, namespace=('/c/'+cnitt_name))
     socketio.on_event('left', left, namespace=('/c/'+cnitt_name))
-    return render_template("forum.html", posts=posts, cnitt_name=cnitt_name, cnitt=cnitt, after=after,users=Users, name=name,room=cnitt_name), 200
+    return render_template("forum.html", hasMore=True,posts=posts, cnitt_name=cnitt_name, cnitt=cnitt, after=after,users=Users, name=name,room=cnitt_name), 200
+
+
+@app.route("/get_posts/c/<string:cnitt_name>", methods=["GET"])
+@app.route("/get_posts/c/<string:cnitt_name>/<string:sort_type>", methods=["GET"])
+def get_posts_for_infinite(cnitt_name="Front", sort_type='Hot'):
+    cnitt = SubCnitt.get(cnitt_name)
+    if cnitt is None:
+        return redirect(url_for("index")), 404
+    num_posts = request.args.get("count")
+    after = request.args.get("after")
+    posts = cnitt.posts(sort_type=sort_type, quantity=num_posts, start=after, user_id=id)
+    more = True
+    if len(posts) == 0:
+        more = False
+    template = render_template("post_basic_template.html", posts=posts, hasMore=more, users=Users)
+
+    return template
+
 
 
 @login_required
@@ -376,7 +434,7 @@ def show_sub_cnitt(cnitt_name="Front", sort_type='Hot'):
 def joined(message):
     """Sent by clients when they enter a room.
     A status message is broadcast to all people in the room."""
-    room = "temp"
+    room = session.get('room')
     join_room(room)
     emit('status', {'msg': current_user.username + ' has entered the room.'}, room=room)
 
@@ -385,7 +443,7 @@ def joined(message):
 def text(message):
     """Sent by a client when the user entered a new message.
     The message is sent to all people in the room."""
-    room = "temp"
+    room = session.get('room')
     emit('message', {'msg': current_user.username + ':' + message['msg']}, room=room)
 
 @login_required
@@ -393,7 +451,7 @@ def text(message):
 def left(message):
     """Sent by clients when they leave a room.
     A status message is broadcast to all people in the room."""
-    room = "temp"
+    room = session.get('room')
     leave_room(room)
     emit('status', {'msg': current_user.username + ' has left the room.'}, room=room)
 
@@ -426,6 +484,7 @@ def subscribe(cnitt):
     elif current_user is not None:
         get.subscribe(current_user.id)
     return redirect("/c/" + cnitt)
+
 
 
 @app.route("/unsubscribe/<string:cnitt>")
@@ -481,9 +540,9 @@ def initialize_app():
     write = Roles(name="write", permissions=7)
     mod = Roles(name="moderator", permissions=15)
     admin = Roles(name="admin", permissions=31)
-    gal_user = Users(username = "gcherki",first_name="Gal", last_name="Cherki", email="gal.cherki@hotmail.com", password="math", role_id=6)
-    josh_user = Users(username = "jradin",first_name="Josh", last_name="Radin", email="jradin16@gmail.com", password="helloworld",role_id=6)
-    matt_user = Users(username = "mleone",first_name="Matthew", last_name="Leone", email="mleone10@u.rochester.edu", password="scopophobic",role_id=6)
+    gal_user = Users(username = "gcherki",first_name="Gal", last_name="Cherki", email="gal.cherki@hotmail.com", password="math", role_id=6, confirmed = True)
+    josh_user = Users(username = "jradin",first_name="Josh", last_name="Radin", email="jradin16@gmail.com", password="helloworld",role_id=6,  confirmed = True)
+    matt_user = Users(username = "mleone",first_name="Matthew", last_name="Leone", email="mleone10@u.rochester.edu", password="scopophobic",role_id=6,  confirmed = True)
     all_cnitt = SubCnitt(name="All", required_subscription=True)
     front_cnitt = SubCnitt(name="Front", required_subscription=True)
     pictures = SubCnitt(name="pics")
@@ -506,8 +565,12 @@ def initialize_app():
 
 
         SubCnitt.add_required_subscriptions()
+
         all_cnitt.create_link_post("TEST POST PLEASE IGNORE 1", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", gal_user.id)
         all_cnitt.create_text_post("TEST POST PLEASE IGNORE 2", "hello world, again", user.id)
+
+        for i in range(0, 100):
+            pictures.create_link_post("TEST POST PLEASE IGNORE " + str(i), "https://www.youtube.com/watch?v=dQw4w9WgXcQ", gal_user.id)
 
 
 def get_the_all_cnitt():

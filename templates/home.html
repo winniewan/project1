@@ -14,7 +14,7 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 		<!-- Allows us to use social media icons -->
 		<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-		<link rel = "stylesheet" href = "{{ url_for('static', filename='home.css') }}">
+		<link rel = "stylesheet" href = "{{ url_for('static', filename='mega.css') }}">
 </head>
 <body>
 
@@ -138,10 +138,10 @@
 					{% if post.is_link %}
                         <h2><a href = "{{post.content}}"> {{ post.title }} </a></h2>
 					{% else %}
-					<h2><a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}"> {{ post.title }} </a></h2>
+					<h2><a href = "{{ url_for('comments_for_post', cnitt_name = post.cnitt_name, post_id = post.pid)}}"> {{ post.title }} </a></h2>
 					{% endif %}
 					<p> </br> </p>
-					<a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" id = "blur" class="btn btn-primary"> Comments </a>
+					<a href = "{{ url_for('comments_for_post', cnitt_name = post.cnitt_name, post_id = post.pid)}}" id = "blur" class="btn btn-primary"> Comments </a>
 
 				</div>
 			</div>
