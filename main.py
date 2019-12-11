@@ -4,7 +4,7 @@ from functools import wraps
 
 import wtforms as wtf
 import wtforms.validators as valid
-from flask import Flask, render_template, abort, redirect, request, url_for, flash
+from flask import Flask, render_template, abort, redirect, request, url_for, flash, session
 from flask_login import login_user, logout_user, LoginManager, login_required, \
     current_user
 from flask_wtf import FlaskForm
@@ -127,6 +127,7 @@ def index():
     searchform = SearchBar()
     posts = SubCnitt.get("Front").posts()
     subscribed = SubCnitt.get_top_n_subscribed(8)
+    session['curScene'] = None
     if searchform.validate_on_submit():
         next = search(searchform.wanted.data)
         return redirect(next)
@@ -336,6 +337,7 @@ def mlp(cnitt_name):
 @app.route("/c/<string:cnitt_name>/<string:sort_type>", methods=["GET"])
 def show_sub_cnitt(cnitt_name="Front", sort_type='Hot'):
     cnitt = SubCnitt.get(cnitt_name)
+    session['curScene'] = cnitt_name
     if cnitt is None:
         return redirect(url_for("index")), 404
 
@@ -363,10 +365,14 @@ def show_sub_cnitt(cnitt_name="Front", sort_type='Hot'):
         posts = cnitt.posts(sort_type=sort_type, quantity=num_posts, start=after, user_id=id)
     # SHOW POSTS HERE
 
+    socketio.on_event('joined', joined, namespace=('/c/'+cnitt_name))
+    socketio.on_event('text', text, namespace=('/c/'+cnitt_name))
+    socketio.on_event('left', left, namespace=('/c/'+cnitt_name))
     return render_template("forum.html", posts=posts, cnitt_name=cnitt_name, cnitt=cnitt, after=after,users=Users, name=name,room=cnitt_name), 200
 
+
 @login_required
-@socketio.on('joined', namespace='/c')
+#@socketio.on('joined', namespace=("/c/"+ session.get('curScene',"")))
 def joined(message):
     """Sent by clients when they enter a room.
     A status message is broadcast to all people in the room."""
@@ -375,7 +381,7 @@ def joined(message):
     emit('status', {'msg': current_user.username + ' has entered the room.'}, room=room)
 
 @login_required
-@socketio.on('text', namespace='/c')
+#@socketio.on('text', namespace=("/c/"+ session.get('curScene',"")))
 def text(message):
     """Sent by a client when the user entered a new message.
     The message is sent to all people in the room."""
@@ -383,13 +389,17 @@ def text(message):
     emit('message', {'msg': current_user.username + ':' + message['msg']}, room=room)
 
 @login_required
-@socketio.on('left', namespace='/c')
+#@socketio.on('left', namespace=("/c/"+ session.get('curScene',"")))
 def left(message):
     """Sent by clients when they leave a room.
     A status message is broadcast to all people in the room."""
     room = "temp"
     leave_room(room)
     emit('status', {'msg': current_user.username + ' has left the room.'}, room=room)
+
+
+
+
 
 
 
