@@ -13,7 +13,7 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 		<!-- Allows us to use social media icons -->
 		<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-		<link rel = "stylesheet" href = "{{ url_for('static', filename='about.css') }}">
+		<link rel = "stylesheet" href = "{{ url_for('static', filename='mega.css') }}">
 </head>
 <body>
   <div class="container-fluid padding">
@@ -66,15 +66,15 @@
   <div class="container-fluid padding">
     <div class="row padding">
       <div class="col-md-12 col-lg-6">
-        <h2>Our message</h2>
-        <p>
+        <h3>Our message</h3>
+        <p id = "our_message">
           Sometimes complications may arise where we cannot find you an event
           or activity taking place near you that falls under your preferred
           activities. To solve this we offer something outside of your comfort
           zone in the hopes for you to try something new!
         </p>
 
-        <p>
+        <p id = "our_message">
           This is a personal project from a group of 5 undergraduate students
           from the University of Rochester. We aim to create something similar
           to reddit, except it's cnitt! As U of R students, there are
@@ -82,7 +82,7 @@
           that allows anyone to share, communicate, and learn from each other.
         </p>
 
-        <p>
+        <p id = "our_message">
           The University of Rochester is one of the country's top-tier research
           universities. Our campuses are home to 200 academic majors, more than
           2,000 faculty and instructional staff, and some 10,000

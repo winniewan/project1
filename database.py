@@ -335,7 +335,7 @@ class Director(db.Model):
     mod_number = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
     uid = db.Column(db.Integer, db.ForeignKey("Users.id"), nullable=False)
     cnitt_id = db.Column(db.Integer, db.ForeignKey('SubCnitts.cnitt_id'), nullable=False)
-    isDir = db.Column(db.Boolean, nullable=False)
+    isDir = db.Column(db.Boolean, nullable=False,default=True)
 
 
 class Comment(db.Model):

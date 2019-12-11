@@ -13,6 +13,8 @@ from flask_login import login_user, logout_user, LoginManager, login_required, \
     current_user
 from flask_wtf import FlaskForm
 from werkzeug.datastructures import MultiDict
+from flask_socketio import SocketIO
+from flask_socketio import emit, join_room, leave_room
 
 from database import *
 
@@ -30,7 +32,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = \
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app=app)
-
+socketio = SocketIO(app)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -380,8 +382,10 @@ def show_sub_cnitt(cnitt_name="Front", sort_type='Hot'):
 
     if not current_user.is_authenticated:
         id = None
+        name = None
     else:
         id = current_user.id
+        name = current_user.username
 
     num_posts = request.args.get("count")
     if num_posts is not None:
@@ -400,7 +404,36 @@ def show_sub_cnitt(cnitt_name="Front", sort_type='Hot'):
         posts = cnitt.posts(sort_type=sort_type, quantity=num_posts, start=after, user_id=id)
     # SHOW POSTS HERE
 
-    return render_template("forum.html", posts=posts, cnitt_name=cnitt_name, cnitt=cnitt, after=after,users=Users), 200
+    return render_template("forum.html", posts=posts, cnitt_name=cnitt_name, cnitt=cnitt, after=after,users=Users, name=name,room=cnitt_name), 200
+
+@login_required
+@socketio.on('joined', namespace='/c')
+def joined(message):
+    """Sent by clients when they enter a room.
+    A status message is broadcast to all people in the room."""
+    room = "temp"
+    join_room(room)
+    emit('status', {'msg': current_user.username + ' has entered the room.'}, room=room)
+
+@login_required
+@socketio.on('text', namespace='/c')
+def text(message):
+    """Sent by a client when the user entered a new message.
+    The message is sent to all people in the room."""
+    room = "temp"
+    emit('message', {'msg': current_user.username + ':' + message['msg']}, room=room)
+
+@login_required
+@socketio.on('left', namespace='/c')
+def left(message):
+    """Sent by clients when they leave a room.
+    A status message is broadcast to all people in the room."""
+    room = "temp"
+    leave_room(room)
+    emit('status', {'msg': current_user.username + ' has left the room.'}, room=room)
+
+
+
 
 
 @app.route("/c/<string:cnitt_name>/comments/<int:post_id>",  methods = ["GET", "POST"], defaults={'sort_type': 'Hot'})

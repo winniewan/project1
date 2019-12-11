@@ -15,7 +15,7 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 		<!-- Allows us to use social media icons -->
 		<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-		<link rel = "stylesheet" href = "{{ url_for('static', filename='home.css') }}">
+		<link rel = "stylesheet" href = "{{ url_for('static', filename='mega.css') }}">
 </head>
 <body>
 
@@ -94,7 +94,7 @@
             <li>
                 <div class="card">
                     <b> {{comment.votes}} </b>
-                    <p>{{comment.text}}</p>
+                    <p id = "comment-text">{{comment.text}}</p>
                 </div>
             </li>
         {% endfor %}

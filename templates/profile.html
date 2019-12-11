@@ -15,9 +15,9 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 		<!-- Allows us to use social media icons -->
 		<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-		<link rel = "stylesheet" href = "{{ url_for('static', filename='profile.css') }}">
+		<link rel = "stylesheet" href = "{{ url_for('static', filename='mega.css') }}">
 </head>
-<body>
+<body class = "profile-background">
 
 	<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
 		<div class="container-fluid">
@@ -53,7 +53,7 @@
   <div class="container-fluid padding">
     <div class="row welcome text-center">
       <div class="col-12">
-        <h1 class="profileTitle"> {{ user.first_name }}'s Profile </h1>
+        <h2 class="profileTitle"> {{ user.first_name }}'s Profile </h2>
       </div>
       <hr>
     </div>
@@ -63,7 +63,7 @@
 	<div class="model-dialog text-center">
 		<div class="col-sm-4 main-section">
 			<div class="modal-content">
-				<div class="col-12 user-img">
+				<div class="gif-img">
 					<img src="/static/img/gif/userimg.gif">
 				</div>
 					<div class="form-group">
@@ -81,19 +81,19 @@
 						{% endif %}
 					</div>
 					{% for post in posts%}
-					<div>
-					<li>
-							<button class="up_arrow"  type="button">UP</button>
-							<b> {{ post.net_votes }}</b>
-							{% if post.is_link %}
-							<a href = "{{post.content}}"> {{ post.title }} </a>
-							{% else %}
-							<a href = "{{url_for('comments_for_post',cnitt_name=post.cnitt_name,post_id=post.pid)}}"> {{ post.title }} </a>
-							{% endif %}
-							<br>
-							<a href = "{{url_for('comments_for_post',cnitt_name=post.cnitt_name,post_id=post.pid)}}"> comments </a>
-					</li>
-					</div>
+						<div>
+						<li>
+								<button class="up_arrow"  type="button">UP</button>
+								<b> {{ post.net_votes }}</b>
+								{% if post.is_link %}
+								<a href = "{{post.content}}"> {{ post.title }} </a>
+								{% else %}
+								<a href = "{{url_for('comments_for_post',cnitt_name=post.cnitt_name,post_id=post.pid)}}"> {{ post.title }} </a>
+								{% endif %}
+								<br>
+								<a href = "{{url_for('comments_for_post',cnitt_name=post.cnitt_name,post_id=post.pid)}}"> comments </a>
+						</li>
+						</div>
 					{% endfor %}
 					{% else %}
 					{% endif %}
