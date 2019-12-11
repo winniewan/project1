@@ -8,10 +8,11 @@ from flask import Flask, render_template, abort, redirect, request, url_for, fla
 from flask_login import login_user, logout_user, LoginManager, login_required, \
     current_user
 from flask_wtf import FlaskForm
-from database import *
 from werkzeug.datastructures import MultiDict
 from flask_socketio import SocketIO
 from flask_socketio import emit, join_room, leave_room
+
+from database import *
 
 # google oauth
 
@@ -255,7 +256,7 @@ def add_user():
         fname = form.first_name.data
         form.first_name.data = None
         lname = form.last_name.data
-        form.last_name.data = None
+        form.last_name.data = Nonex
         email = form.email.data
         form.email.data = None
         password = form.password.data
@@ -428,6 +429,24 @@ def unsubscribe(cnitt):
     return redirect("/c/" + cnitt)
 
 
+@app.route("/up_vote/<int:post_id>", methods=["POST"])
+def upvote_post(post_id):
+    if current_user.is_authenticated:
+        current_user.up_vote_post(post_id)
+    else:
+        pass
+    return str(Post.query.filter_by(pid=post_id).first().net_votes)
+
+
+@app.route("/down_vote/<int:post_id>", methods=["POST"])
+def downvote_post(post_id):
+    if current_user.is_authenticated:
+        current_user.down_vote_post(post_id)
+    else:
+        pass
+    return str(Post.query.filter_by(pid=post_id).first().net_votes)
+
+
 
 @app.route("/makeComment/<string:cnitt_name>/<int:post_id>",  methods = ["GET", "POST"])
 def makeComment(cnitt_name, post_id):
@@ -477,7 +496,7 @@ def initialize_app():
 
 
         SubCnitt.add_required_subscriptions()
-        all_cnitt.create_link_post("TEST POST PLEASE IGNORE 1", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", user.id)
+        all_cnitt.create_link_post("TEST POST PLEASE IGNORE 1", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", gal_user.id)
         all_cnitt.create_text_post("TEST POST PLEASE IGNORE 2", "hello world, again", user.id)
 
 
