@@ -11,8 +11,11 @@ from flask_login import login_user, logout_user, LoginManager, login_required, \
     current_user
 from flask_socketio import SocketIO
 from flask_socketio import emit, join_room, leave_room
+
 from flask_wtf import FlaskForm
 from werkzeug.datastructures import MultiDict
+
+from wtforms import PasswordField
 
 from database import *
 
@@ -111,8 +114,19 @@ class CommentForm(FlaskForm):
     content = wtf.TextAreaField("Write Comment Here", validators = [valid.DataRequired()])
     submit = wtf.SubmitField("Comment")
 
+class password_Form(FlaskForm):
+    password = wtf.PasswordField('New Password', validators = [valid.DataRequired(),
+        valid.EqualTo('confirm', message='Passwords must match')
+    ])
+    confirm = wtf.PasswordField('Repeat Password', validators = [valid.DataRequired()])
+    submit = wtf.SubmitField("Submit")
+
+class email_Form(FlaskForm):
+    email = wtf.StringField('Account E-Mail', validators = [valid.DataRequired()])
+    submit = wtf.SubmitField("Submit")
+
 def send_email(to, subject, template, **kwargs):
-	#scarlatoscarlato@gmail.com
+    #scarlatoscarlato@gmail.com
     gmail_user = 'brandnewmillstone@gmail.com'
     gmail_pwd = "Danimals8!"
     smtpserver = smtplib.SMTP("smtp.gmail.com", 587)
@@ -210,13 +224,35 @@ def editProfile(uid):
         print("oops")
         abort(404)
 
+@app.route('/resetPassword/<token>/<email>', methods =["GET", "POST"])
+def passwordReset(token, email):
+    form = password_Form()
+    user = Users.query.filter_by(email=email).first()
+    if user.confirm(token):
+        if form.validate_on_submit():
+            password = form.password.data
+            form.password.data = None
+            form.confirm.data = None
+            user.password = password
+            db.session.commit()
+            print('You have changed your password. Thanks!')
+            return redirect(url_for("login"))
+        else:
+            return render_template("passwordReset.html", form = form), 200
+    else:
+        print('The confirmation link is invalid or has expired.')
+    return redirect(url_for('index'))
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = Users.query.filter_by(email=form.email.data).first()
         if user is not None and Users.verify_password(user, password=form.password.data):
-            login_user(user, form.remember_me.data)
+            if user.confirmed:
+                login_user(user, form.remember_me.data)
+            else:
+                print("Please authenticate your account.")
             next = request.args.get("next")
             if next is None or not next.startswith("/"):
                 next = url_for("index")
@@ -290,7 +326,7 @@ def add_user():
             db.session.commit()
             token = user.generate_confirmation_token()
             send_email(user.email, 'Confirm Your Account','ConfirmAccount', user = user, token = token)
-            flash('A confirmation email has been sent to your account.')
+            print('A confirmation email has been sent to your account.')
             SubCnitt.add_required_subscriptions()
             next = request.args.get("next")
             if next is None or not next.startswith("/"):
@@ -306,9 +342,9 @@ def confirm(token):
     if current_user.confirmed:
         return redirect(url_for('index'))
     if current_user.confirm(token):
-        flash('You have confirmed your account. Thanks!')
+        print('You have confirmed your account. Thanks!')
     else:
-        flash('The confirmation link is invalid or has expired.')
+        print('The confirmation link is invalid or has expired.')
     return redirect(url_for('index'))
 
 @app.route("/users/<int:uid>")
@@ -365,10 +401,20 @@ def mlp(cnitt_name):
         return redirect(next)
     return render_template("link_post_submission.html", form = form), 200
 
-@app.route("/email")
-def email():
-    send_email(current_user.email, "Testing", "emailTest", user = current_user)
-    return render_template('about.html')
+@app.route("/reset", methods = ["GET", "POST"])
+def reset():
+    form = email_Form()
+    if form.validate_on_submit:
+        user = Users.query.filter_by(email=form.email.data).first()
+        if user is not None:
+            email = form.email.data
+            form.email.data = None
+            token = user.generate_confirmation_token()
+            send_email(email , 'Reset your password','passwordEmail', email = user.email, token = token)
+            print('An email has been sent to your account.')	
+        else:
+            print("No user with that email")
+    return render_template('resetTemp.html', form= form)
 
 
 @app.route("/c", methods=["GET"])
