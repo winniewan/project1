@@ -12,7 +12,7 @@ function up_vote(self) {
 }
 
 function down_vote(self) {
-     var id = self.attr('id').split('_')[0];
+    var id = self.attr('id').split('_')[0];
 
     $.ajax({
         "url": "/down_vote/" + id,
@@ -39,6 +39,7 @@ $(".down_arrow").each(function () {
 
 var loaded = 25;
 var amountNextToLoad = 25;
+var lock = false;
 
 function isScrolledIntoView(elem)
 {
@@ -51,11 +52,11 @@ function isScrolledIntoView(elem)
     return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
 }
 
-window.onscroll = function ()  {
+window.onscroll = function () {
     let $moretarget = $("#moretarget");
-    if($moretarget.length && isScrolledIntoView($moretarget)) {
-           // ajax call get data from server and append to the div
-
+    if (!lock && $moretarget.length && isScrolledIntoView($moretarget)) {
+        // ajax call get data from server and append to the div
+        lock = true;
 
         $.ajax({
             "url": "/get_posts" + window.location.pathname,
@@ -65,11 +66,13 @@ window.onscroll = function ()  {
                 "count": amountNextToLoad,
                 "after": loaded
             },
-            success: function(response) {
+            success: function (response) {
                 $("#moretarget").replaceWith(response);
-                loaded = loaded + amountNextToLoad
+                loaded = loaded + amountNextToLoad;
+                lock = false;
             }
         });
     }
-};
+}
+
 

@@ -1,9 +1,7 @@
 import os
-import ssl
 import smtplib
-
-from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from functools import wraps
 
 import wtforms as wtf
@@ -364,12 +362,13 @@ def mlp(cnitt_name):
         if next is None or not next.startswith("/"):
             next = url_for("show_sub_cnitt", cnitt_name = cnitt_name, sort_type = 'Hot')
         return redirect(next)
-    return render_template ("link_post_submission.html", form = form), 200
+    return render_template("link_post_submission.html", form = form), 200
 
 @app.route("/email")
 def email():
     send_email(current_user.email, "Testing", "emailTest", user = current_user)
     return render_template('about.html')
+
 
 @app.route("/c", methods=["GET"])
 @app.route("/c/", defaults={'cnitt_name': 'Front'}, methods=["GET"])
@@ -420,7 +419,7 @@ def get_posts_for_infinite(cnitt_name="Front", sort_type='Hot'):
     more = True
     if len(posts) == 0:
         more = False
-    template = render_template("post_basic_template.html", posts=posts, hasMore=more)
+    template = render_template("post_basic_template.html", posts=posts, hasMore=more, users=Users)
 
     return template
 
@@ -557,8 +556,12 @@ def initialize_app():
 
 
         SubCnitt.add_required_subscriptions()
+
         all_cnitt.create_link_post("TEST POST PLEASE IGNORE 1", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", gal_user.id)
         all_cnitt.create_text_post("TEST POST PLEASE IGNORE 2", "hello world, again", user.id)
+
+        for i in range(0, 100):
+            pictures.create_link_post("TEST POST PLEASE IGNORE " + str(i), "https://www.youtube.com/watch?v=dQw4w9WgXcQ", gal_user.id)
 
 
 def get_the_all_cnitt():
