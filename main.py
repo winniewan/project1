@@ -11,11 +11,8 @@ from flask_login import login_user, logout_user, LoginManager, login_required, \
     current_user
 from flask_socketio import SocketIO
 from flask_socketio import emit, join_room, leave_room
-
 from flask_wtf import FlaskForm
 from werkzeug.datastructures import MultiDict
-
-from wtforms import PasswordField
 
 from database import *
 
@@ -86,7 +83,7 @@ class Edit_User_Form(FlaskForm):
     submit = wtf.SubmitField("Save")
 
 class LoginForm(FlaskForm):
-    email = wtf.StringField("Email", validators=[valid.DataRequired(), valid.Length(1, 64), valid.Email()])
+    email = wtf.StringField("Email", validators=[valid.DataRequired(), valid.email(), valid.Length(1, 64), valid.Email()])
     password = wtf.PasswordField("Password", validators=[valid.DataRequired()])
     remember_me = wtf.BooleanField("Remember me")
     submit = wtf.SubmitField("Log in")
@@ -96,7 +93,7 @@ class SearchBar(FlaskForm):
     submit = wtf.SubmitField("Search")
 
 class RoleForm(FlaskForm):
-    email = wtf.StringField("Email", validators=[valid.DataRequired(), valid.Length(1, 64), valid.Email()])
+    email = wtf.StringField("Email", validators=[valid.DataRequired(), valid.email(), valid.Length(1, 64), valid.Email()])
     role_name = wtf.StringField("Role", validators=[valid.DataRequired()])
     submit = wtf.SubmitField("change_role")
 
@@ -122,7 +119,7 @@ class password_Form(FlaskForm):
     submit = wtf.SubmitField("Submit")
 
 class email_Form(FlaskForm):
-    email = wtf.StringField('Account E-Mail', validators = [valid.DataRequired()])
+    email = wtf.StringField('Account E-Mail', validators = [valid.DataRequired(), valid.email(message="Not an Email")])
     submit = wtf.SubmitField("Submit")
 
 def send_email(to, subject, template, **kwargs):
@@ -411,9 +408,9 @@ def reset():
             form.email.data = None
             token = user.generate_confirmation_token()
             send_email(email , 'Reset your password','passwordEmail', email = user.email, token = token)
-            print('An email has been sent to your account.')	
+            flash('An email has been sent to your account.')
         else:
-            print("No user with that email")
+            flash("No user with that email")
     return render_template('resetTemp.html', form= form)
 
 

@@ -2,102 +2,114 @@
 <html lang="en">
 
 <head>
-		<meta charset="utf-8"/>
-	<!-- <link rel = "stylesheet" href = "{{ url_for('static', filename='home.css') }}"> -->
-	<!-- Required meta tags -->
+    <meta charset="utf-8"/>
+    <!-- <link rel = "stylesheet" href = "{{ url_for('static', filename='home.css') }}"> -->
+    <!-- Required meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-		<title> Profile </title>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-		<!-- Allows us to use social media icons -->
-		<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-		<link rel = "stylesheet" href = "{{ url_for('static', filename='mega.css') }}">
+    <title> Profile </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <!-- Allows us to use social media icons -->
+    <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <link rel = "stylesheet" href = "{{ url_for('static', filename='mega.css') }}">
 </head>
 <body class = "profile-background">
-	<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
-		<div class="container-fluid">
-			<a class="navbar-brand" href="/"><img src="/static/img/mylogo.png"></a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-					<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collpase navbar-collpase" id="navbarResponsive">
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item">
-						<a class="nav-link" href="/">Home</a>
-					</li>
-					<li>
-						<a class="nav-link" href="/about">About</a>
-					</li>
-					{% if current_user.is_authenticated %}
-					<li>
-						<a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
-					</li>
-					{% else %}
-					<li>
-						<a class="nav-link" href="/add_user">Register</a>
-					</li>
-					<li>
-						<a class="nav-link" href="{{ url_for('login') }}">Login</a>
-					</li>
-					{% endif %}
-				</ul>
-			</div>
-		</div>
-	</nav>
 
-  <div class="container-fluid padding">
-    <div class="row welcome text-center">
-      <div class="col-12">
-        <h2 class="profileTitle"> {{ user.first_name }}'s Profile </h2>
-      </div>
-      <hr>
+<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/"><img src="/static/img/mylogo.png"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collpase navbar-collpase" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="/about">About</a>
+                </li>
+                {% if current_user.is_authenticated %}
+                    <li>
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a class="nav-link" href="/add_user">Register</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
-  </div>
+</nav>
 
-	{% if current_user.is_authenticated %}
-	<div class="model-dialog text-center">
-		<div class="col-sm-4 main-section">
-			<div class="modal-content">
-				<div class="gif-img">
-					<img src="/static/img/gif/userimg.gif">
-				</div>
-					<div class="form-group">
-						Name: {{ user.first_name }} {{ user.last_name }}
-					</div>
-					<div class="form-group">
-						Email: {{ user.email }}
-					</div>
-					<div class="form-group">
-						Bio: {{user.bio}}
-					</div>
-					<div>
-						{% if current_user.id == user.id %}
-							<a href="{{ url_for('editProfile', uid = current_user.id) }}" class = "btn" >Edit Profile</a>
-						{% endif %}
-					</div>
-					{% for post in posts%}
-						<div>
-						<li>
-								<button class="up_arrow"  type="button">UP</button>
-								<b> {{ post.net_votes }}</b>
-								{% if post.is_link %}
-								<a href = "{{post.content}}"> {{ post.title }} </a>
-								{% else %}
-								<a href = "{{url_for('comments_for_post',cnitt_name=post.cnitt_name,post_id=post.pid)}}"> {{ post.title }} </a>
-								{% endif %}
-								<br>
-								<a href = "{{url_for('comments_for_post',cnitt_name=post.cnitt_name,post_id=post.pid)}}"> comments </a>
-						</li>
-						</div>
-					{% endfor %}
-					{% else %}
-					{% endif %}
-			</div>
-		</div>
-	</div>
+<div class="container-fluid padding">
+    <div class="row welcome text-center">
+        <div class="col-12">
+            <h2 class="profileTitle"> {{ user.first_name }}'s Profile </h2>
+        </div>
+        <hr>
+    </div>
+</div>
+
+{% if current_user.is_authenticated %}
+    <div class="model-dialog text-center">
+    <div class="col-sm-4 main-section">
+    <div class="modal-content">
+    <div class="gif-img">
+        <img src="/static/img/gif/userimg.gif">
+    </div>
+    <div class="form-group">
+        Name: {{ user.first_name }} {{ user.last_name }}
+    </div>
+    <div class="form-group">
+        Email: {{ user.email }}
+    </div>
+    <div class="form-group">
+        Bio: {{user.bio}}
+    </div>
+    <div>
+        {% if current_user.id == user.id %}
+            <a href="{{ url_for('editProfile', uid = current_user.id) }}" class = "btn" >Edit Profile</a>
+        {% endif %}
+    </div>
+    {% for post in posts%}
+        <div class="container-fluid padding" id="{{ post.pid }}_post">
+            <div class="row padding">
+                <div class="col-lg-12" id="{{ post.pid }}_post">
+                    <button class="up_arrow" id="{{ post.pid }}_up"  type="button">UP</button>
+                    <b id="{{ post.pid }}_votes"> {{ post.net_votes }}</b>
+                    <button class="down_arrow"  id="{{ post.pid }}_down" type="button">DOWN</button>
+                    {% if post.is_link %}
+                        <h2><a href = "{{post.content}}"> {{ post.title }} </a></h2>
+                    {% else %}
+                        <h2><a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}"> {{ post.title }} </a></h2>
+                    {% endif %}
+                    <p> </br> </p>
+                    <a href = "{{ url_for('comments_for_post', cnitt_name = cnitt_name, post_id = post.pid)}}" id = "blur" class="btn btn-primary"> Comments </a>
+                    {% if not current_user.is_anonymous and current_user.is_moderator() %}
+                        <button class="btn btn-primary delete" id="{{ post.pid }}_delete"  type="button">delete</button>
+                    {% endif %}
+                </div>
+            </div>
+            <hr class="light">
+            </br>
+            </br>
+            </br>
+        </div>
+
+    {% endfor %}
+{% else %}
+{% endif %}
+</div>
+</div>
+</div>
 </body>
 </html>

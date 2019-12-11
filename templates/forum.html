@@ -1,4 +1,4 @@
-<<<<<<< Updated upstream
+
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
@@ -159,7 +159,7 @@
                         <button class="up_arrow" id="{{ post.pid }}_up"  type="button">UP</button>
                         <b id="{{ post.pid }}_votes"> {{ post.net_votes }}</b>
                         <button class="down_arrow"  id="{{ post.pid }}_down" type="button">DOWN</button>
-                        <h2><a href = "users/{{post.creator}}"> {{users.query.filter_by(id=post.creator).first().username }} </a></h2>
+                        <h2><a href = "{{ url_for('users', uid=post.creator) }}"> {{users.query.filter_by(id=post.creator).first().username }} </a></h2>
                         {% if post.is_link %}
                             <h2><a href = "{{post.content}}"> {{ post.title }} </a></h2>
                         {% else %}
