@@ -54,6 +54,7 @@ function isScrolledIntoView(elem)
 
 window.onscroll = function () {
     let $moretarget = $("#moretarget");
+
     if (!lock && $moretarget.length && isScrolledIntoView($moretarget)) {
         // ajax call get data from server and append to the div
         lock = true;

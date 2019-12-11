@@ -207,6 +207,7 @@ footer {
 	background-color: #3f3f3f;
 	color: #d5d5d5;
 	padding-top: 2rem;
+	display: inline;
 }
 
 .footerlogo {
@@ -243,6 +244,23 @@ footer {
 	padding-bottom: 1em;
 }
 
+.block {
+	width: 100%;
+	display: inline;
+}
+
+.columns {
+	display: flex;
+}
+
+.column.left{
+	width: 70%;
+}
+
+.column.right{
+	width: 30%;
+}
+
 .navbar-brand img {
 	width: 40%;
 	height: 40%;
@@ -276,7 +294,8 @@ html {
 	height: 100%;
 	width: 100%;
 	font-family: 'Poppins', sans-serif;
-	color: #222;
+	color: white;
+	float: left;
 }
 
 .profileTitle {

@@ -142,15 +142,12 @@
     		</li>
 	</nav>
 
-	{% if current_user.is_authenticated %}
-	<div id = "chatroom">
-		<h1>c\{{ room }} chatroom</h1>
-		<textarea id="chat" cols="80" rows="20" readonly></textarea><br><br>
-		<input id="text" size="80" placeholder="Enter your message here"><br><br>
-		<button onClick = "leave_room()"> leave chat </button> 
-	</div>
-	{% endif %}
+    <div class="columns">
 
+
+
+
+    <div class="column left">
   <!-- Cnitt posts -->
     {% for post in posts%}
 		<div class="container-fluid padding">
@@ -178,10 +175,26 @@
 	{% endfor %}
 
     {% if hasMore %}
-        <div id="moretarget">
+        <p id="moretarget">
             loading
-        </div>
+        </p>
     {% endif %}
+    </div>
+
+    <div class="column right">
+        {% if current_user.is_authenticated %}
+            <div id = "chatroom">
+                <h1>c\{{ room }} chatroom</h1>
+                <textarea id="chat" cols="60" rows="20" readonly></textarea><br><br>
+                <input id="text" size="60" placeholder="Enter your message here"><br><br>
+                <button onClick = "leave_room()"> leave chat </button>
+            </div>
+        {% endif %}
+    </div>
+
+    </div>
+
+<div class="block"></div>
 
 <footer>
 	<div class="container-fluid padding">
